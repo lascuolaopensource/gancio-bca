@@ -52,4 +52,21 @@ yarn dev
 > info "Info"
 > You can skip step n.5 and register the user from the UI, the first registered user will be an active administrator.
 
+#### Using Docker
+
+1. Build the container
+```bash
+docker build -f Dockerfile.dev -t gancio .
+```
+
+2. Install dependencies
+```bash
+docker run -v $PWD:/home/node -it gancio yarn install
+```
+
+3. Hacking
+```bash
+docker run -v $PWD:/home/node -it gancio
+```
+
 Please use the [issues](https://framagit.org/les/gancio/-/issues) to discuss any modification.
