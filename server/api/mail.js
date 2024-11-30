@@ -32,6 +32,11 @@ const mail = {
     const settings = settingsController.settings
     locale = locale || settings.instance_locale
     locale = localeMapOverride?.[locale] ?? locale
+
+     // Add smtp password from secrets
+    const secrets = settingsController.secretSettings
+    settings.smtp.auth.pass = secrets.smtp_password;
+
     log.info(`Send ${template} email to ${addresses} with locale ${locale}`)
     const email = new Email({
       views: { root: path.join(__dirname, '..', 'emails') },
