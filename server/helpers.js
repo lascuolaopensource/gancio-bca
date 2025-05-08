@@ -220,8 +220,8 @@ const Helpers = {
     const filename = crypto.randomBytes(16).toString('hex')
     const sharpStream = sharp({ failOnError: true })
     const promises = [
-      sharpStream.clone().resize(500, null, { withoutEnlargement: true }).jpeg({ effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, 'thumb', filename + '.jpg')),
-      sharpStream.clone().resize(1200, null, { withoutEnlargement: true }).jpeg({ quality: 95, effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, filename + '.jpg')),
+      sharpStream.clone().rotate().resize(500, null, { withoutEnlargement: true }).jpeg({ effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, 'thumb', filename + '.jpg')),
+      sharpStream.clone().rotate().resize(1200, null, { withoutEnlargement: true }).jpeg({ quality: 95, effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, filename + '.jpg')),
     ]
 
     const response = await axios({ method: 'GET', url, responseType: 'stream' })

@@ -184,6 +184,7 @@ const settingsController = {
 
     // convert and resize to png
     return sharp(uploadedPath)
+      .rotate()
       .resize(400)
       .png({ quality: 90 })
       .toFile(baseImgPath + '.png', (err) => {
@@ -206,6 +207,7 @@ const settingsController = {
 
     // convert and resize to png
     return sharp(uploadedPath)
+      .rotate()
       .resize(600)
       .png({ quality: 99 })
       .toFile(baseImgPath, (err) => {
@@ -228,6 +230,7 @@ const settingsController = {
 
     // convert and resize to png
     return sharp(uploadedPath)
+      .rotate()
       .resize(600)
       .png({ quality: 99 })
       .toFile(baseImgPath, (err) => {
