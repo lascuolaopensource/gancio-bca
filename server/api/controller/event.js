@@ -606,7 +606,7 @@ const eventController = {
       }
     } catch (e) {
       log.error('[EVENT ADD]', e)
-      res.sendStatus(400)
+      res.status(400).send(`Error: ` + (e?.message ?? e))
     }
   },
 

@@ -225,7 +225,6 @@ const Helpers = {
     ]
 
     const response = await axios({ method: 'GET', url, responseType: 'stream' })
-
     response.data.pipe(sharpStream)
     return Promise.all(promises)
       .then(res => {
@@ -241,8 +240,7 @@ const Helpers = {
       })
       .catch(err => {
         log.error(err)
-        req.err = err
-        cb(null)
+        throw err
       })
   },
 
