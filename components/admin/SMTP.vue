@@ -111,7 +111,16 @@ export default {
       if (!smtp.auth.user) {
         delete smtp.auth
       }
-      if (!smtp.secure) {
+      if (smtp.secure) {
+        smtp.secure = true
+        smtp.requireTLS = true
+        // Even if "ignoreTLS" defaults to false, we set it here because
+        // previously testing SMTP settings with the secure flag unset
+        // resulted in the database persisting "ignoreTLS" as true, which
+        // made using STARTTLS impossible.
+        smtp.ignoreTLS = false
+      }
+      else {
         smtp.secure = false
         smtp.ignoreTLS = true
       }
