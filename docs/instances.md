@@ -24,6 +24,7 @@ nav_order: 7
 - [rebaltela.org](https://rebaltela.org) (Verona, Italy)
 - [roma.convoca.la](https://roma.convoca.la) (Roma, Italy)
 - [scruscio.org](https://scruscio.org/) (Palermo, Italy)
+- [gancio.invegendo.org](https://gancio.invegendo.org) (Genova, Italy)
 - [bcn.convoca.la](https://bcn.convoca.la/) (Barcelona)
 - [mad.convoca.la](https://mad.convoca.la/) (Madrid)
 - [eventosmurcia.org](https://eventosmurcia.org/) (Murcia, Spain)
