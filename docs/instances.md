@@ -58,6 +58,7 @@ nav_order: 7
 - [offbeat.amsterdam](https://offbeat.amsterdam) (Amsterdam)
 - [koledar.kompot.si](https://koledar.kompot.si) (Ljubljana, Slovenia)
 - [vagancio.partidopirata.com.ar](https://vagancio.partidopirata.com.ar)(Buenos Aires, Argentina)
+- [kinkcalendar.site](https://kinkcalendar.site/) (kink, BDSM and fetish community)
 
 
 You can also check federated instances on [fedidb.org](https://fedidb.org/software/gancio) or on [fediverse.observer](https://gancio.fediverse.observer/list)
