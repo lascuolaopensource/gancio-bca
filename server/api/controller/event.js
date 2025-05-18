@@ -1073,21 +1073,21 @@ const eventController = {
       if (cursor < startAt) {
         cursor = cursor.plus({ days: 7 * Number(frequency[0]) })
       }
-    } else if (frequency === '1m') {
-
-      // day n.X each month
+    } else if (frequency === '1m' || frequency === '1y') {
+      let interval = frequency === '1y' ? { years: 1 } : { months: 1 }
+      // day n.X each interval
       if (type === 'ordinal') {
         cursor = cursor.set({ day: parentStartDatetime.day })
 
         if (cursor< startAt) {
-          cursor = cursor.plus({ months: 1 })
+          cursor = cursor.plus(interval)
         }
       } else { // weekday
 
         // get recurrent freq details
         cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
         if (cursor < startAt) {
-          cursor = cursor.plus({ months: 1 })
+          cursor = cursor.plus(interval)
           cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
         }
       }
