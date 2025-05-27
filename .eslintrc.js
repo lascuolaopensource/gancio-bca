@@ -31,6 +31,7 @@ module.exports = {
     'no-console': 'off',
     'arrow-parens': 'off',
     'import/order': 'off',
-    'space-in-parens': 'off'
+    'space-in-parens': 'off',
+    'eol-last': 'off'
   }
 }
