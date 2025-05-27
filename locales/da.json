@@ -218,7 +218,10 @@
         "only_future": "kun kommende begivenheder",
         "where_advanced_options_description": "Her kan du tilføje yderligere beskrivelser af stedet",
         "online_locations_help": "Foreksempel et link til en videokonference",
-        "report_message_confirmation": "Synes du denne begivenhed ikke bør være her? Skriv til os hvorfor"
+        "report_message_confirmation": "Synes du denne begivenhed ikke bør være her? Skriv til os hvorfor",
+        "recurrent_1y_ordinal": "På {n} {days} i {months} hvert år",
+        "recurrent_1y_days": "{months} {days} hvert år",
+        "each_year": "Hvert år"
     },
     "admin": {
         "delete_user": "Fjern",
@@ -317,6 +320,14 @@
         "add_link": "Tilføj link",
         "smtp_description": "<ul><li>Admin bør modtage en e-mail når en begivenhed tilføjes anonymt (hvis det er slået til).</li><li>Admin bør modtage en e-mail om registreringsanmodning (hvis det er slået til</li><li>Bruger bør modtage en e-mail om registreringsanmodning.</li><li>Bruger bør modtage en e-mail om bekræftet registrering</li><li>Bruger bør modtage en bekræftelses e-mail når de er blevet registreret direkte af admin.</li><li>Brugere bør modtage e-mail om at genoprette password hvis de har glemt det</li></ul>",
         "smtp_test_success": "En test e-mail er blevet sendt til {admin_email}, tjek venligst din indbakke",
-        "smtp_test_button": "Send en test e-mail"
+        "smtp_test_button": "Send en test e-mail",
+        "geocoding_provider_help": "Standardudbyderen er Nominatim",
+        "geocoding_provider": "Geocoding udbyder",
+        "geocoding_countrycodes": "Landekoder",
+        "created_at": "Oprettet",
+        "geocoding_countrycodes_help": "Lader dig instille et søgefilter baseret på landekoder",
+        "smtp_use_sendmail": "Brug sendmail",
+        "domain": "Domæne",
+        "known_users": "Kendte brugere"
     }
 }
