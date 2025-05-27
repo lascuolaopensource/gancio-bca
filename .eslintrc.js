@@ -30,6 +30,7 @@ module.exports = {
     camelcase: 'off',
     'no-console': 'off',
     'arrow-parens': 'off',
-    'import/order': 'off'
+    'import/order': 'off',
+    'space-in-parens': 'off'
   }
 }
