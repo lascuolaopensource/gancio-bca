@@ -25,6 +25,7 @@ nav_order: 7
 - [roma.convoca.la](https://roma.convoca.la) (Roma, Italy)
 - [scruscio.org](https://scruscio.org/) (Palermo, Italy)
 - [gancio.invegendo.org](https://gancio.invegendo.org) (Genova, Italy)
+- [sciamsciam.org](https://sciamsciam.org) (Basilicata, Italy)
 - [bcn.convoca.la](https://bcn.convoca.la/) (Barcelona)
 - [mad.convoca.la](https://mad.convoca.la/) (Madrid)
 - [eventosmurcia.org](https://eventosmurcia.org/) (Murcia, Spain)
