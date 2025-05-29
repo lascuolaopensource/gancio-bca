@@ -5,19 +5,21 @@ const { Op, literal } = require('sequelize')
 const { DateTime } = require('luxon')
 const ics = require('ics')
 const collectionController = require('./collection')
+const { queryParamToBool } = require('../../helpers')
 
 const exportController = {
 
   async export (req, res) {
+    const settings = res.locals.settings
     const format = req.params.format || 'json'
     const tags = req.query.tags
     const places = req.query.places
-    const collection = req.query?.collection ?? res.locals.settings.collection_in_home
-    const show_recurrent = !!req.query.show_recurrent
+    const collection = req.query?.collection ?? settings.collection_in_home
+    const show_recurrent = settings.allow_recurrent_event && queryParamToBool(req.query?.show_recurrent, settings.recurrent_event_visible)
 
     const opt = {
-      zone: res.locals.settings.instance_timezone,
-      locale: res.locals.settings.instance_locale
+      zone: settings.instance_timezone,
+      locale: settings.instance_locale
     }
 
     const where = {}
@@ -113,7 +115,7 @@ const exportController = {
       const tmpStart = DateTime.fromSeconds(e.start_datetime, { zone: 'UTC' })
       const start = [ tmpStart.year, tmpStart.month, tmpStart.day, tmpStart.hour, tmpStart.minute ]
 
-      const location = e.place.name !== 'online' ? `${e.place.name} - ${e.place.address}` : `${e.place.name} - ${e?.online_locations[0]}`
+      const location = e?.place ? (e.place?.name !== 'online' ? `${e.place?.name} - ${e.place?.address}` : `${e.place?.name} - ${e?.online_locations?.[0]}`) : ''
       const ret = {
         uid: `${e.id}@${settings.hostname}`,
         start,
@@ -129,7 +131,7 @@ const exportController = {
         alarms
       }
 
-      if (e.place.latitude && e.place.longitude) {
+      if (e.place?.latitude && e.place?.longitude) {
         ret.geo = { lat: e.place.latitude, lon: e.place.longitude }
       }
 

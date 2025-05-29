@@ -73,7 +73,7 @@ const Helpers = {
   HttpError,
   BadRequestError,
   NotFoundError,
-  UnauthorizedError,  
+  UnauthorizedError,
 
   randomString(length = 12) {
     const wishlist = '0123456789abcdefghijklmnopqrstuvwxyz'
@@ -130,6 +130,7 @@ const Helpers = {
       hide_thumbs: settings.hide_thumbs,
       hide_calendar: settings.hide_calendar,
       allow_geolocation: settings.allow_geolocation,
+      calendar_first_day_of_week: settings.calendar_first_day_of_week || undefined,
       geocoding_provider_type: settings.geocoding_provider_type,
       geocoding_provider: settings.geocoding_provider,
       geocoding_countrycodes: settings.geocoding_countrycodes,
@@ -150,10 +151,10 @@ const Helpers = {
   serveStatic() {
     const router = express.Router()
     // serve images/thumb
-    router.use('/media/', express.static(config.upload_path, { immutable: true, maxAge: '1y' }), 
+    router.use('/media/', express.static(config.upload_path, { immutable: true, maxAge: '1y' }),
       (_req, res) => res.redirect('/fallbackimage.png')
     )
-    
+
     router.use('/download/:filename', (req, res) => {
       res.download(req.params.filename, undefined, { root: config.upload_path }, err => {
         if (err) {
@@ -219,12 +220,11 @@ const Helpers = {
     const filename = crypto.randomBytes(16).toString('hex')
     const sharpStream = sharp({ failOnError: true })
     const promises = [
-      sharpStream.clone().resize(500, null, { withoutEnlargement: true }).jpeg({ effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, 'thumb', filename + '.jpg')),
-      sharpStream.clone().resize(1200, null, { withoutEnlargement: true }).jpeg({ quality: 95, effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, filename + '.jpg')),
+      sharpStream.clone().rotate().resize(500, null, { withoutEnlargement: true }).jpeg({ effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, 'thumb', filename + '.jpg')),
+      sharpStream.clone().rotate().resize(1200, null, { withoutEnlargement: true }).jpeg({ quality: 95, effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, filename + '.jpg')),
     ]
 
-    const response = await axios({ method: 'GET', url: encodeURI(url), responseType: 'stream' })
-
+    const response = await axios({ method: 'GET', url, responseType: 'stream' })
     response.data.pipe(sharpStream)
     return Promise.all(promises)
       .then(res => {
@@ -240,8 +240,7 @@ const Helpers = {
       })
       .catch(err => {
         log.error(err)
-        req.err = err
-        cb(null)
+        throw err
       })
   },
 
@@ -316,17 +315,17 @@ const Helpers = {
     const { DateTime } = require('luxon')
     const show_federated = res.locals.settings.federated_events_in_home
     const show_multidate = res.locals.settings.allow_multidate_event
-    const show_recurrent = res.locals.settings.allow_recurrent_event
+    const show_recurrent = res.locals.settings.allow_recurrent_event && res.locals.settings.recurrent_event_visible
     const collection_in_home = res.locals.settings.collection_in_home
 
     const ret = await Promise.allSettled([
       announceController._getVisible(),
       collectionController._getVisible(),
       collection_in_home ?
-        collectionController._getEvents({ name: collection_in_home, start: DateTime.local().toUnixInteger(), show_recurrent }) :
-        eventController._select({ start: DateTime.local().toUnixInteger(), show_multidate, show_recurrent, show_federated })
+        collectionController._getEvents({ name: collection_in_home, start: DateTime.local().startOf('month').toUnixInteger(), show_recurrent }) :
+        eventController._select({ start: DateTime.local().startOf('month').toUnixInteger(), show_multidate, show_recurrent, show_federated })
     ])
-    
+
     res.locals.announcements = ret[0]?.value
     res.locals.collections = ret[1]?.value
     res.locals.events = ret[2]?.value

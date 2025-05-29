@@ -112,7 +112,7 @@ const eventController = {
 
   /**
    * /event/detail/:event_slug.:format?
-   * get event details 
+   * get event details
    * this is also used to get next/prev event
    */
   async get(req, res) {
@@ -159,6 +159,13 @@ const eventController = {
       return res.sendStatus(404)
     }
 
+    // admin, editors and event's owner gets the number of messages (could open moderation)
+    let n_messages = 0
+    if (isAdminOrEditor || event.userId !== req.user?.id) {
+      n_messages = await Message.count({ where: { eventId: event.id, ...(!isAdminOrEditor && { is_author_visible: true }) }}).catch(() => 0)
+    }
+
+    // TODO: does next and prev make any sense in case of collection in home or home with federated events? should we remove this?
     // get prev and next event
     const next = await Event.findOne({
       attributes: ['id', 'slug'],
@@ -200,6 +207,7 @@ const eventController = {
       event = event.get()
       event.isMine = event.userId === req.user?.id
       event.isAnon = event.userId === null || !event?.user?.is_active
+      event.n_messages = n_messages
       event.original_url = event?.ap_object?.url || event?.ap_object?.id
       delete event.ap_object
       delete event.user
@@ -277,7 +285,7 @@ const eventController = {
 
     if (event.userId === req.user.id) {
       const messages = await Message.findAll({ where: { eventId, is_author_visible: true }, order: [['createdAt', 'DESC']]})
-      return res.json(messages)      
+      return res.json(messages)
     }
 
     return res.sendStatus(400)
@@ -393,13 +401,21 @@ const eventController = {
           parentId: null,
           is_visible: false,
         },
+        attributes: {
+          include: [
+            [ Sequelize.cast( Sequelize.fn('COUNT', Sequelize.col('messages.id')), 'INTEGER' ), 'n_messages' ]
+          ],
+        },
         order: [['start_datetime', 'ASC']],
-        include: [{ model: Tag, required: false }, Place]
+        include: [
+          Place,
+          { model: Message, required: false, attributes: [] }],
+        group: ['event.id', 'place.id'],
       })
       const now = DateTime.local().toUnixInteger()
       res.json({ events: events.filter(e => e.start_datetime >= now) , oldEvents: events.filter(e => e.start_datetime < now) })
     } catch (e) {
-      log.info(e)
+      log.info(String(e))
       res.sendStatus(400)
     }
   },
@@ -487,7 +503,7 @@ const eventController = {
           log.debug('[EVENT] end_datetime is too much in the future')
           return res.status(400).send('are you sure?')
         }
-  
+
       }
 
       if (!start_datetime) {
@@ -590,7 +606,7 @@ const eventController = {
       }
     } catch (e) {
       log.error('[EVENT ADD]', e)
-      res.sendStatus(400)
+      res.status(400).send(`Error: ` + (e?.message ?? e))
     }
   },
 
@@ -762,7 +778,7 @@ const eventController = {
         // remove related resources
         await Resource.destroy({ where: { eventId: event.id }})
         await EventNotification.destroy({ where: { eventId: event.id }})
-        
+
       } catch (e) {
         console.error(e)
       }
@@ -882,7 +898,7 @@ const eventController = {
       where,
       attributes: {
         exclude: [
-        'likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
+        'likes', 'boost', 'userId', 'createdAt', 'updatedAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
           ...(!include_parent ? ['recurrent']: []),
           ...(!include_unconfirmed ? ['is_visible']: []),
           ...(!include_description ? ['description']: [])
@@ -924,7 +940,10 @@ const eventController = {
       }
       if (e.ap_user) {
         e.ap_user = { image: e.ap_user?.object?.icon?.url ?? `${e.ap_user?.url}/favicon.ico` }
-      }      
+      } else {
+        delete e.ap_user
+        delete e.apUserApId
+      }
       return e
     })
   },
@@ -944,7 +963,7 @@ const eventController = {
         recurrent: { [Op.not]: null }
       }
     }
-    
+
     const events = await Event.findAll({
       where,
       attributes: {
@@ -992,13 +1011,16 @@ const eventController = {
     const show_recurrent = settings.allow_recurrent_event && helpers.queryParamToBool(req.query.show_recurrent, settings.recurrent_event_visible)
 
     let events = []
+
     if (settings.collection_in_home && !(tags || places || query)) {
       events = await collectionController._getEvents({
         name: settings.collection_in_home,
         start,
         end,
         show_recurrent,
-        limit
+        limit,
+        page,
+        older
       })
     } else {
       events = await eventController._select({
@@ -1051,21 +1073,21 @@ const eventController = {
       if (cursor < startAt) {
         cursor = cursor.plus({ days: 7 * Number(frequency[0]) })
       }
-    } else if (frequency === '1m') {
-
-      // day n.X each month
+    } else if (frequency === '1m' || frequency === '1y') {
+      let interval = frequency === '1y' ? { years: 1 } : { months: 1 }
+      // day n.X each interval
       if (type === 'ordinal') {
         cursor = cursor.set({ day: parentStartDatetime.day })
 
         if (cursor< startAt) {
-          cursor = cursor.plus({ months: 1 })
+          cursor = cursor.plus(interval)
         }
       } else { // weekday
 
         // get recurrent freq details
         cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
         if (cursor < startAt) {
-          cursor = cursor.plus({ months: 1 })
+          cursor = cursor.plus(interval)
           cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
         }
       }
@@ -1076,10 +1098,13 @@ const eventController = {
     try {
       const newEvent = await Event.create(event)
       if (e.tags) {
-        return newEvent.addTags(e.tags)
-      } else {
-        return newEvent
+        newEvent.addTags(e.tags)
       }
+
+      // send notifications
+      await notifier.notifyEvent('Create', newEvent.id)
+
+      return newEvent
     } catch (e) {
       console.error(event)
       log.error('[RECURRENT EVENT]', e)

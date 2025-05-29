@@ -1,6 +1,5 @@
 const config = require('./server/config.js')
 const locales = require('./locales/index')
-
 const dns = require('node:dns')
 dns.setDefaultResultOrder('ipv4first')
 
@@ -103,7 +102,6 @@ module.exports = {
     skipSettingLocaleOnNavigate: true,
     defaultLocale: 'en',
   },
-
   render: {
     static: {
       maxAge: "6000000"
@@ -126,6 +124,9 @@ module.exports = {
     cookie: {
       prefix: 'auth.',
       options: {
+        sameSite: !isDev && 'Lax',
+        // enable secure cookie only for https baseurl, ref #572
+        secure: !isDev && /^https:/.test(config.baseurl),
         maxAge: 60 * 60 * 24 * 30 * 12 * 5
       }
     },
@@ -150,7 +151,7 @@ module.exports = {
   buildModules: ['@nuxtjs/vuetify'],
   vuetify: {
     treeShake: true,
-    defaultAssets: false,    
+    defaultAssets: false,
     optionsPath: './vuetify.options.js'
   },
   hooks: {
@@ -158,7 +159,7 @@ module.exports = {
       server.keepAliveTimeout = 35000;
       server.headersTimeout = 36000;
     }
-  },  
+  },
   build: {
     extend(config, { isDev, isClient }) {
       // ..
