@@ -116,40 +116,14 @@ const settingsController = {
   async set(key, value, is_secret = false) {
     // If the key is 'smtp', handle it specially
     if (key === 'smtp') {
-      const sanitizedValue = {...value};
-      // Extract and save password separately if it exists
-      if (sanitizedValue.auth && sanitizedValue.auth.pass) {
-        await this.set('smtp_password', sanitizedValue.auth.pass, true);
-        delete sanitizedValue.auth.pass;
-      }
-
-      log.info(`SET ${key} ${JSON.stringify(sanitizedValue)}`)
-      
-      try {
-        const [setting, created] = await DB.Setting.findOrCreate({
-          where: { key },
-          defaults: { value: sanitizedValue, is_secret: false }
-        })
-        
-        if (!created) { 
-          await setting.update({ value: sanitizedValue }) 
-        }
-        
-        settingsController.settings[key] = sanitizedValue
-        return true
-      } catch (e) {
-        log.error('[SETTING SET]', e)
-        return false
-      }
+      return await this.handleSMTPSettings(value);
     }
-    
-    const sanitizedValue = this.sanitizeSensitiveFields(value, ["pass"]);
-    
-    log.info(`SET ${key} ${is_secret ? '*****' : JSON.stringify(sanitizedValue)}`)
+
+    log.info(`SET ${key} ${is_secret ? '*****' : JSON.stringify(value)}`)
     try {
       const [setting, created] = await DB.Setting.findOrCreate({
         where: { key },
-        defaults: { value: sanitizedValue, is_secret }
+        defaults: { value: value, is_secret }
       })
       if (!created) { await setting.update({ value, is_secret }) }
       settingsController[is_secret ? 'secretSettings' : 'settings'][key] = value
@@ -157,6 +131,40 @@ const settingsController = {
     } catch (e) {
       log.error('[SETTING SET]', e)
       return false
+    }
+  },
+
+  async handleSMTPSettings(smtpConfig) {
+    try {
+      const sanitizedConfig = {...smtpConfig};
+
+      // Extract and save password separately if it exists
+      if (sanitizedConfig.auth && sanitizedConfig.auth.pass) {
+        const passwordSaved = await this.set('smtp_password', sanitizedConfig.auth.pass, true);
+        if (!passwordSaved) {
+          throw new Error('Failed to save SMTP password');
+        }
+        delete sanitizedConfig.auth.pass;
+      }
+
+      // Log sanitized config
+      log.info(`SET smtp ${JSON.stringify(this.sanitizeSensitiveFields(sanitizedConfig, ["pass"]))}`)
+
+      // Save the SMTP config without password
+      const [setting, created] = await DB.Setting.findOrCreate({
+        where: { key: 'smtp' },
+        defaults: { value: sanitizedConfig, is_secret: false }
+      })
+
+      if (!created) {
+        await setting.update({ value: sanitizedConfig })
+      }
+
+      settingsController.settings.smtp = sanitizedConfig;
+      return true;
+    } catch (e) {
+      log.error('[SETTING SET SMTP]', e);
+      return false;
     }
   },
   
