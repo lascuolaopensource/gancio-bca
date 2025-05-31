@@ -60,6 +60,8 @@ nav_order: 7
 - [koledar.kompot.si](https://koledar.kompot.si) (Ljubljana, Slovenia)
 - [vagancio.partidopirata.com.ar](https://vagancio.partidopirata.com.ar)(Buenos Aires, Argentina)
 - [kinkcalendar.site](https://kinkcalendar.site/) (kink, BDSM and fetish community)
+- [antroposofiachile.net](https://gancio.antroposofiachile.net) (Red de Eventos de Antroposofía en Chile)
+- [pelumpen.com](https://eventos.pelumpen.com) (Red de eventos del Valle de Pelumpén; Limache y Olmué, V Región, Chile)
 
 
 You can also check federated instances on [fedidb.org](https://fedidb.org/software/gancio) or on [fediverse.observer](https://gancio.fediverse.observer/list)
