@@ -308,6 +308,7 @@
         "smtp_test_success": "A test email is sent to {admin_email}, please check your inbox",
         "smtp_test_button": "Send a test email",
         "smtp_use_sendmail": "Use sendmail",
+        "smtp_password_description": "Leave blank if you don't want to change the password",
         "admin_email": "Admin e-mail",
         "admin_email_help": "The address we use as the sender to send emails. This is also the address to which admin emails are sent",
         "widget": "Widget",

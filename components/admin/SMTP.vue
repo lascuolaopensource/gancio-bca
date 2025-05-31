@@ -12,7 +12,7 @@ v-card
         persistent-hint
         :rules="$validators.email")
 
-      v-switch(v-model='smtp.sendmail'
+      v-switch(v-model='smtp.sendmail' inset
         :label="$t('admin.smtp_use_sendmail')")
 
       v-row(v-if='!smtp.sendmail')
@@ -26,15 +26,17 @@ v-card
             :rules="[$validators.required('admin.smtp_port')]")
 
         v-col(cols=12)
-          v-switch(v-model='smtp.secure'
+          v-switch(v-model='smtp.secure' inset
             :label="$t('admin.smtp_secure')")
-        
+
         v-col(md=6)
           v-text-field(v-model='smtp.auth.user'
             :label="$t('common.user')")
 
         v-col(md=6)
           v-text-field(v-model='smtp.auth.pass'
+            persistent-hint
+            :hint="$t('admin.smtp_password_description')"
             :label="$t('common.password')"
             type='password')
 
@@ -98,7 +100,7 @@ export default {
       if (testing) {
         this.loading = true
         try {
-          await this.$axios.$post('/settings/smtp', { smtp })
+          await this.$axios.$post('/settings/test_smtp', { smtp })
           this.$root.$message(this.$t('admin.smtp_test_success', { admin_email: this.admin_email }), { color: 'success' })
         } catch (e) {
           this.$root.$message(e.response && e.response.data, { color: 'error' })
