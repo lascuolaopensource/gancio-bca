@@ -7,6 +7,7 @@ const config = require('../../config')
 const generateKeyPair = promisify(crypto.generateKeyPair)
 const log = require('../../log')
 const escape = require('lodash/escape')
+const clone = require('lodash/cloneDeep')
 const DB = require('../models/models')
 
 let defaultHostname
@@ -113,17 +114,21 @@ const settingsController = {
     await pluginController._load()
   },
 
-  async set(key, value, is_secret = false) {
+  async set (key, value, is_secret = false) {
     // If the key is 'smtp', handle it specially
     if (key === 'smtp') {
-      return await this.handleSMTPSettings(value);
+      if (!value.auth.pass) {
+        value.auth.pass = settingsController.settings.smtp.auth.pass
+      }
+      log.info(`SET SMTP: ${JSON.stringify({ host: value.host, port: value.port, user: value.auth.user })}`)
+    } else {
+      log.info(`SET ${key} ${is_secret ? '*****' : JSON.stringify(value)}`)
     }
 
-    log.info(`SET ${key} ${is_secret ? '*****' : JSON.stringify(value)}`)
     try {
       const [setting, created] = await DB.Setting.findOrCreate({
         where: { key },
-        defaults: { value: value, is_secret }
+        defaults: { value, is_secret }
       })
       if (!created) { await setting.update({ value, is_secret }) }
       settingsController[is_secret ? 'secretSettings' : 'settings'][key] = value
@@ -132,64 +137,6 @@ const settingsController = {
       log.error('[SETTING SET]', e)
       return false
     }
-  },
-
-  async handleSMTPSettings(smtpConfig) {
-    try {
-      const sanitizedConfig = {...smtpConfig};
-
-      // Extract and save password separately if it exists
-      if (sanitizedConfig.auth && sanitizedConfig.auth.pass) {
-        const passwordSaved = await this.set('smtp_password', sanitizedConfig.auth.pass, true);
-        if (!passwordSaved) {
-          throw new Error('Failed to save SMTP password');
-        }
-        delete sanitizedConfig.auth.pass;
-      }
-
-      // Log sanitized config
-      log.info(`SET smtp ${JSON.stringify(this.sanitizeSensitiveFields(sanitizedConfig, ["pass"]))}`)
-
-      // Save the SMTP config without password
-      const [setting, created] = await DB.Setting.findOrCreate({
-        where: { key: 'smtp' },
-        defaults: { value: sanitizedConfig, is_secret: false }
-      })
-
-      if (!created) {
-        await setting.update({ value: sanitizedConfig })
-      }
-
-      settingsController.settings.smtp = sanitizedConfig;
-      return true;
-    } catch (e) {
-      log.error('[SETTING SET SMTP]', e);
-      return false;
-    }
-  },
-  
-  // Helper method to sanitize sensitive fields
-  sanitizeSensitiveFields(obj, sensitiveKeys) {
-    if (typeof obj !== 'object' || obj === null) return obj;
-    // Create a deep copy to avoid modifying the original
-    const sanitized = JSON.parse(JSON.stringify(obj));
-    // Recursive function to mask sensitive fields
-    const maskSensitive = (item) => {
-      if (typeof item !== 'object' || item === null) return item;
-      for (const [key, value] of Object.entries(item)) {
-        if (sensitiveKeys.some(sensitiveKey => 
-          key.toLowerCase().includes(sensitiveKey)
-        )) {
-          item[key] = '*****';
-        } else if (typeof value === 'object' && value !== null) {
-          // Recursively check nested objects
-          maskSensitive(value);
-        }
-      }
-      return item;
-    };
-    
-    return maskSensitive(sanitized);
   },
 
   async setRequest (req, res) {
@@ -229,14 +176,9 @@ const settingsController = {
   },
 
   getSMTPSettings (_req, res) {
-    const smtpSettings = {...settingsController.settings.smtp};
-  
-    const savedPassword = settingsController.secretSettings.smtp_password;
-    if (savedPassword) {
-      smtpSettings.auth.pass = "***";
-    }
-    
-    return res.json(smtpSettings);
+    const smtpSettings = clone(settingsController.settings.smtp)
+    delete smtpSettings.auth.pass
+    return res.json(smtpSettings)
   },
 
   getAll (_req, res) {
