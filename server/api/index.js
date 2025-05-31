@@ -175,7 +175,7 @@ module.exports = () => {
     api.post('/settings/logo', isAdmin, multer({ dest: config.upload_path }).single('logo'), settingsController.setLogo)
     api.post('/settings/fallbackImage', isAdmin, multer({ dest: config.upload_path }).single('fallbackImage'), settingsController.setFallbackImage)
     api.post('/settings/headerImage', isAdmin, multer({ dest: config.upload_path }).single('headerImage'), settingsController.setHeaderImage)
-    api.post('/settings/smtp', isAdmin, settingsController.testSMTP)
+    api.post('/settings/test_smtp', isAdmin, settingsController.testSMTP)
     api.get('/settings/smtp', isAdmin, settingsController.getSMTPSettings)
 
     // moderation

@@ -98,7 +98,7 @@ export default {
       if (testing) {
         this.loading = true
         try {
-          await this.$axios.$post('/settings/smtp', { smtp })
+          await this.$axios.$post('/settings/test_smtp', { smtp })
           this.$root.$message(this.$t('admin.smtp_test_success', { admin_email: this.admin_email }), { color: 'success' })
         } catch (e) {
           this.$root.$message(e.response && e.response.data, { color: 'error' })
