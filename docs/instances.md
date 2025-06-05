@@ -38,6 +38,7 @@ nav_order: 7
 - [calndr.de](https://calndr.de/)
 - [bonn.jetzt](https://bonn.jetzt/) (Digital-Events aus Bonn, Rhein-Sieg und der Region)
 - [flyinghigh-bonn.org](https://flyinghigh-bonn.org/) (resistant and subcultural events in and around Bonn.)
+- [gancio.graz.events](https://gancio.graz.events/) (Verein zur Förderung ethischer Digitalkultur)
 - [quest.livellosegreto.it](https://quest.livellosegreto.it/)
 - [agenda.lanbroa.eus](https://agenda.lanbroa.eus/) (Lanbroa)
 - [mallorca.convoca.la](https://mallorca.convoca.la/) (Mallorca)
