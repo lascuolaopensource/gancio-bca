@@ -150,7 +150,10 @@
         "custom_css_help": "Můžete si přizpůsobit i styly, některé příklady najdete <a href='https://gancio.org/usage/custom_css'>zde</a>.",
         "show_download_media": "Zobrazit možnost stažení médií",
         "show_download_media_hint": "Zobrazit tlačítko ke stažení médií na stránce události",
-        "add_trusted_source_help": "Použijte jednu z následujících syntaxí: <br/><ul><li>webová adresa jiné instance Gancio nebo softwaru, který podporuje Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (např. <u>https://demo.gancio.org</u>)</li><li>uživatelské jméno na ActivityPub, například <u>@gancio@mastodon.cisti.org</u></li><li>adresa URL účtu, například <u>https://instance.tld/actor</u>.</li></ul><br/>Budou importovány události zveřejněné nebo boostnuté těmito zdroji."
+        "add_trusted_source_help": "Použijte jednu z následujících syntaxí: <br/><ul><li>webová adresa jiné instance Gancio nebo softwaru, který podporuje Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (např. <u>https://demo.gancio.org</u>)</li><li>uživatelské jméno na ActivityPub, například <u>@gancio@mastodon.cisti.org</u></li><li>adresa URL účtu, například <u>https://instance.tld/actor</u>.</li></ul><br/>Budou importovány události zveřejněné nebo boostnuté těmito zdroji.",
+        "calendar_first_day_of_week_default": "Výchozí (nastavení klienta)",
+        "calendar_first_day_of_week_description": "Vyberte den týdne, který se bude v kalendářích zobrazovat jako první den týdne. Výchozí hodnota se řídí nastavením klienta.",
+        "calendar_first_day_of_week": "První den týdne v kalendáři"
     },
     "common": {
         "related": "Příbuzné",
@@ -353,13 +356,17 @@
         "send_to_admins": "Poslat administrátorům",
         "disable_author": "Deaktivovat autora",
         "disable_author_confirm": "Opravdu chcete deaktivovat autora této události?",
-        "report_message_confirmation": "Myslíte si, že by zde tato událost neměla být? Napište nám důvod"
+        "report_message_confirmation": "Myslíte si, že by zde tato událost neměla být? Napište nám důvod",
+        "recurrent_1y_ordinal": "{n} {days} v měsíci {months} každý rok",
+        "each_year": "Každý rok",
+        "recurrent_1y_days": "{months} {days} každý rok"
     },
     "validators": {
         "latitude": "Zadejte platnou zeměpisnou šířku (-90 < šířka < 90)",
         "email": "Zadejte platný e-mail",
         "longitude": "Zadejte platnou zeměpisnou délku (-180 < délka < 180)",
-        "required": "Pole {fieldName} je vyžadováno"
+        "required": "Pole {fieldName} je vyžadováno",
+        "url": "Zadejte platnou adresu URL (http:// nebo https://)"
     },
     "login": {
         "insert_email": "Zadejte svou e-mailovou adresu",
