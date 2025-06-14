@@ -223,7 +223,10 @@
         "report_message_confirmation": "¿Crees que este evento no debería estar aquí? Danos una razón",
         "message_hint": "Podrías enviar un mensaje a otros administradores y, opcionalmente, a la persona autora del evento.",
         "assign_to_user": "Asignar al usuario",
-        "assign_to_user_description": "Puede asignar un evento anónimo a un usuario. Esto permitirá al usuario seleccionado modificar el evento."
+        "assign_to_user_description": "Puede asignar un evento anónimo a un usuario. Esto permitirá al usuario seleccionado modificar el evento.",
+        "recurrent_1y_days": "{months} {days} todo año",
+        "recurrent_1y_ordinal": "Los {n} {days} en {months} todo año",
+        "each_year": "Todo año"
     },
     "admin": {
         "place_description": "En el caso de que un lugar sea incorrecto o cambie de dirección, puedes cambiarlo. <br/> Todos los eventos presentes y pasados asociados con este lugar cambiarán de dirección.",
@@ -378,7 +381,9 @@
         "trusted_sources_label_default": "Otras localizaciones",
         "trusted_sources_label_help": "La etiqueta por defecto es \"Otras localizaciones\"",
         "add_trusted_source": "Añade una fuente federada confiable",
-        "delete_page_confirm": "Estás segure de querer borrar la página \"<strong>{title}</strong>\"?"
+        "delete_page_confirm": "Estás segure de querer borrar la página \"<strong>{title}</strong>\"?",
+        "calendar_first_day_of_week": "Primero dia de la semana",
+        "receive_confirm_notification": "Obtener e-mail de confirmación de usuário/evento"
     },
     "auth": {
         "not_confirmed": "Todavía no hemos confirmado este email…",
