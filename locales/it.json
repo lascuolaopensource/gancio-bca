@@ -167,7 +167,7 @@
         "coordinates_search_description": "Puoi ricercare il posto per nome, o incollare la coppia di coordinate.",
         "confirmed": "Evento confermato",
         "not_found": "Evento non trovato",
-        "remove_confirmation": "Vuoi eliminare questo evento?",
+        "remove_confirmation": "Vuoi davvero eliminare l'evento \"<strong>{event}</strong>\"?",
         "remove_recurrent_confirmation": "Sei sicura di voler eliminare questo evento ricorrente?\nGli eventi passati verranno mantenuti ma non ne verranno creati altri.",
         "recurrent": "Ricorrente",
         "edit_recurrent": "Modifica evento ricorrente:",
