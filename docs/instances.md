@@ -37,6 +37,7 @@ nav_order: 7
 - [events.rheinmain.social](https://events.rheinmain.social/) (Rheinmain)
 - [calndr.de](https://calndr.de/)
 - [bonn.jetzt](https://bonn.jetzt/) (Digital-Events aus Bonn, Rhein-Sieg und der Region)
+- [gancio.blablalinux.be](https://gancio.blablalinux.be/)
 - [flyinghigh-bonn.org](https://flyinghigh-bonn.org/) (resistant and subcultural events in and around Bonn.)
 - [gancio.graz.events](https://gancio.graz.events/) (Verein zur Förderung ethischer Digitalkultur)
 - [quest.livellosegreto.it](https://quest.livellosegreto.it/)
