@@ -151,7 +151,8 @@
     },
     "event": {
         "anon": "Anonimo",
-        "anon_description": "Puoi inserire un evento senza registrarti o fare il login, ma in questo caso dovrai aspettare che qualcuno lo legga confermando che si tratta di un evento adatto a questo spazio, delegando questa scelta. Inoltre non sarà possibile modificarlo.<br/><br/> \nPuoi invece fare il <a href='/login'>login</a> o <a href='/register'>registrarti</a>, altrimenti vai avanti, lo confermeremo appena possibile. ",
+        "anon_description": "Puoi inserire un evento senza registrarti o fare il login, ma in questo caso dovrai aspettare che qualcuno lo legga confermando che si tratta di un evento adatto a questo spazio, delegando questa scelta. Inoltre non sarà possibile modificarlo.<br/><br/> \nPuoi invece fare il <a href='/login'>login</a> o <a href='/register'>registrarti</a>, altrimenti vai avanti, lo confermeremo appena possibile.",
+        "anon_description_without_registration": "Puoi aggiungere un evento ma dovrai aspettare che qualcuno lo legga confermando che si tratta di un evento adatto a questo spazio.\nDopo l'invio, non sarà possibile modificarlo.<br/><br/>\nLo confermeremo il prima possibile.",
         "same_day": "Stesso giorno",
         "what_description": "Titolo",
         "description_description": "Descrizione",

@@ -15,7 +15,7 @@ v-container.container.pa-0.pa-md-3
           v-row
             //- Not logged event
             v-col(v-if='!$auth.loggedIn' cols=12)
-              p(v-html="$t('event.anon_description')")
+              p(v-html="$t(settings.allow_registration ? 'event.anon_description' : 'event.anon_description_without_registration')")
 
             //- Title
             v-col(cols=12)
