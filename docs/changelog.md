@@ -7,6 +7,38 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+## [1.27.0](https://framagit.org/les/gancio/compare/v1.26.1...v1.27.0) (2025-06-21)
+
+
+### Features
+
+* new language Japanese, 日本語 ([a986115](https://framagit.org/les/gancio/commit/a98611563c8de40fc0a9c69fd50ef01297537ff6))
+* Add yearly recurrence option ([bffd683](https://framagit.org/les/gancio/commit/bffd68358c9aaa9f5d2a69c6d84757008ce88507)), closes [#203](https://framagit.org/les/gancio/issues/203)
+* add dev container configuration ([f397041](https://framagit.org/les/gancio/commit/f397041d9e00f0dea7673e30db59a067f5caf928))
+
+
+### Bug Fixes
+
+*  Do not import passed events when backfilling events from newly followed actor, fix [#583](https://framagit.org/les/gancio/issues/583) ([86bb11a](https://framagit.org/les/gancio/commit/86bb11ace29eaa72502b17f4aa0e1d12d0933bf4))
+* Admin notification emails once again without Bcc, fix [#578](https://framagit.org/les/gancio/issues/578) ([90e4294](https://framagit.org/les/gancio/commit/90e42940e4e2cf95f44467970d91089ca482f3d0))
+* gancio advertises register on `/add` when registration is disabled, fix [#588](https://framagit.org/les/gancio/issues/588) ([f003fe8](https://framagit.org/les/gancio/commit/f003fe88d32b2b5c2a0a496792f67f7d44f38499))
+* Hide sensitive value of SMTP settings ([a2c22fc](https://framagit.org/les/gancio/commit/a2c22fceb0637460c78eff065dbf31c7a6036fc8))
+* improve error handler on wrong image url, fix [#577](https://framagit.org/les/gancio/issues/577) ([6476898](https://framagit.org/les/gancio/commit/647689881ca2518ec5a3da0ab0079fcf3501a44e))
+* remove federated events too, fix [#586](https://framagit.org/les/gancio/issues/586) ([09743d5](https://framagit.org/les/gancio/commit/09743d56c405e5129dea6a443123ba4ee96137d9))
+* Rotate uploaded images according to their exif data, fix [#576](https://framagit.org/les/gancio/issues/576) ([903af9f](https://framagit.org/les/gancio/commit/903af9fece2a07532709038320bb40070428dee2))
+* **SMTP:** merge test and save smtp configuration, better select ([4c2d7db](https://framagit.org/les/gancio/commit/4c2d7db7fcfcb61e4a0b308c7c0f1745185b6e23))
+* **SMTP:** stop changing the port on `secure` changes ([d5cf4e9](https://framagit.org/les/gancio/commit/d5cf4e98992f0c53fafd8565b8f4ec707dee5fe7))
+* STARTTLS became unusable after testing with the secure flag unset ([64ba325](https://framagit.org/les/gancio/commit/64ba3259df4d536eaf3387c6de2be0ce6a9a3aa9)), closes [#192](https://framagit.org/les/gancio/issues/192)
+* update AP event, parseAPLocation ([b4c635a](https://framagit.org/les/gancio/commit/b4c635a7e7bc33da706ce3825fe81a5d60c946fc))
+* update eslint config ([ab937c3](https://framagit.org/les/gancio/commit/ab937c3d9509723366cc4f578b4350ae63f80742)), closes [#581](https://framagit.org/les/gancio/issues/581)
+
+### [1.26.1](https://framagit.org/les/gancio/compare/v1.26.0...v1.26.1) (2025-04-28)
+
+
+### Bug Fixes
+
+* error when getting image from url ([9cd862d](https://framagit.org/les/gancio/commit/9cd862da66c6fd7473a48d5084023b7a0304d241))
+
 ## [1.26.0](https://framagit.org/les/gancio/compare/v1.25.1...v1.26.0) (2025-04-28)
 
 ### Notes
