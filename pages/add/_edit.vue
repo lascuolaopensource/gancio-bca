@@ -221,6 +221,7 @@ export default {
         })
         return
       }
+      if (this.loading) { return }
       this.loading = true
 
       const formData = new FormData()
