@@ -12,6 +12,7 @@ module.exports = {
   gl: 'Galego',
   hr: 'Croatian, Hrvatski',
   it: 'Italiano',
+  lv: 'Latviešu',
   ja: 'Japanese, 日本語',
   nb: 'Norwegian Bokmål',
   nl: 'Dutch',
