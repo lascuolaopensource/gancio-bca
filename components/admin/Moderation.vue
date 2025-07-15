@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-card-title {{$t('common.moderation')}}
   v-card-text
@@ -64,85 +64,124 @@ v-container
 <script>
 import { mapState, mapActions } from 'vuex'
 import get from 'lodash/get'
-import { mdiDelete, mdiEye, mdiEyeOff, mdiDotsVertical, mdiCheckboxIntermediate,
-mdiCheckboxBlankOutline, mdiChevronLeft, mdiChevronRight, mdiChevronDown } from '@mdi/js'
+import {
+  mdiDelete,
+  mdiEye,
+  mdiEyeOff,
+  mdiDotsVertical,
+  mdiCheckboxIntermediate,
+  mdiCheckboxBlankOutline,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiChevronDown,
+} from '@mdi/js'
 
 export default {
   name: 'Moderation',
-  data () {
+  data() {
     return {
-      mdiDelete, mdiEye, mdiEyeOff, mdiDotsVertical, mdiCheckboxIntermediate,
-      mdiCheckboxBlankOutline, mdiChevronLeft, mdiChevronRight, mdiChevronDown,
+      mdiDelete,
+      mdiEye,
+      mdiEyeOff,
+      mdiDotsVertical,
+      mdiCheckboxIntermediate,
+      mdiCheckboxBlankOutline,
+      mdiChevronLeft,
+      mdiChevronRight,
+      mdiChevronDown,
       instances: [],
       resources: [],
       users: [],
       usersHeader: [
         { value: 'object.preferredUsername', text: this.$t('common.name') },
-        { value: 'blocked', text: this.$t('admin.blocked') }
+        { value: 'blocked', text: this.$t('admin.blocked') },
       ],
       instancesHeader: [
         { value: 'domain', text: this.$t('admin.domain') },
         { value: 'name', text: this.$t('common.name') },
         { value: 'blocked', text: this.$t('admin.blocked') },
-        { value: 'users', text: this.$t('admin.known_users') }
+        { value: 'users', text: this.$t('admin.known_users') },
       ],
       resourcesHeader: [
         { value: 'created', text: this.$t('admin.created_at') },
         { value: 'event', text: this.$t('common.event') },
         { value: 'user', text: this.$t('common.user') },
         { value: 'content', text: this.$t('common.content') },
-        { value: 'actions', text: this.$t('common.actions') }
+        { value: 'actions', text: this.$t('common.actions') },
       ],
       usersFilter: '',
-      instancesFilter: ''
+      instancesFilter: '',
     }
   },
   computed: mapState(['settings']),
-  async mounted () {
+  async mounted() {
     this.instances = await this.$axios.$get('/instances')
     if (!this.instances.length) {
       return
     }
-    this.users = await this.$axios.$get(`/instances/${this.instances[0].domain}`)
+    this.users = await this.$axios.$get(
+      `/instances/${this.instances[0].domain}`
+    )
     this.resources = await this.$axios.$get('/resources')
   },
   methods: {
     ...mapActions(['setSetting']),
-    resourceStyle ({ row }) {
+    resourceStyle({ row }) {
       if (row.hidden) {
         return { opacity: 0.5 }
       }
     },
-    async instanceSelected (instance) {
+    async instanceSelected(instance) {
       this.users = await this.$axios.$get(`/instances/${instance.domain}`)
-      this.resources = await this.$axios.$get('/resources', { filters: { instance: instance.domain } })
+      this.resources = await this.$axios.$get('/resources', {
+        filters: { instance: instance.domain },
+      })
     },
-    async hideResource (resource, hidden) {
+    async hideResource(resource, hidden) {
       await this.$axios.$put(`/resources/${resource.id}`, { hidden })
       resource.hidden = hidden
     },
-    async toggleUserBlock (ap_user) {
+    async toggleUserBlock(ap_user) {
       if (!ap_user.blocked) {
-        const ret = await this.$root.$confirm('admin.user_block_confirm', { user: get(ap_user, 'object.preferredUsername', ap_user.preferredUsername) })
-        if (!ret) { return }
+        const ret = await this.$root.$confirm('admin.user_block_confirm', {
+          user: get(
+            ap_user,
+            'object.preferredUsername',
+            ap_user.preferredUsername
+          ),
+        })
+        if (!ret) {
+          return
+        }
       }
-      await this.$axios.post('/ap_actors/toggle_block', { ap_id: ap_user.ap_id })
+      await this.$axios.post('/ap_actors/toggle_block', {
+        ap_id: ap_user.ap_id,
+      })
       ap_user.blocked = !ap_user.blocked
     },
-    async deleteResource (resource) {
+    async deleteResource(resource) {
       const ret = await this.$root.$confirm('admin.delete_resource_confirm')
-      if (!ret) { return }
-      await this.$axios.delete(`/resources/${resource.id}`)
-      this.resources = this.resources.filter(r => r.id !== resource.id)
-    },
-    async toggleBlock (instance) {
-      if (!instance.blocked) {
-        const ret = await this.$root.$confirm('admin.instance_block_confirm', { instance: instance.domain })
-        if (!ret) { return }
+      if (!ret) {
+        return
       }
-      await this.$axios.post('/instances/toggle_block', { instance: instance.domain, blocked: !instance.blocked })
+      await this.$axios.delete(`/resources/${resource.id}`)
+      this.resources = this.resources.filter((r) => r.id !== resource.id)
+    },
+    async toggleBlock(instance) {
+      if (!instance.blocked) {
+        const ret = await this.$root.$confirm('admin.instance_block_confirm', {
+          instance: instance.domain,
+        })
+        if (!ret) {
+          return
+        }
+      }
+      await this.$axios.post('/instances/toggle_block', {
+        instance: instance.domain,
+        blocked: !instance.blocked,
+      })
       instance.blocked = !instance.blocked
-    }
-  }
+    },
+  },
 }
 </script>

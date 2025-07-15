@@ -103,18 +103,33 @@ v-col(cols=12)
 import { DateTime } from 'luxon'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import List from '@/components/List'
-import { mdiClockTimeFourOutline, mdiClockTimeEightOutline, mdiClose } from '@mdi/js'
+import {
+  mdiClockTimeFourOutline,
+  mdiClockTimeEightOutline,
+  mdiClose,
+} from '@mdi/js'
 
 export default {
   name: 'DateInput',
   components: { List },
   props: {
-    value: { type: Object, default: () => ({ from: null, due: null, recurrent: null, fromHour: null, dueHour: null }) },
-    event: { type: Object, default: () => null }
+    value: {
+      type: Object,
+      default: () => ({
+        from: null,
+        due: null,
+        recurrent: null,
+        fromHour: null,
+        dueHour: null,
+      }),
+    },
+    event: { type: Object, default: () => null },
   },
   data() {
     return {
-      mdiClockTimeFourOutline, mdiClockTimeEightOutline, mdiClose,
+      mdiClockTimeFourOutline,
+      mdiClockTimeEightOutline,
+      mdiClose,
       allowedMinutes: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
       menuFromHour: false,
       menuDueHour: false,
@@ -123,17 +138,20 @@ export default {
         { value: '1w', text: this.$t('event.each_week') },
         { value: '2w', text: this.$t('event.each_2w') },
         { value: '1m', text: this.$t('event.each_month') },
-        { value: '1y', text: this.$t('event.each_year') }
-      ]
+        { value: '1y', text: this.$t('event.each_year') },
+      ],
     }
   },
   computed: {
     ...mapState(['settings', 'events']),
     ...mapGetters(['is_dark']),
-    fromDate () {
+    fromDate() {
       if (this.value.from) {
         if (this.value.multidate) {
-          return ({ start: new Date(this.value.from), end: new Date(this.value.due) })
+          return {
+            start: new Date(this.value.from),
+            end: new Date(this.value.due),
+          }
         } else {
           return new Date(this.value.from)
         }
@@ -142,46 +160,67 @@ export default {
     todayEvents() {
       const start = this.$time.startOfDay(this.value.from)
       const end = this.$time.endOfDay(this.value.from)
-      return this.events.filter(e => e.id !== this.event.id && e.start_datetime >= start && e.start_datetime <= end)
+      return this.events.filter(
+        (e) =>
+          e.id !== this.event.id &&
+          e.start_datetime >= start &&
+          e.start_datetime <= end
+      )
     },
     attributes() {
-      return this.$time.attributesFromEvents(this.events.filter(e => e.id !== this.event.id))
+      return this.$time.attributesFromEvents(
+        this.events.filter((e) => e.id !== this.event.id)
+      )
     },
     whenPatterns() {
-      if (!this.value.from) { return }
+      if (!this.value.from) {
+        return
+      }
       const date = DateTime.fromJSDate(this.value.from)
 
       const freq = this.value.recurrent.frequency
       const weekDay = date.toFormat('EEEE')
       const month = date.toFormat('MMMM')
       if (freq === '1w' || freq === '2w') {
-        return this.$t(`event.recurrent_${freq}_days`, { days: weekDay }).toUpperCase()
+        return this.$t(`event.recurrent_${freq}_days`, {
+          days: weekDay,
+        }).toUpperCase()
       } else if (freq === '1m' || freq === '2m' || freq === '1y') {
-        const n = Math.floor((date.day-1) / 7) + 1
+        const n = Math.floor((date.day - 1) / 7) + 1
 
         const patterns = [
-          { label: this.$t(`event.recurrent_${freq}_days`, { days: date.day, months: month }), key: 'ordinal' }
+          {
+            label: this.$t(`event.recurrent_${freq}_days`, {
+              days: date.day,
+              months: month,
+            }),
+            key: 'ordinal',
+          },
           // { label: this.$tc(`event.recurrent_${freq}_ordinal`, { n, days: weekDay }), key: 'weekday' }
         ]
 
         if (n < 5) {
-          patterns.push(
-            {
-              label: this.$t(`event.recurrent_${freq}_ordinal`, { n: this.$t(`ordinal.${n}`), days: weekDay, months: month }),
-              key: n
-            }
-          )
+          patterns.push({
+            label: this.$t(`event.recurrent_${freq}_ordinal`, {
+              n: this.$t(`ordinal.${n}`),
+              days: weekDay,
+              months: month,
+            }),
+            key: n,
+          })
         }
 
         // if selected day is in last week, propose also this type of selection
         const lastWeek = date.endOf('month').day - date.day < 7
         if (lastWeek) {
-          patterns.push(
-            {
-              label: this.$t(`event.recurrent_${freq}_ordinal`, { n: this.$t('ordinal.-1'), days: weekDay, months: month }),
-              key: -1
-            }
-          )
+          patterns.push({
+            label: this.$t(`event.recurrent_${freq}_ordinal`, {
+              n: this.$t('ordinal.-1'),
+              days: weekDay,
+              months: month,
+            }),
+            key: -1,
+          })
         }
 
         return patterns
@@ -189,7 +228,7 @@ export default {
         return this.$t('event.recurrent_each_day')
       }
       return ''
-    }
+    },
   },
   async mounted() {
     if (this.value.multidate) {
@@ -211,15 +250,30 @@ export default {
     change(what, value) {
       // change event's type
       if (what === 'type') {
-        if (typeof value === 'undefined') { this.type = 'normal' }
+        if (typeof value === 'undefined') {
+          this.type = 'normal'
+        }
         if (value === 'recurrent') {
           if (this.value.multidate && this.value.due) {
-            this.$emit('input', { ...this.value, due: this.value.from, recurrent: { frequency: '1w' }, multidate: false })
+            this.$emit('input', {
+              ...this.value,
+              due: this.value.from,
+              recurrent: { frequency: '1w' },
+              multidate: false,
+            })
           } else {
-            this.$emit('input', { ...this.value, recurrent: { frequency: '1w' }, multidate: false })
+            this.$emit('input', {
+              ...this.value,
+              recurrent: { frequency: '1w' },
+              multidate: false,
+            })
           }
         } else if (value === 'multidate') {
-          this.$emit('input', { ...this.value, recurrent: null, multidate: true })
+          this.$emit('input', {
+            ...this.value,
+            recurrent: null,
+            multidate: true,
+          })
         } else {
           let from = this.value.from
           if (from && from.start) {
@@ -229,13 +283,27 @@ export default {
           if (due && due.start) {
             due = due.start
           }
-          this.$emit('input', { ...this.value, from, due, recurrent: null, multidate: false })
+          this.$emit('input', {
+            ...this.value,
+            from,
+            due,
+            recurrent: null,
+            multidate: false,
+          })
         }
       } else if (what === 'frequency') {
-        if (typeof value === 'undefined') { value = '1w' }
-        this.$emit('input', { ...this.value, recurrent: { ...this.value.recurrent, frequency: value } })
+        if (typeof value === 'undefined') {
+          value = '1w'
+        }
+        this.$emit('input', {
+          ...this.value,
+          recurrent: { ...this.value.recurrent, frequency: value },
+        })
       } else if (what === 'recurrentType') {
-        this.$emit('input', { ...this.value, recurrent: { ...this.value.recurrent, type: value } })
+        this.$emit('input', {
+          ...this.value,
+          recurrent: { ...this.value.recurrent, type: value },
+        })
       } else if (what === 'fromHour') {
         if (value) {
           this.$emit('input', { ...this.value, fromHour: value })
@@ -249,18 +317,32 @@ export default {
           const [fromHour, fromMinute] = this.value.fromHour.split(':')
           if (!this.value.multidate) {
             if (hour < fromHour) {
-              this.value.due = DateTime.fromJSDate(this.value.from, {zone: this.settings.instance_timezone}).plus({day: 1}).toJSDate()
+              this.value.due = DateTime.fromJSDate(this.value.from, {
+                zone: this.settings.instance_timezone,
+              })
+                .plus({ day: 1 })
+                .toJSDate()
             } else {
-              this.value.due = DateTime.fromJSDate(this.value.from, {zone: this.settings.instance_timezone}).toJSDate()
+              this.value.due = DateTime.fromJSDate(this.value.from, {
+                zone: this.settings.instance_timezone,
+              }).toJSDate()
             }
           } else {
-            this.value.due = DateTime.fromJSDate(this.value.due, {zone: this.settings.instance_timezone}).set({ hour, minute }).toJSDate()
+            this.value.due = DateTime.fromJSDate(this.value.due, {
+              zone: this.settings.instance_timezone,
+            })
+              .set({ hour, minute })
+              .toJSDate()
           }
         } else {
           if (!this.value.multidate) {
             this.value.due = null
           } else {
-            this.value.due = DateTime.fromJSDate(this.value.due, {zone: this.settings.instance_timezone}).set({ hour: 23, minute:59 }).toJSDate()
+            this.value.due = DateTime.fromJSDate(this.value.due, {
+              zone: this.settings.instance_timezone,
+            })
+              .set({ hour: 23, minute: 59 })
+              .toJSDate()
           }
         }
         this.$emit('input', { ...this.value, dueHour: value })
@@ -268,7 +350,13 @@ export default {
         // change date in calendar (could be a range or a recurrent event...)
       } else if (what === 'date') {
         if (value === null) {
-          this.$emit('input', { ...this.value, from: null, due: null, fromHour: null, dueHour: null })
+          this.$emit('input', {
+            ...this.value,
+            from: null,
+            due: null,
+            fromHour: null,
+            dueHour: null,
+          })
           return
         }
         if (this.value.multidate) {
@@ -282,15 +370,21 @@ export default {
           if (this.value.from) {
             let newDueDate = new Date(value).toDateString()
             if (this.value.dueHour < this.value.fromHour) {
-              newDueDate = new Date(DateTime.fromJSDate(from, {zone: this.settings.instance_timezone}).plus({day: 1}).toJSDate()).toDateString()
+              newDueDate = new Date(
+                DateTime.fromJSDate(from, {
+                  zone: this.settings.instance_timezone,
+                })
+                  .plus({ day: 1 })
+                  .toJSDate()
+              ).toDateString()
             }
-            due = new Date(newDueDate + " " + this.value.dueHour)
+            due = new Date(newDueDate + ' ' + this.value.dueHour)
           }
           this.$emit('input', { ...this.value, from, due })
         }
       }
     },
-  }
+  },
 }
 </script>
 

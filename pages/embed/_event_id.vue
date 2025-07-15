@@ -12,10 +12,9 @@ nuxt-link.embed_event(:to='`/event/${event.slug || event.id}`' target='_blank' :
     .date {{event.place.name}}
 </template>
 <script>
-
 export default {
   layout: 'iframe',
-  async asyncData ({ $axios, params, error }) {
+  async asyncData({ $axios, params, error }) {
     try {
       const event = await $axios.$get(`/event/detail/${params.event_id}`)
       return { event }
@@ -23,20 +22,20 @@ export default {
       error({ statusCode: 404, message: 'Event not found' })
     }
   },
-  data () {
+  data() {
     return {
       settings: { baseurl: '' },
-      loading: true
+      loading: true,
     }
-  }
+  },
 }
 
 // <iframe src='http://localhost:13120/embed/1' class='embedded_gancio'></iframe>
 </script>
-<style lang='scss'>
+<style lang="scss">
 .embed_event {
   display: flex;
-  transition: margin .1s;
+  transition: margin 0.1s;
   background: url('/logo.png') no-repeat right 5px bottom 5px;
   background-size: 32px;
   background-color: #1f1f1f;
@@ -75,6 +74,5 @@ export default {
     margin-right: 5px;
     height: 100%;
   }
-
 }
 </style>

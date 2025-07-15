@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
   v-container
     v-card-title {{ $t('common.pages') }}
     v-card-subtitle(v-html="$t('admin.page_description')")
@@ -42,13 +42,31 @@ import Editor from '../Editor'
 import Announcement from '../Announcement'
 import TBtn from '../../components/TBtn.vue'
 
-import { mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff, mdiArrowRight } from '@mdi/js'
+import {
+  mdiPlus,
+  mdiChevronRight,
+  mdiChevronLeft,
+  mdiChevronDown,
+  mdiDeleteForever,
+  mdiPencil,
+  mdiEye,
+  mdiEyeOff,
+  mdiArrowRight,
+} from '@mdi/js'
 
 export default {
   components: { Editor, Announcement, TBtn },
   data() {
     return {
-      mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEyeOff, mdiEye, mdiArrowRight,
+      mdiPlus,
+      mdiChevronRight,
+      mdiChevronLeft,
+      mdiChevronDown,
+      mdiDeleteForever,
+      mdiPencil,
+      mdiEyeOff,
+      mdiEye,
+      mdiArrowRight,
       valid: false,
       dialog: false,
       editing: false,
@@ -56,9 +74,14 @@ export default {
       loading: false,
       headers: [
         { value: 'title', text: this.$t('common.title') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
+        {
+          value: 'actions',
+          text: this.$t('common.actions'),
+          align: 'right',
+          sortable: false,
+        },
       ],
-      page: { title: '', content: '' }
+      page: { title: '', content: '' },
     }
   },
   async mounted() {
@@ -81,27 +104,32 @@ export default {
       try {
         page.visible = !page.visible
         await this.$axios.$put(`/pages/${page.id}`, page)
-        this.pages = this.pages.map(a => a.id === page.id ? page : a)
-        this.setPages(cloneDeep(this.pages.filter(a => a.visible)))
-      } catch (e) { }
+        this.pages = this.pages.map((a) => (a.id === page.id ? page : a))
+        this.setPages(cloneDeep(this.pages.filter((a) => a.visible)))
+      } catch (e) {}
     },
     async remove(page) {
-      const ret = await this.$root.$confirm('admin.delete_page_confirm', { title: page.title })
-      if (!ret) { return }
-      this.$axios.delete(`/pages/${page.id}`)
-        .then(() => {
-          this.$root.$message('admin.page_remove_ok')
-          this.pages = this.pages.filter(a => a.id !== page.id)
-        })
+      const ret = await this.$root.$confirm('admin.delete_page_confirm', {
+        title: page.title,
+      })
+      if (!ret) {
+        return
+      }
+      this.$axios.delete(`/pages/${page.id}`).then(() => {
+        this.$root.$message('admin.page_remove_ok')
+        this.pages = this.pages.filter((a) => a.id !== page.id)
+      })
     },
     async save() {
-      if (!this.$refs.page.validate()) { return }
+      if (!this.$refs.page.validate()) {
+        return
+      }
       this.loading = true
       try {
         let page = null
         if (this.editing) {
           page = await this.$axios.$put(`/pages/${this.page.id}`, this.page)
-          this.pages = this.pages.map(a => a.id === page.id ? page : a)
+          this.pages = this.pages.map((a) => (a.id === page.id ? page : a))
         } else {
           page = await this.$axios.$post('/pages', this.page)
           this.pages = this.pages.concat(page)
@@ -114,7 +142,7 @@ export default {
         console.error(e)
       }
       this.loading = false
-    }
-  }
+    },
+  },
 }
-</script>  
+</script>

@@ -74,7 +74,12 @@ import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import uniqBy from 'lodash/uniqBy'
 
-import { mdiFileImport, mdiFormatTitle, mdiTagMultiple, mdiCloseCircle } from '@mdi/js'
+import {
+  mdiFileImport,
+  mdiFormatTitle,
+  mdiTagMultiple,
+  mdiCloseCircle,
+} from '@mdi/js'
 
 import Editor from '@/components/Editor'
 import ImportDialog from '@/components/ImportDialog'
@@ -89,28 +94,26 @@ export default {
     ImportDialog,
     MediaInput,
     WhereInput,
-    DateInput
+    DateInput,
   },
   validate({ store, params, error }) {
     // should we allow anon event?
-    if(!store.state.settings.allow_anon_event && !store.state.auth.loggedIn) {
-      return error({ statusCode: 401, message: 'Not allowed'})
+    if (!store.state.settings.allow_anon_event && !store.state.auth.loggedIn) {
+      return error({ statusCode: 401, message: 'Not allowed' })
     }
 
     // do not allow edit to anon users
     if (params.edit && !store.state.auth.loggedIn) {
-      return error({ statusCode: 401, message: 'Not allowed'})
+      return error({ statusCode: 401, message: 'Not allowed' })
     }
 
     return true
-
   },
   async asyncData({ query, params, $axios, error, $auth, $time, store }) {
     if (params.edit) {
-
       const data = { event: { place: {}, media: [] } }
       data.id = params.edit
-      data.edit = query.clone ? false : true 
+      data.edit = query.clone ? false : true
       let event
       try {
         event = await $axios.$get('/event/detail/' + data.id)
@@ -133,7 +136,9 @@ export default {
         due: due && due.toJSDate(),
         multidate: event.multidate,
         fromHour: from.toFormat('HH:mm'),
-        dueHour: due && (due.toFormat('HH:mm') === '23:59' ? null : due.toFormat('HH:mm'))
+        dueHour:
+          due &&
+          (due.toFormat('HH:mm') === '23:59' ? null : due.toFormat('HH:mm')),
       }
 
       data.event.title = event.title
@@ -157,7 +162,10 @@ export default {
     const month = $time.currentMonth()
     const year = $time.currentYear()
     return {
-      mdiFileImport, mdiFormatTitle, mdiTagMultiple, mdiCloseCircle,
+      mdiFileImport,
+      mdiFormatTitle,
+      mdiTagMultiple,
+      mdiCloseCircle,
       valid: false,
       openImportDialog: false,
       event: {
@@ -166,7 +174,7 @@ export default {
         title: '',
         description: '',
         tags: [],
-        media: []
+        media: [],
       },
       tags: [],
       page: { month, year },
@@ -174,21 +182,24 @@ export default {
       date: { from: null, due: null, recurrent: null },
       edit: false,
       loading: false,
-      disableAddress: false
+      disableAddress: false,
     }
   },
-  mounted () {
-    this.$nextTick( async () => this.tags = await this.$axios.$get('/tag') )
+  mounted() {
+    this.$nextTick(async () => (this.tags = await this.$axios.$get('/tag')))
   },
   head() {
     return {
-      title: `${this.settings.title} - ${this.$t('common.add_event')}`
+      title: `${this.settings.title} - ${this.$t('common.add_event')}`,
     }
   },
   computed: mapState(['settings']),
   methods: {
-    updateTags (tags) {
-      this.event.tags = uniqBy(tags.map(t => t.trim()), t => t.toLocaleLowerCase()).filter(t => t)
+    updateTags(tags) {
+      this.event.tags = uniqBy(
+        tags.map((t) => t.trim()),
+        (t) => t.toLocaleLowerCase()
+      ).filter((t) => t)
     },
     searchTags: debounce(async function (ev) {
       const search = ev.target.value
@@ -198,30 +209,38 @@ export default {
     eventImported(event) {
       this.event = Object.assign(this.event, event)
 
-      this.$refs.where.selectPlace({ name: event.place.name || event.place, address: event.place.address })
+      this.$refs.where.selectPlace({
+        name: event.place.name || event.place,
+        address: event.place.address,
+      })
       const from = this.$time.fromUnix(this.event.start_datetime)
-      const due = this.event.end_datetime && this.$time.fromUnix(this.event.end_datetime)
+      const due =
+        this.event.end_datetime && this.$time.fromUnix(this.event.end_datetime)
       this.date = {
         recurrent: this.event.recurrent || null,
         from: from.toJSDate(),
         due: due && due.toJSDate(),
         multidate: event.multidate,
         fromHour: from.toFormat('HH:mm'),
-        dueHour: due && due.toFormat('HH:mm')
+        dueHour: due && due.toFormat('HH:mm'),
       }
       this.openImportDialog = false
     },
     async done() {
       if (!this.$refs.form.validate()) {
         this.$nextTick(() => {
-          const el = document.querySelector('.v-input.error--text:first-of-type')
+          const el = document.querySelector(
+            '.v-input.error--text:first-of-type'
+          )
           if (el) {
             el.scrollIntoView(false)
           }
         })
         return
       }
-      if (this.loading) { return }
+      if (this.loading) {
+        return
+      }
       this.loading = true
 
       const formData = new FormData()
@@ -250,18 +269,29 @@ export default {
       }
 
       if (this.event.online_locations?.length) {
-        this.event.online_locations.forEach(l => formData.append('online_locations[]', l))
+        this.event.online_locations.forEach((l) =>
+          formData.append('online_locations[]', l)
+        )
       } else {
         formData.append('online_locations', [])
       }
 
       formData.append('description', this.event.description)
       formData.append('multidate', !!this.date.multidate)
-      formData.append('start_datetime', this.$time.fromDateInput(this.date.from, this.date.fromHour))
+      formData.append(
+        'start_datetime',
+        this.$time.fromDateInput(this.date.from, this.date.fromHour)
+      )
       if (!!this.date.multidate) {
-        formData.append('end_datetime', this.$time.fromDateInput(this.date.due, this.date.dueHour || '23:59'))
+        formData.append(
+          'end_datetime',
+          this.$time.fromDateInput(this.date.due, this.date.dueHour || '23:59')
+        )
       } else if (this.date.dueHour && this.date.due) {
-        formData.append('end_datetime', this.$time.fromDateInput(this.date.due, this.date.dueHour))
+        formData.append(
+          'end_datetime',
+          this.$time.fromDateInput(this.date.due, this.date.dueHour)
+        )
       } else {
         formData.append('end_datetime', '')
       }
@@ -269,16 +299,29 @@ export default {
       if (this.edit) {
         formData.append('id', this.event.id)
       }
-      if (this.event.tags) { this.event.tags.forEach(tag => formData.append('tags[]', tag.tag || tag)) }
+      if (this.event.tags) {
+        this.event.tags.forEach((tag) =>
+          formData.append('tags[]', tag.tag || tag)
+        )
+      }
       try {
-        const ret = this.edit ? await this.$axios.$put('/event', formData) : await this.$axios.$post('/event', formData)
+        const ret = this.edit
+          ? await this.$axios.$put('/event', formData)
+          : await this.$axios.$post('/event', formData)
         if (!this.date.recurrent && (ret.is_visible || this.$auth.loggedIn)) {
           this.$router.push(`/event/${ret.slug}`)
         } else {
           this.$router.push('/')
         }
         this.$nextTick(() => {
-          this.$root.$message(this.$auth.loggedIn ? (this.edit ? 'event.saved' : 'event.added') : 'event.added_anon', { color: 'success' })
+          this.$root.$message(
+            this.$auth.loggedIn
+              ? this.edit
+                ? 'event.saved'
+                : 'event.added'
+              : 'event.added_anon',
+            { color: 'success' }
+          )
         })
       } catch (e) {
         switch (e?.request?.status) {
@@ -290,7 +333,7 @@ export default {
         }
         this.loading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

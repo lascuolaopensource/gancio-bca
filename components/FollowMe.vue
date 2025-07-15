@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-card
   v-card-title(v-text="$t('common.follow_me_title')")
   v-card-text
@@ -32,7 +32,7 @@ export default {
   name: 'FollowMe',
   props: { isDialog: { type: Boolean, default: false } },
   mixins: [clipboard],
-  data () {
+  data() {
     return {
       mdiInformation,
       instance_hostname: '',
@@ -40,45 +40,46 @@ export default {
       instance: {},
       stats: {},
       loading: false,
-      get_instance_info: debounce(this.getInstanceInfo, 300)
+      get_instance_info: debounce(this.getInstanceInfo, 300),
     }
   },
-  async fetch () {
+  async fetch() {
     this.stats = await this.$axios.$get('/ap_actors/stats')
   },
   computed: {
     ...mapState(['settings']),
-    couldGo () {
+    couldGo() {
       // check if is mastodon
       this.get_instance_info(this.instance_hostname)
       return true
     },
-    link () {
+    link() {
       // check if exists
       return `https://${this.instance_hostname}/authorize_interaction?uri=${this.settings.instance_name}@${this.settings.hostname}`
-    }
+    },
   },
   methods: {
-    getInstanceInfo () {
+    getInstanceInfo() {
       if (!this.instance_hostname) {
         return
       }
       this.loading = true
 
       const instance_url = `https://${this.instance_hostname}/api/v1/instance`
-      this.$axios.$get(instance_url)
-        .then(ret => {
+      this.$axios
+        .$get(instance_url)
+        .then((ret) => {
           this.instance = ret
           this.proceed = true
           this.loading = false
         })
-        .catch(e => {
+        .catch((e) => {
           this.instance = {}
           this.proceed = false
           this.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 <style>

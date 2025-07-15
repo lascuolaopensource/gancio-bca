@@ -14,26 +14,26 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   components: { Editor },
-  data ({ $store }) {
+  data({ $store }) {
     return {
-      about: $store.state.settings.about || this.$t('about')
+      about: $store.state.settings.about || this.$t('about'),
     }
   },
-  head () {
+  head() {
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale
+        lang: this.settings.instance_locale,
       },
-      title: `${this.settings.title} - ${this.$t('common.info')}`
+      title: `${this.settings.title} - ${this.$t('common.info')}`,
     }
   },
   computed: mapState(['settings']),
   methods: {
     ...mapActions(['setSetting']),
-    save () {
+    save() {
       this.$root.$message('common.ok', { color: 'success' })
       this.setSetting({ key: 'about', value: this.about })
-    }
-  }
+    },
+  },
 }
 </script>

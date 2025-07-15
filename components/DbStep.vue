@@ -23,20 +23,20 @@ v-container
 import { mdiArrowRight } from '@mdi/js'
 
 export default {
-  data () {
+  data() {
     return {
       mdiArrowRight,
       db: {
         dialect: 'sqlite',
         storage: './gancio.sqlite',
         host: 'localhost',
-        database: 'gancio'
+        database: 'gancio',
       },
-      loading: false
+      loading: false,
     }
   },
   methods: {
-    async checkDb () {
+    async checkDb() {
       this.loading = true
       try {
         await this.$axios.$post('/setup/db', { db: this.db })
@@ -46,7 +46,7 @@ export default {
         this.$root.$message(e.response.data, { color: 'error' })
       }
       this.loading = false
-    }
-  }
+    },
+  },
 }
 </script>

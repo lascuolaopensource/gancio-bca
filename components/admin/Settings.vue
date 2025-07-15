@@ -124,104 +124,183 @@ const locales = require('../../locales/index')
 
 export default {
   props: {
-    setup: { type: Boolean, default: false }
+    setup: { type: Boolean, default: false },
   },
   components: { SMTP, Geolocation },
   name: 'Settings',
-  data ({ $store }) {
+  data({ $store }) {
     return {
-      mdiAlert, mdiArrowRight, mdiMap,
+      mdiAlert,
+      mdiArrowRight,
+      mdiMap,
       title: $store.state.settings.title,
       description: $store.state.settings.description,
       instance_name: 'events',
-      locales: Object.keys(locales).map(locale => ({ value: locale, text: locales[locale] })),
+      locales: Object.keys(locales).map((locale) => ({
+        value: locale,
+        text: locales[locale],
+      })),
       showSMTP: false,
       showGeolocationConfigs: false,
     }
   },
   computed: {
     ...mapState(['settings']),
-    calendar_week_days () {
+    calendar_week_days() {
       return [
-        { value: null, text: this.$i18n.t('admin.calendar_first_day_of_week_default') },
+        {
+          value: null,
+          text: this.$i18n.t('admin.calendar_first_day_of_week_default'),
+        },
         // TODO: could be refactored with luxon Info utils: Info.weekdays('long', {  locale: this.$i18n.locale } )[6] }
-        { value: 1, text: DateTime.fromISO('1970-01-04T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
-        { value: 2, text: DateTime.fromISO('1970-01-05T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
-        { value: 7, text: DateTime.fromISO('1970-01-03T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+        {
+          value: 1,
+          text: DateTime.fromISO('1970-01-04T00:00:00.000Z').toFormat('EEEE', {
+            locale: this.$i18n.locale,
+          }),
+        },
+        {
+          value: 2,
+          text: DateTime.fromISO('1970-01-05T00:00:00.000Z').toFormat('EEEE', {
+            locale: this.$i18n.locale,
+          }),
+        },
+        {
+          value: 7,
+          text: DateTime.fromISO('1970-01-03T00:00:00.000Z').toFormat('EEEE', {
+            locale: this.$i18n.locale,
+          }),
+        },
       ]
     },
-    ap_handler () {
+    ap_handler() {
       return `@${this.instance_name}@${this.settings.hostname}`
     },
     instance_locale: {
-      get () { return this.settings.instance_locale },
-      set (value) { this.setSetting({ key: 'instance_locale', value }) }
+      get() {
+        return this.settings.instance_locale
+      },
+      set(value) {
+        this.setSetting({ key: 'instance_locale', value })
+      },
     },
     instance_timezone: {
-      get () { return this.settings.instance_timezone },
-      set (value) { this.setSetting({ key: 'instance_timezone', value }) }
+      get() {
+        return this.settings.instance_timezone
+      },
+      set(value) {
+        this.setSetting({ key: 'instance_timezone', value })
+      },
     },
     allow_registration: {
-      get () { return this.settings.allow_registration },
-      set (value) { this.setSetting({ key: 'allow_registration', value }) }
+      get() {
+        return this.settings.allow_registration
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_registration', value })
+      },
     },
     allow_anon_event: {
-      get () { return this.settings.allow_anon_event },
-      set (value) { this.setSetting({ key: 'allow_anon_event', value }) }
+      get() {
+        return this.settings.allow_anon_event
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_anon_event', value })
+      },
     },
     allow_recurrent_event: {
-      get () { return this.settings.allow_recurrent_event },
-      set (value) { this.setSetting({ key: 'allow_recurrent_event', value }) }
+      get() {
+        return this.settings.allow_recurrent_event
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_recurrent_event', value })
+      },
     },
     allow_event_without_end_time: {
-      get () { return this.settings.allow_event_without_end_time },
-      set (value) { this.setSetting({ key: 'allow_event_without_end_time', value }) }
+      get() {
+        return this.settings.allow_event_without_end_time
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_event_without_end_time', value })
+      },
     },
     allow_multidate_event: {
-      get () { return this.settings.allow_multidate_event },
-      set (value) { this.setSetting({ key: 'allow_multidate_event', value }) }
+      get() {
+        return this.settings.allow_multidate_event
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_multidate_event', value })
+      },
     },
     recurrent_event_visible: {
-      get () { return this.settings.recurrent_event_visible },
-      set (value) { this.setSetting({ key: 'recurrent_event_visible', value }) }
+      get() {
+        return this.settings.recurrent_event_visible
+      },
+      set(value) {
+        this.setSetting({ key: 'recurrent_event_visible', value })
+      },
     },
     allow_geolocation: {
-      get () { return this.settings.allow_geolocation },
-      set (value) { this.setSetting({ key: 'allow_geolocation', value }) }
+      get() {
+        return this.settings.allow_geolocation
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_geolocation', value })
+      },
     },
     calendar_first_day_of_week: {
-      get () { return this.settings.calendar_first_day_of_week },
-      set (value) { this.setSetting({ key: 'calendar_first_day_of_week', value }) }
+      get() {
+        return this.settings.calendar_first_day_of_week
+      },
+      set(value) {
+        this.setSetting({ key: 'calendar_first_day_of_week', value })
+      },
     },
     show_download_media: {
-      get () { return this.settings.show_download_media },
-      set (value) { this.setSetting({ key: 'show_download_media', value }) }
+      get() {
+        return this.settings.show_download_media
+      },
+      set(value) {
+        this.setSetting({ key: 'show_download_media', value })
+      },
     },
     allow_online_event: {
-      get () { return this.settings.allow_online_event },
-      set (value) { this.setSetting({ key: 'allow_online_event', value }) }
+      get() {
+        return this.settings.allow_online_event
+      },
+      set(value) {
+        this.setSetting({ key: 'allow_online_event', value })
+      },
     },
     enable_moderation: {
-      get () { return this.settings.enable_moderation },
-      set (value) { this.setSetting({ key: 'enable_moderation', value }) }
+      get() {
+        return this.settings.enable_moderation
+      },
+      set(value) {
+        this.setSetting({ key: 'enable_moderation', value })
+      },
     },
     enable_report: {
-      get () { return this.settings.enable_report },
-      set (value) { this.setSetting({ key: 'enable_report', value }) }
+      get() {
+        return this.settings.enable_report
+      },
+      set(value) {
+        this.setSetting({ key: 'enable_report', value })
+      },
     },
-    filteredTimezones () {
+    filteredTimezones() {
       const current_timezone = DateTime.local().zoneName
       tzNames.unshift(current_timezone)
       return tzNames
-    }
+    },
   },
   methods: {
     ...mapActions(['setSetting']),
-    save (key, value) {
+    save(key, value) {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    }
-  }
+    },
+  },
 }
 </script>

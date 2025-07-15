@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-card-title {{ $t('common.collections') }}
     v-spacer
@@ -162,14 +162,42 @@ import debounce from 'lodash/debounce'
 import isEqual from 'lodash/isEqual'
 import sortBy from 'lodash/sortBy'
 
-import { mdiPencil, mdiChevronLeft, mdiChevronRight, mdiMagnify, mdiPlus, mdiTagMultiple, mdiMapMarker, mdiDeleteForever, mdiChevronUp,
-  mdiCloseCircle, mdiChevronDown, mdiWeb, mdiInformation, mdiNotEqualVariant, mdiEqualBox } from '@mdi/js'
+import {
+  mdiPencil,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiMagnify,
+  mdiPlus,
+  mdiTagMultiple,
+  mdiMapMarker,
+  mdiDeleteForever,
+  mdiChevronUp,
+  mdiCloseCircle,
+  mdiChevronDown,
+  mdiWeb,
+  mdiInformation,
+  mdiNotEqualVariant,
+  mdiEqualBox,
+} from '@mdi/js'
 
 export default {
   data({ $store }) {
     return {
-      mdiPencil, mdiChevronRight, mdiChevronLeft, mdiMagnify, mdiPlus, mdiTagMultiple, mdiMapMarker, mdiDeleteForever, mdiChevronUp,
-      mdiCloseCircle, mdiChevronDown, mdiWeb, mdiInformation, mdiEqualBox, mdiNotEqualVariant,
+      mdiPencil,
+      mdiChevronRight,
+      mdiChevronLeft,
+      mdiMagnify,
+      mdiPlus,
+      mdiTagMultiple,
+      mdiMapMarker,
+      mdiDeleteForever,
+      mdiChevronUp,
+      mdiCloseCircle,
+      mdiChevronDown,
+      mdiWeb,
+      mdiInformation,
+      mdiEqualBox,
+      mdiNotEqualVariant,
       loading: false,
       dialog: false,
       valid: false,
@@ -189,15 +217,31 @@ export default {
       collectionHeaders: [
         { value: 'name', text: this.$t('common.name') },
         // { value: 'filters', text: this.$t('common.filter') },
-        { value: 'pin', text: this.$t('common.pin'), align: 'right', sortable: false },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 150, sortable: false }
+        {
+          value: 'pin',
+          text: this.$t('common.pin'),
+          align: 'right',
+          sortable: false,
+        },
+        {
+          value: 'actions',
+          text: this.$t('common.actions'),
+          align: 'right',
+          width: 150,
+          sortable: false,
+        },
       ],
       filterHeaders: [
         { value: 'negate', text: '', width: 20, sortable: false },
         { value: 'actors', text: this.$t('common.actors') },
         { value: 'tags', text: this.$t('common.tags') },
         { value: 'places', text: this.$t('common.places') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
+        {
+          value: 'actions',
+          text: this.$t('common.actions'),
+          align: 'right',
+          sortable: false,
+        },
       ],
       in_home: $store.state.settings.collection_in_home !== null,
     }
@@ -213,19 +257,25 @@ export default {
   computed: {
     ...mapState(['settings']),
     collection_in_home: {
-      get () { return this.settings.collection_in_home },
-      set (value) { this.setSetting({ key: 'collection_in_home', value }) }
+      get() {
+        return this.settings.collection_in_home
+      },
+      set(value) {
+        this.setSetting({ key: 'collection_in_home', value })
+      },
     },
   },
   watch: {
-    in_home (val) {
+    in_home(val) {
       this.collection_in_home = null
-    }
+    },
   },
   methods: {
     ...mapActions(['setSetting', 'setCollections']),
     searchTags: debounce(async function (ev) {
-      this.tags = await this.$axios.$get(`/tag?search=${encodeURIComponent(ev.target.value)}`)
+      this.tags = await this.$axios.$get(
+        `/tag?search=${encodeURIComponent(ev.target.value)}`
+      )
     }, 100),
     searchPlaces: debounce(async function (ev) {
       this.places = await this.$axios.$get(`/place?search=${ev.target.value}`)
@@ -234,15 +284,26 @@ export default {
     async addFilter() {
       this.loading = true
       const tags = this.filterTags
-      const places = this.filterPlaces.map(p => ({ id: p.id, name: p.name }))
-      const actors = this.filterActors.map(a => ({ ap_id: a.ap_id, name: a.object?.preferredUsername ?? a.object?.username ?? a?.name, domain: a?.instanceDomain ?? a.domain  }))
-      const filter = { collectionId: this.collection.id, tags, places, actors, negate: this.negateFilter }
+      const places = this.filterPlaces.map((p) => ({ id: p.id, name: p.name }))
+      const actors = this.filterActors.map((a) => ({
+        ap_id: a.ap_id,
+        name: a.object?.preferredUsername ?? a.object?.username ?? a?.name,
+        domain: a?.instanceDomain ?? a.domain,
+      }))
+      const filter = {
+        collectionId: this.collection.id,
+        tags,
+        places,
+        actors,
+        negate: this.negateFilter,
+      }
 
       // tags and places are JSON field and there's no way to use them inside a unique constrain
-      const alreadyExists = this.filters.find(f =>
-        isEqual(sortBy(f.places, 'id'), sortBy(filter.places, 'id')) && 
-        isEqual(sortBy(f.tags), sortBy(filter.tags)) &&
-        isEqual(sortBy(f.actors), sortBy(filter.actors))
+      const alreadyExists = this.filters.find(
+        (f) =>
+          isEqual(sortBy(f.places, 'id'), sortBy(filter.places, 'id')) &&
+          isEqual(sortBy(f.tags), sortBy(filter.tags)) &&
+          isEqual(sortBy(f.actors), sortBy(filter.actors))
       )
 
       if (this.editFilterId !== false) {
@@ -253,7 +314,7 @@ export default {
           this.loading = false
           return
         }
-        await this.$axios.$post('/filter', filter )
+        await this.$axios.$post('/filter', filter)
       }
 
       this.$fetch()
@@ -284,7 +345,7 @@ export default {
       this.$fetch()
       this.loading = false
     },
-    async moveUp (collection) {
+    async moveUp(collection) {
       try {
         await this.$axios.$put(`/collection/moveup/${collection.sortIndex}`)
         this.$fetch()
@@ -293,7 +354,7 @@ export default {
         this.$root.$message(this.$t(err), { color: 'error' })
       }
     },
-    async togglePinCollection (collection) {
+    async togglePinCollection(collection) {
       try {
         await this.$axios.$put(`/collection/toggle/${collection.id}`)
         collection.isTop = !collection.isTop
@@ -312,7 +373,7 @@ export default {
     async removeFilter(filter) {
       try {
         await this.$axios.$delete(`/filter/${filter.id}`)
-        this.filters = this.filters.filter(f => f.id !== filter.id)
+        this.filters = this.filters.filter((f) => f.id !== filter.id)
         this.$fetch()
       } catch (e) {
         const err = get(e, 'response.data.errors[0].message', e)
@@ -321,23 +382,28 @@ export default {
       }
     },
     async removeCollection(collection) {
-      const ret = await this.$root.$confirm('admin.delete_collection_confirm', { collection: collection.name })
-      if (!ret) { return }
+      const ret = await this.$root.$confirm('admin.delete_collection_confirm', {
+        collection: collection.name,
+      })
+      if (!ret) {
+        return
+      }
       try {
         await this.$axios.$delete(`/collection/${collection.id}`)
-        this.collections = this.collections.filter(c => c.id !== collection.id)
+        this.collections = this.collections.filter(
+          (c) => c.id !== collection.id
+        )
         this.setCollections(this.collections)
       } catch (e) {
         const err = get(e, 'response.data.errors[0].message', e)
         this.$root.$message(this.$t(err), { color: 'error' })
         this.loading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style>
-
 /**  this is for the switch */
 .v-data-table .v-input--selection-controls {
   margin-top: 0;

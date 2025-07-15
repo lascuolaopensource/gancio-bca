@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-app(app)
   Snackbar
   Confirm
@@ -15,8 +15,8 @@ import Confirm from '../components/Confirm'
 export default {
   name: 'Default',
   components: { Snackbar, Confirm },
-  created () {
+  created() {
     this.$vuetify.theme.dark = false
-  }
+  },
 }
 </script>

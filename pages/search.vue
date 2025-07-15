@@ -19,7 +19,7 @@ import { mdiMagnify } from '@mdi/js'
 export default {
   name: 'Index',
   components: { Event, Announcement, Calendar },
-  data ({ $time }) {
+  data({ $time }) {
     return {
       mdiMagnify,
       events: [],
@@ -27,15 +27,15 @@ export default {
       end: null,
     }
   },
-  async fetch () {
+  async fetch() {
     const search = this.$route.query.search
     this.events = await this.$axios.$get(`/event/search?search=${search}`)
   },
   computed: mapState(['settings']),
   methods: {
-    destroy (id) {
-      this.events = this.events.filter(e => e.id !== id)
-    }
-  }
+    destroy(id) {
+      this.events = this.events.filter((e) => e.id !== id)
+    },
+  },
 }
 </script>

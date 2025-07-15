@@ -61,7 +61,16 @@ v-row.mb-4
     
 </template>
 <script>
-import { mdiMap, mdiMapMarker, mdiPlus, mdiCog, mdiLink, mdiCloseCircle, mdiLaptopAccount, mdiMapSearch } from '@mdi/js'
+import {
+  mdiMap,
+  mdiMapMarker,
+  mdiPlus,
+  mdiCog,
+  mdiLink,
+  mdiCloseCircle,
+  mdiLaptopAccount,
+  mdiMapSearch,
+} from '@mdi/js'
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import WhereInputAdvanced from './WhereInputAdvanced.vue'
@@ -74,9 +83,16 @@ export default {
     event: { type: Object, default: () => null },
   },
   components: { WhereInputAdvanced, TBtn },
-  data () {
+  data() {
     return {
-      mdiMap, mdiMapMarker, mdiPlus, mdiCog, mdiLink, mdiCloseCircle, mdiLaptopAccount, mdiMapSearch,
+      mdiMap,
+      mdiMapMarker,
+      mdiPlus,
+      mdiCog,
+      mdiLink,
+      mdiCloseCircle,
+      mdiLaptopAccount,
+      mdiMapSearch,
       places: [],
       place: { isNew: false, name: '' },
       placeName: '',
@@ -87,15 +103,14 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
-    isOnLine () {
+    isOnLine() {
       return this.settings.allow_online_event && this.value.name === 'online'
     },
-    showAdvancedDialogButton () {
-
+    showAdvancedDialogButton() {
       if (!this.place.name) return false
-    
+
       // do not show advanced dialog button in case geolocation is not allowed
-      if (!(this.settings.allow_geolocation)) {
+      if (!this.settings.allow_geolocation) {
         return false
       }
 
@@ -103,42 +118,50 @@ export default {
       if (!this.place.isNew) return false
 
       return true
-    }
+    },
   },
-  mounted () {
-    this.$nextTick( () => {
+  mounted() {
+    this.$nextTick(() => {
       this.search()
     })
   },
   methods: {
-    search: debounce(async function(ev) {
+    search: debounce(async function (ev) {
       const search = ev ? ev.target.value.trim().toLowerCase() : ''
-      this.places = await this.$axios.$get('place', { params: { search } }).catch()
+      this.places = await this.$axios
+        .$get('place', { params: { search } })
+        .catch()
 
       // Filter out the place with name 'online' if not allowed
       if (this.places.length) {
-        this.places = this.places.filter(p => p.name?.toLocaleLowerCase() !== 'online')
+        this.places = this.places.filter(
+          (p) => p.name?.toLocaleLowerCase() !== 'online'
+        )
       }
       if (this.settings.allow_online_event) {
         this.places.push({ online: true, name: 'online' })
       }
 
-      if (!search && this.places.length) { 
-        return this.places 
+      if (!search && this.places.length) {
+        return this.places
       }
-      const matches = this.places.find(p => search === p.name.toLocaleLowerCase())
+      const matches = this.places.find(
+        (p) => search === p.name.toLocaleLowerCase()
+      )
       if (!matches && search) {
         this.places.unshift({ create: true, name: ev.target.value.trim() })
       }
     }, 200),
-    selectPlace (p) {
+    selectPlace(p) {
       this.place.isNew = false
 
-      if (!p) { return }
+      if (!p) {
+        return
+      }
 
       // existed place selected
       if (typeof p === 'object' && !p.create && !p.online) {
-        this.places = this.places.filter(p => !p.create)
+        this.places = this.places.filter((p) => !p.create)
         if (p.id === this.value.id) return
         this.place.name = p.name
         this.place.address = p.address
@@ -148,14 +171,17 @@ export default {
         }
         this.place.id = p.id
         this.disableAddress = true
-      } else { // this is a new place
+      } else {
+        // this is a new place
         this.place.isNew = true
         this.place.name = (p.name || p).trim()
         // search for a place with the same name
         const tmpPlace = this.place.name.toLocaleLowerCase()
-        const place = this.places.find(p => !p.create && p.name.trim().toLocaleLowerCase() === tmpPlace)
+        const place = this.places.find(
+          (p) => !p.create && p.name.trim().toLocaleLowerCase() === tmpPlace
+        )
         if (place) {
-          this.places = this.places.filter(p => !p.create)
+          this.places = this.places.filter((p) => !p.create)
           this.place.name = place.name
           this.place.id = place.id
           this.place.address = place.address
@@ -169,27 +195,31 @@ export default {
           }
           this.disableAddress = false
           this.$refs.place.blur()
-          this.$nextTick(() => { this.$refs.address && this.$refs.address.focus() })
+          this.$nextTick(() => {
+            this.$refs.address && this.$refs.address.focus()
+          })
         }
       }
       this.$emit('input', { ...this.place })
     },
-    selectLocations () {
+    selectLocations() {
       this.event.online_locations = []
 
       if (this.onlineLocations) {
         this.onlineLocations.forEach((item, i) => {
-          if (!item.startsWith('http')) { item = `https://${item}` }
+          if (!item.startsWith('http')) {
+            item = `https://${item}`
+          }
           this.onlineLocations[i] = item
         })
         // Remove duplicates
         this.onlineLocations = [...new Set(this.onlineLocations)]
         // Insert up to 3 online location: the main one and 2 fallback
-        this.onlineLocations = this.onlineLocations.slice(0, 3)  
-        
+        this.onlineLocations = this.onlineLocations.slice(0, 3)
+
         this.event.online_locations = this.onlineLocations
       }
     },
-  }
+  },
 }
 </script>

@@ -1,14 +1,26 @@
 <template>
-  <v-tabs id='navbar' centered background-color='transparent' optional dense icons-and-text class='mt-4'>
-    <v-tab v-if='$auth.loggedIn || settings.allow_anon_event' to='/add' :ripple="false">
-      <span class='d-none d-sm-flex'>{{$t('common.add_event')}}</span>
-      <v-icon color='primary' v-text='mdiPlus' />
+  <v-tabs
+    id="navbar"
+    centered
+    background-color="transparent"
+    optional
+    dense
+    icons-and-text
+    class="mt-4"
+  >
+    <v-tab
+      v-if="$auth.loggedIn || settings.allow_anon_event"
+      to="/add"
+      :ripple="false"
+    >
+      <span class="d-none d-sm-flex">{{ $t('common.add_event') }}</span>
+      <v-icon color="primary" v-text="mdiPlus" />
     </v-tab>
-    <v-tab to='/export' :ripple="false">
-      <span class='d-none d-sm-flex'>{{$t('common.share')}}</span>
-      <v-icon v-text='mdiShareVariant' />
+    <v-tab to="/export" :ripple="false">
+      <span class="d-none d-sm-flex">{{ $t('common.share') }}</span>
+      <v-icon v-text="mdiShareVariant" />
     </v-tab>
-  </v-tabs>    
+  </v-tabs>
 </template>
 
 <script>
@@ -17,9 +29,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Navbar',
-  data () { 
+  data() {
     return { mdiPlus, mdiShareVariant, mdiHome, mdiInformation }
   },
-  computed: mapState(['settings'])
+  computed: mapState(['settings']),
 }
 </script>

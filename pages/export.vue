@@ -90,14 +90,14 @@ export default {
   name: 'Exports',
   components: {
     FollowMe,
-    Search
+    Search,
   },
   mixins: [clipboard],
-  async asyncData ({ $api, $time }) {
+  async asyncData({ $api, $time }) {
     try {
       const events = await $api.getEvents({
         start: $time.currentTimestamp(),
-        show_recurrent: false
+        show_recurrent: false,
       })
       return { events }
     } catch (e) {
@@ -105,25 +105,32 @@ export default {
       return { events: [] }
     }
   },
-  data ({ $store }) {
+  data({ $store }) {
     return {
-      mdiContentCopy, mdiChevronLeft, mdiChevronRight,
+      mdiContentCopy,
+      mdiChevronLeft,
+      mdiChevronRight,
       type: 'rss',
       notification: { email: '' },
       list: {
         title: $store.state.settings.title,
         maxEvents: null,
         theme: $store.state.settings['theme.is_dark'] ? 'dark' : 'light',
-        sidebar: 'true'
+        sidebar: 'true',
       },
-      filters: { tags: [], places: [], collection: undefined, show_recurrent: $store.state.settings.recurrent_event_visible },
-      events: []
+      filters: {
+        tags: [],
+        places: [],
+        collection: undefined,
+        show_recurrent: $store.state.settings.recurrent_event_visible,
+      },
+      events: [],
     }
   },
-  head () {
+  head() {
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale
+        lang: this.settings.instance_locale,
       },
       title: `${this.settings.title} - ${this.$t('common.export')}`,
     }
@@ -131,7 +138,7 @@ export default {
   computed: {
     ...mapState(['settings']),
     ...mapGetters(['is_dark']),
-    code () {
+    code() {
       const params = [`baseurl="${this.settings.baseurl}"`]
 
       if (this.list.title && this.list.sidebar === 'true') {
@@ -162,20 +169,25 @@ export default {
 
       params.push(`theme="${this.list.theme}"`)
 
-      return `<script src="${this.settings.baseurl}\/gancio-events.es.js"><\/script>\n<gancio-events ${params.join(' ')}></gancio-events>\n\n`
-
-      
+      return `<script src="${
+        this.settings.baseurl
+      }\/gancio-events.es.js"><\/script>\n<gancio-events ${params.join(
+        ' '
+      )}></gancio-events>\n\n`
     },
-    link () {
+    link() {
       const typeMap = ['rss', 'ics']
       const params = []
 
-
       if (this.filters.collection) {
-        return `${this.settings.baseurl}/feed/${typeMap[this.type]}/collection/${encodeURIComponent(this.filters.collection)}`
+        return `${this.settings.baseurl}/feed/${
+          typeMap[this.type]
+        }/collection/${encodeURIComponent(this.filters.collection)}`
       } else {
         if (this.filters.tags.length) {
-          params.push(`tags=${this.filters.tags.map(encodeURIComponent).join(',')}`)
+          params.push(
+            `tags=${this.filters.tags.map(encodeURIComponent).join(',')}`
+          )
         }
 
         if (this.filters.places.length) {
@@ -187,14 +199,16 @@ export default {
         params.push('show_recurrent=true')
       }
 
-      return `${this.settings.baseurl}/feed/${typeMap[this.type]}${params.length ? '?' : ''}${params.join('&')}`
+      return `${this.settings.baseurl}/feed/${typeMap[this.type]}${
+        params.length ? '?' : ''
+      }${params.join('&')}`
     },
-    showLink () {
-      return (['rss', 'ics'].includes(this.type))
-    }
+    showLink() {
+      return ['rss', 'ics'].includes(this.type)
+    },
   },
   methods: {
-    async add_notification () {
+    async add_notification() {
       // validate()
       // if (!this.notification.email) {
       // Message({ message: 'Inserisci una mail', showClose: true, type: 'error' })
@@ -204,9 +218,9 @@ export default {
       // this.$refs.modal.hide()
       // Message({ message: this.$t('email_notification_activated'), showClose: true, type: 'success' })
     },
-    imgPath (event) {
+    imgPath(event) {
       return event.media && event.media[0].url
-    }
-  }
+    },
+  },
 }
 </script>

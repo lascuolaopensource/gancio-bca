@@ -61,43 +61,75 @@ v-container
 <script>
 import { mapState } from 'vuex'
 import get from 'lodash/get'
-import { mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever } from '@mdi/js'
+import {
+  mdiClose,
+  mdiMagnify,
+  mdiCheck,
+  mdiPlus,
+  mdiInformation,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiChevronDown,
+  mdiDeleteForever,
+} from '@mdi/js'
 import TBtn from '../../components/TBtn.vue'
 
 export default {
   name: 'Users',
   components: { TBtn },
   props: {
-    users: { type: Array, default: () => [] }
+    users: { type: Array, default: () => [] },
   },
-  data () {
+  data() {
     return {
-      mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever,
+      mdiClose,
+      mdiMagnify,
+      mdiCheck,
+      mdiPlus,
+      mdiInformation,
+      mdiChevronLeft,
+      mdiChevronRight,
+      mdiChevronDown,
+      mdiDeleteForever,
       newUserDialog: false,
       changeRoleDialog: false,
       role_colors: { admin: 'error', editor: 'warning', user: 'success' },
       valid: false,
       new_user: {
         email: '',
-        is_admin: false
+        is_admin: false,
       },
       search: '',
       headers: [
         { value: 'email', text: this.$t('common.email'), width: 150 },
         { value: 'description', text: this.$t('common.description') },
         { value: 'is_active', text: this.$t('common.enabled'), width: 50 },
-        { value: 'to_notify', text: this.$t('admin.receive_confirm_notification'), width: 50 },
+        {
+          value: 'to_notify',
+          text: this.$t('admin.receive_confirm_notification'),
+          width: 50,
+        },
         { value: 'role', text: this.$t('common.role'), width: 150 },
         // { value: 'is_editor', text: this.$t('common.editor') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100, sortable: false }
-      ]
+        {
+          value: 'actions',
+          text: this.$t('common.actions'),
+          align: 'right',
+          width: 100,
+          sortable: false,
+        },
+      ],
     }
   },
   computed: mapState(['settings']),
   methods: {
-    async deleteUser (user) {
-      const ret = await this.$root.$confirm('admin.delete_user_confirm', { user: user.email })
-      if (!ret) { return }
+    async deleteUser(user) {
+      const ret = await this.$root.$confirm('admin.delete_user_confirm', {
+        user: user.email,
+      })
+      if (!ret) {
+        return
+      }
       try {
         this.loading = true
         await this.$axios.$delete(`/user/${user.id}`)
@@ -109,24 +141,33 @@ export default {
         this.loading = false
       }
     },
-    async toggle (user) {
+    async toggle(user) {
       // ask confirmation only to disable
       if (user.is_active) {
-
-        const ret = await this.$root.$confirm('admin.disable_user_confirm', { user: user.email })
-        if (!ret) { return }
+        const ret = await this.$root.$confirm('admin.disable_user_confirm', {
+          user: user.email,
+        })
+        if (!ret) {
+          return
+        }
       }
       user.is_active = !user.is_active
       this.$axios.$put('/user', user)
     },
-    async toggle_to_notify (user) {
+    async toggle_to_notify(user) {
       user.to_notify = !user.to_notify
       this.$axios.$put('/user', user)
     },
-    async changeRole (user, role) {
+    async changeRole(user, role) {
       // ask confirmation?
-      const ret = await this.$root.$confirm('admin.change_role_confirm', { user: user.email, from_role: user.role, to_role: role })
-      if (!ret) { return }
+      const ret = await this.$root.$confirm('admin.change_role_confirm', {
+        user: user.email,
+        from_role: user.role,
+        to_role: role,
+      })
+      if (!ret) {
+        return
+      }
       try {
         await this.$axios.$put('/user', { ...user, role })
         user.role = role
@@ -135,8 +176,10 @@ export default {
       }
       return false
     },
-    async createUser () {
-      if (!this.$refs.user_form.validate()) { return }
+    async createUser() {
+      if (!this.$refs.user_form.validate()) {
+        return
+      }
       try {
         this.loading = true
         await this.$axios.$post('/user', this.new_user)
@@ -150,7 +193,7 @@ export default {
         this.$root.$message(this.$t(err), { color: 'error' })
         this.loading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

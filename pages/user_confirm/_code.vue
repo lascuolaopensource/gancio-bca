@@ -23,29 +23,34 @@ import { mdiAlert } from '@mdi/js'
 
 export default {
   name: 'Recover',
-  async asyncData ({ params, $axios }) {
+  async asyncData({ params, $axios }) {
     const code = params.code
     try {
-      const user = await $axios.$post('/user/check_recover_code', { recover_code: code })
+      const user = await $axios.$post('/user/check_recover_code', {
+        recover_code: code,
+      })
       return { user, code }
     } catch (e) {
       return { user: false, error: String(e) }
     }
   },
-  data () {
+  data() {
     return { new_password: '', mdiAlert }
   },
   methods: {
-    async change_password () {
+    async change_password() {
       if (!this.$refs.form.validate()) return
       try {
-        await this.$axios.$post('/user/recover_password', { recover_code: this.code, password: this.new_password })
+        await this.$axios.$post('/user/recover_password', {
+          recover_code: this.code,
+          password: this.new_password,
+        })
         this.$root.$message('common.password_updated', { color: 'success' })
         this.$router.push('/login')
       } catch (e) {
         this.$root.$message(e, { color: 'warning' })
       }
-    }
-  }
+    },
+  },
 }
 </script>

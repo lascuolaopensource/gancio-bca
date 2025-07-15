@@ -104,13 +104,31 @@ v-container
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import { mdiDeleteForever, mdiPlus, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDownload, mdiUpload, mdiTagMultiple, mdiCloseCircle } from '@mdi/js'
+import {
+  mdiDeleteForever,
+  mdiPlus,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiChevronDown,
+  mdiDownload,
+  mdiUpload,
+  mdiTagMultiple,
+  mdiCloseCircle,
+} from '@mdi/js'
 
 export default {
   name: 'Federation',
-  data ({ $store, $options }) {
+  data({ $store, $options }) {
     return {
-      mdiDeleteForever, mdiPlus, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDownload, mdiUpload, mdiCloseCircle, mdiTagMultiple,
+      mdiDeleteForever,
+      mdiPlus,
+      mdiChevronLeft,
+      mdiChevronRight,
+      mdiChevronDown,
+      mdiDownload,
+      mdiUpload,
+      mdiCloseCircle,
+      mdiTagMultiple,
       source_url: '',
       instance_name: $store.state.settings.instance_name,
       trusted_sources_label: $store.state.settings.trusted_sources_label,
@@ -127,14 +145,14 @@ export default {
         { value: 'url', text: 'URL' },
         { value: 'following', text: 'Following' },
         { value: 'follower', text: 'Follower' },
-        { value: 'actions', text: 'Actions', align: 'right', sortable: false }
-      ]
+        { value: 'actions', text: 'Actions', align: 'right', sortable: false },
+      ],
     }
   },
   async fetch() {
     this.stats = await this.$axios.$get('/ap_actors/stats')
     const trusted_sources = await this.$axios.$get('/ap_actors/trusted')
-    this.trusted_sources = trusted_sources.map(t => {
+    this.trusted_sources = trusted_sources.map((t) => {
       t.loading = false
       return t
     })
@@ -142,34 +160,58 @@ export default {
   computed: {
     ...mapState(['settings']),
     enable_federation: {
-      get () { return this.settings.enable_federation },
-      set (value) { this.setSetting({ key: 'enable_federation', value }) }
+      get() {
+        return this.settings.enable_federation
+      },
+      set(value) {
+        this.setSetting({ key: 'enable_federation', value })
+      },
     },
     enable_resources: {
-      get () { return this.settings.enable_resources },
-      set (value) { this.setSetting({ key: 'enable_resources', value }) }
+      get() {
+        return this.settings.enable_resources
+      },
+      set(value) {
+        this.setSetting({ key: 'enable_resources', value })
+      },
     },
     federated_events_in_home: {
-      get () { return this.settings.federated_events_in_home },
-      set (value) { this.setSetting({ key: 'federated_events_in_home', value }) }
+      get() {
+        return this.settings.federated_events_in_home
+      },
+      set(value) {
+        this.setSetting({ key: 'federated_events_in_home', value })
+      },
     },
     default_fedi_hashtags: {
-      get () { return this.settings.default_fedi_hashtags },
-      set (value) { this.setSetting({ key: 'default_fedi_hashtags', value }) }
-    },    
+      get() {
+        return this.settings.default_fedi_hashtags
+      },
+      set(value) {
+        this.setSetting({ key: 'default_fedi_hashtags', value })
+      },
+    },
     hide_boosts: {
-      get () { return this.settings.hide_boosts },
-      set (value) { this.setSetting({ key: 'hide_boosts', value }) }
-    }
+      get() {
+        return this.settings.hide_boosts
+      },
+      set(value) {
+        this.setSetting({ key: 'hide_boosts', value })
+      },
+    },
   },
   methods: {
     ...mapActions(['setSetting']),
-    async createTrustedInstance () {
-      if (!this.$refs.form.validate()) { return }
+    async createTrustedInstance() {
+      if (!this.$refs.form.validate()) {
+        return
+      }
       this.loading = true
       try {
         this.source_url = this.source_url.replace(/\/$/, '')
-        await this.$axios.$post('/ap_actors/add_trust', { url: this.source_url })
+        await this.$axios.$post('/ap_actors/add_trust', {
+          url: this.source_url,
+        })
         this.$refs.form.reset()
         this.$fetch()
         this.dialogAddTrustedSource = false
@@ -179,22 +221,32 @@ export default {
       }
       this.loading = false
     },
-    async deleteTrustedSource (trusted_source) {
-      const ret = await this.$root.$confirm('admin.delete_trusted_source_confirm')
-      if (!ret) { return }
+    async deleteTrustedSource(trusted_source) {
+      const ret = await this.$root.$confirm(
+        'admin.delete_trusted_source_confirm'
+      )
+      if (!ret) {
+        return
+      }
       try {
-        await this.$axios.$delete('/ap_actors/trust', { params: { ap_id: trusted_source.ap_id }})
+        await this.$axios.$delete('/ap_actors/trust', {
+          params: { ap_id: trusted_source.ap_id },
+        })
         this.$fetch()
         this.$root.$emit('update_trusted_sources')
-        this.$root.$message('admin.trusted_source_removed', { color: 'success' })
+        this.$root.$message('admin.trusted_source_removed', {
+          color: 'success',
+        })
       } catch (e) {
         this.$root.$message(e, { color: 'error' })
       }
     },
-    async toggleFollowing (trusted_source) {
+    async toggleFollowing(trusted_source) {
       try {
         trusted_source.loading = true
-        await this.$axios.$put('/ap_actors/follow', { ap_id: trusted_source.ap_id })
+        await this.$axios.$put('/ap_actors/follow', {
+          ap_id: trusted_source.ap_id,
+        })
         this.$root.$message('common.ok', { color: 'success' })
       } catch (e) {
         this.$root.$message(e, { color: 'error' })
@@ -202,11 +254,11 @@ export default {
       trusted_source.loading = false
       this.$fetch()
     },
-    save (key, value) {
+    save(key, value) {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    }
-  }
+    },
+  },
 }
 </script>

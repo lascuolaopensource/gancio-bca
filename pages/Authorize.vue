@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-form.d-flex.justify-space-around(method='post' action='/oauth/authorize')
   v-card.mt-5(max-width='600px')
     v-card-title {{settings.title}} - {{$t('common.authorize')}}
@@ -25,13 +25,13 @@ export default {
   name: 'Authorize',
   layout: 'modal',
   middleware: ['auth'],
-  async asyncData ({ $axios, query, error, req }) {
+  async asyncData({ $axios, query, error, req }) {
     const { transactionID, client, scope, redirect_uri } = query
     return { transactionID, client, redirect_uri, scope }
   },
   computed: mapState(['settings']),
-  head () {
+  head() {
     return { title: `${this.settings.title} - Authorize` }
-  }
+  },
 }
 </script>

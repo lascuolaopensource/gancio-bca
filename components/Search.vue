@@ -72,46 +72,63 @@ import debounce from 'lodash/debounce'
 export default {
   name: 'Search',
   props: {
-    value: { type: Object, default: () => ({ }) }
+    value: { type: Object, default: () => ({}) },
   },
-  data () {
+  data() {
     return {
-      mdiTag, mdiMapMarker, mdiCloseCircle, mdiCollage,
+      mdiTag,
+      mdiMapMarker,
+      mdiCloseCircle,
+      mdiCollage,
       items: [],
       filters: [],
       collection: null,
       collections: [],
-      show_recurrent: this.value.show_recurrent || false
+      show_recurrent: this.value.show_recurrent || false,
     }
   },
-  async fetch () {
+  async fetch() {
     this.collections = await this.$axios.$get('/collections')
   },
   computed: {
     ...mapState(['settings']),
   },
   methods: {
-    search: debounce(async function(search) {
-      this.items = await this.$axios.$get(`/event/meta?search=${search.target.value}`)
+    search: debounce(async function (search) {
+      this.items = await this.$axios.$get(
+        `/event/meta?search=${search.target.value}`
+      )
     }, 100),
-    remove (item) {
-      this.filters = this.filters.filter(m => m.type !== item.type || m.type === 'place' ? m.id !== item.id : m.label !== item.label)
+    remove(item) {
+      this.filters = this.filters.filter((m) =>
+        m.type !== item.type || m.type === 'place'
+          ? m.id !== item.id
+          : m.label !== item.label
+      )
       this.change()
     },
-    change () {
+    change() {
       if (this.collection) {
         this.filters = []
-        this.$emit('input', { collection: this.collection, places: [], tags: [], show_recurrent: this.show_recurrent  })
+        this.$emit('input', {
+          collection: this.collection,
+          places: [],
+          tags: [],
+          show_recurrent: this.show_recurrent,
+        })
       } else {
-        
         const filters = {
-          tags: this.filters.filter(t => t.type === 'tag').map(t => t.label),
-          places: this.filters.filter(p => p.type === 'place').map(p => p.id),
-          show_recurrent: this.show_recurrent
+          tags: this.filters
+            .filter((t) => t.type === 'tag')
+            .map((t) => t.label),
+          places: this.filters
+            .filter((p) => p.type === 'place')
+            .map((p) => p.id),
+          show_recurrent: this.show_recurrent,
         }
         this.$emit('input', filters)
       }
-    }
-  }
+    },
+  },
 }
 </script>

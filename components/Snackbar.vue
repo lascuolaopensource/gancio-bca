@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-snackbar(
   v-model="active"
   :color="color"
@@ -18,9 +18,11 @@ v-snackbar(
 import { mdiAlert, mdiCloseCircle, mdiInformation } from '@mdi/js'
 
 export default {
-  data () {
+  data() {
     return {
-      mdiAlert, mdiCloseCircle, mdiInformation,
+      mdiAlert,
+      mdiCloseCircle,
+      mdiInformation,
       icon: mdiInformation,
       color: 'secondary',
       bottom: true,
@@ -29,16 +31,17 @@ export default {
       right: true,
       active: false,
       timeout: 5000,
-      message: ''
+      message: '',
     }
   },
-  created () {
+  created() {
     this.$root.$message = (message, opts = {}) => {
       this.active = true
       this.message = this.$t(message, opts)
       this.color = opts.color || 'primary'
-      this.icon = opts.icon || (this.color === 'success' ? mdiInformation : mdiAlert)
+      this.icon =
+        opts.icon || (this.color === 'success' ? mdiInformation : mdiAlert)
     }
-  }
+  },
 }
 </script>

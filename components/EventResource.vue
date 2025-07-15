@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 #resources.mt-1(v-if='settings.enable_federation')
     div.mb-3(v-if='!settings.hide_boosts && (event.boost?.length || event.likes?.length)')
         client-only
@@ -71,74 +71,112 @@
 import { mapState } from 'vuex'
 import get from 'lodash/get'
 
-import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiClose, mdiEye, mdiEyeOff, mdiDelete, mdiLock, mdiShareAll, mdiStar } from '@mdi/js'
+import {
+  mdiArrowLeft,
+  mdiArrowRight,
+  mdiDotsVertical,
+  mdiClose,
+  mdiEye,
+  mdiEyeOff,
+  mdiDelete,
+  mdiLock,
+  mdiShareAll,
+  mdiStar,
+} from '@mdi/js'
 
 export default {
-    name: 'EventResource',
-    data () {
-        return { mdiStar, mdiShareAll, mdiDotsVertical, mdiClose, mdiArrowLeft, mdiArrowRight, mdiEyeOff, mdiEye, mdiLock, mdiDelete,
-            currentAttachment: 0,
-            showResources: false,
-            selectedResource: { data: { attachment: [] } },
+  name: 'EventResource',
+  data() {
+    return {
+      mdiStar,
+      mdiShareAll,
+      mdiDotsVertical,
+      mdiClose,
+      mdiArrowLeft,
+      mdiArrowRight,
+      mdiEyeOff,
+      mdiEye,
+      mdiLock,
+      mdiDelete,
+      currentAttachment: 0,
+      showResources: false,
+      selectedResource: { data: { attachment: [] } },
+    }
+  },
+  props: {
+    event: Object,
+  },
+  computed: {
+    ...mapState(['settings']),
+    currentAttachmentLabel() {
+      return get(
+        this.selectedResource,
+        `data.attachment[${this.currentAttachment}].name`,
+        ''
+      )
+    },
+  },
+  methods: {
+    isImg(attachment) {
+      const type = attachment.mediaType.split('/')[0]
+      return type === 'image'
+    },
+    isAudio(attachment) {
+      const type = attachment.mediaType.split('/')[0]
+      return type === 'audio'
+    },
+    resource_filter(value) {
+      return value.replace(
+        /<a.*href="([^">]+).*>(?:.(?!<\/a>))*.<\/a>/,
+        (orig, url) => {
+          // get extension
+          const ext = url.slice(-4)
+          if (['.mp3', '.ogg'].includes(ext)) {
+            return `<audio controls><source src='${url}'></audio>`
+          } else {
+            return orig
+          }
         }
+      )
     },
-    props: {
-        event: Object
-    },
-    computed: {
-        ...mapState(['settings']),
-        currentAttachmentLabel () {
-            return get(this.selectedResource, `data.attachment[${this.currentAttachment}].name`, '')
-        }  
-    },
-    methods: {
-        isImg (attachment) {
-            const type = attachment.mediaType.split('/')[0]
-            return type === 'image'
-        },
-        isAudio (attachment) {
-            const type = attachment.mediaType.split('/')[0]
-            return type === 'audio'
-        },
-        resource_filter (value) {
-            return value.replace(
-                /<a.*href="([^">]+).*>(?:.(?!<\/a>))*.<\/a>/,
-                (orig, url) => {
-                    // get extension
-                    const ext = url.slice(-4)
-                    if (['.mp3', '.ogg'].includes(ext)) {
-                        return `<audio controls><source src='${url}'></audio>`
-                    } else {
-                        return orig
-                    }
-                }
-            )
-        },
-        showResource (resource) {
+    showResource(resource) {
       this.showResources = true
       this.selectedResource = resource
       // document.getElementById('resourceDialog').focus()
     },
-    async hideResource (resource, hidden) {
+    async hideResource(resource, hidden) {
       await this.$axios.$put(`/resources/${resource.id}`, { hidden })
       resource.hidden = hidden
     },
-    async blockUser (resource) {
+    async blockUser(resource) {
       try {
-        const ret = await this.$root.$confirm('admin.user_block_confirm', { user: resource.ap_user.ap_id })
-        if (!ret) { return }
-        await this.$axios.post('/ap_actor/toggle_block', { ap_id: resource.ap_user.ap_id })
-        this.$root.$message('admin.user_blocked', { user: resource.ap_user.ap_id, color: 'success' })
-      } catch (e) { }
+        const ret = await this.$root.$confirm('admin.user_block_confirm', {
+          user: resource.ap_user.ap_id,
+        })
+        if (!ret) {
+          return
+        }
+        await this.$axios.post('/ap_actor/toggle_block', {
+          ap_id: resource.ap_user.ap_id,
+        })
+        this.$root.$message('admin.user_blocked', {
+          user: resource.ap_user.ap_id,
+          color: 'success',
+        })
+      } catch (e) {}
     },
-    async deleteResource (resource) {
+    async deleteResource(resource) {
       try {
         const ret = await this.$root.$confirm('admin.delete_resource_confirm')
-        if (!ret) { return }
+        if (!ret) {
+          return
+        }
         await this.$axios.delete(`/resources/${resource.id}`)
-        this.event.resources = this.event.resources.filter(r => r.id !== resource.id)
-      } catch (e) { }
-    },        
-    }
+        this.event.resources = this.event.resources.filter(
+          (r) => r.id !== resource.id
+        )
+      } catch (e) {}
+    },
+  },
 }
 </script>

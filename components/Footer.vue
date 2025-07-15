@@ -35,13 +35,13 @@ import FollowMe from '../components/FollowMe'
 
 export default {
   components: { FollowMe },
-  data () {
+  data() {
     return {
       showFollowMe: false,
-      trusted_sources: []
+      trusted_sources: [],
     }
   },
-  async mounted () {
+  async mounted() {
     this.$root.$on('update_trusted_sources', async () => {
       this.trusted_sources = await this.$axios.$get('ap_actors/trusted').catch()
     })
@@ -49,16 +49,26 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
-    footerLinks () {
+    footerLinks() {
       if (!this.settings || !this.settings.footerLinks) return []
-      return this.settings.footerLinks.map(link => {
+      return this.settings.footerLinks.map((link) => {
         if (/^https?:\/\//.test(link.href)) {
-          return { href: link.href, label: link.label.startsWith('common.') ? this.$t(link.label) : link.label }
+          return {
+            href: link.href,
+            label: link.label.startsWith('common.')
+              ? this.$t(link.label)
+              : link.label,
+          }
         } else {
-          return { to: link.href, label: link.label.startsWith('common.') ? this.$t(link.label) : link.label }
+          return {
+            to: link.href,
+            label: link.label.startsWith('common.')
+              ? this.$t(link.label)
+              : link.label,
+          }
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -11,7 +11,7 @@ import { mdiViewModule, mdiViewList, mdiContrastCircle } from '@mdi/js'
 
 export default {
   name: 'ThemeView',
-  data () {
+  data() {
     return { mdiViewModule, mdiViewList, mdiContrastCircle }
   },
   computed: {
@@ -25,7 +25,7 @@ export default {
     },
     async toggleHideThumbs() {
       this.setLocalSetting({ key: 'hide_thumbs', value: !this.hide_thumbs })
-    }
-  }
+    },
+  },
 }
 </script>

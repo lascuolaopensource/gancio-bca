@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-card-title {{ $t('common.plugins') }}
     v-spacer
@@ -42,13 +42,23 @@ v-container
 
 </template>
 <script>
-import { mdiPencil, mdiChevronLeft, mdiChevronRight, mdiMagnify, mdiEye } from '@mdi/js'
+import {
+  mdiPencil,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiMagnify,
+  mdiEye,
+} from '@mdi/js'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   data() {
     return {
-      mdiPencil, mdiChevronRight, mdiChevronLeft, mdiMagnify, mdiEye,
+      mdiPencil,
+      mdiChevronRight,
+      mdiChevronLeft,
+      mdiMagnify,
+      mdiEye,
       loading: false,
       dialog: false,
       valid: false,
@@ -57,8 +67,8 @@ export default {
       headers: [
         { value: 'name', text: 'Name' },
         { value: 'description', text: 'Address' },
-        { value: 'actions', text: 'Actions', align: 'right' }
-      ]
+        { value: 'actions', text: 'Actions', align: 'right' },
+      ],
     }
   },
   async mounted() {
@@ -67,11 +77,11 @@ export default {
   computed: mapState(['settings']),
   methods: {
     ...mapActions(['setSetting']),
-    async saveSettings(close=true) {
+    async saveSettings(close = true) {
       this.loading = true
       await this.setSetting({
         key: 'plugin_' + this.selectedPlugin.name,
-        value: this.selectedPlugin.settingsValue
+        value: this.selectedPlugin.settingsValue,
       })
       this.loading = false
       if (close) {
@@ -80,9 +90,13 @@ export default {
     },
     async testPlugin() {
       await this.saveSettings(false)
-      this.$axios.$post(`/plugin/test/${this.selectedPlugin.name}`).catch( e => {
-        this.$root.$message(e?.response?.data?.message ?? e, { color: 'warning'})
-      })
+      this.$axios
+        .$post(`/plugin/test/${this.selectedPlugin.name}`)
+        .catch((e) => {
+          this.$root.$message(e?.response?.data?.message ?? e, {
+            color: 'warning',
+          })
+        })
     },
     toggleEnable(plugin) {
       this.$axios.$put(`/plugin/${plugin.name}`)
@@ -90,7 +104,7 @@ export default {
     setOptions(plugin) {
       this.selectedPlugin = plugin
       this.dialog = true
-    }
-  }
+    },
+  },
 }
 </script>

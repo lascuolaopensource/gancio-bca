@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 div#list
   v-list(dense)
     v-list-item
@@ -18,47 +18,49 @@ import { mdiRepeat } from '@mdi/js'
 
 export default {
   name: 'List',
-  data () {
+  data() {
     return { mdiRepeat }
   },
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     events: {
       type: Array,
       default: () => {
         return []
-      }
+      },
     },
     maxEvents: {
       type: Number,
-      default: 0
+      default: 0,
     },
     minimal: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showTags: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showImage: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showDescription: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   computed: {
-    computedEvents () {
-      if (!this.maxEvents) { return this.events }
+    computedEvents() {
+      if (!this.maxEvents) {
+        return this.events
+      }
       return this.events.slice(0, this.maxEvents)
-    }
-  }
+    },
+  },
 }
 </script>
 <style>

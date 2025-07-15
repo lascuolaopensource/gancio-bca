@@ -70,10 +70,10 @@ import geolocation from '../../server/helpers/geolocation/index'
 import { mdiChevronDown } from '@mdi/js'
 
 export default {
-  components: { 
-    [process.client && 'Map']: () => import('@/components/Map.vue')
+  components: {
+    [process.client && 'Map']: () => import('@/components/Map.vue'),
   },
-  data ({ $store }) {
+  data({ $store }) {
     return {
       mdiChevronDown,
       mapKey: 0,
@@ -82,38 +82,54 @@ export default {
       isNewTilelayerTest: false,
       isNewGeocodingTest: false,
       geocoding_provider_type_items: ['Nominatim', 'Photon'],
-      geocoding_provider_type: $store.state.settings.geocoding_provider_type || '',
+      geocoding_provider_type:
+        $store.state.settings.geocoding_provider_type || '',
       geocoding_provider_type_default: 'Nominatim',
       geocoding_provider: $store.state.settings.geocoding_provider || '',
-      geocoding_provider_default: "https://nominatim.openstreetmap.org/search" ,
-      geocoding_countrycodes: $store.state.settings.geocoding_countrycodes || [],
+      geocoding_provider_default: 'https://nominatim.openstreetmap.org/search',
+      geocoding_countrycodes:
+        $store.state.settings.geocoding_countrycodes || [],
       tilelayer_provider: $store.state.settings.tilelayer_provider || '',
-      tilelayer_provider_default: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      tilelayer_provider_attribution: $store.state.settings.tilelayer_provider_attribution || '',
-      tilelayer_provider_attribution_default: '<a target=\'_blank\' href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors',
+      tilelayer_provider_default:
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      tilelayer_provider_attribution:
+        $store.state.settings.tilelayer_provider_attribution || '',
+      tilelayer_provider_attribution_default:
+        '<a target=\'_blank\' href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       countries: isoCountries,
     }
   },
   computed: {
     ...mapState(['settings', 'events']),
     tilelayerTest() {
-      const v = this.tilelayer_provider !== '' ? this.tilelayer_provider : this.tilelayer_provider_default
+      const v =
+        this.tilelayer_provider !== ''
+          ? this.tilelayer_provider
+          : this.tilelayer_provider_default
       return v
     },
     geocodingTest() {
-      const v = this.geocoding_provider !== '' ? this.geocoding_provider : this.geocoding_provider_default
+      const v =
+        this.geocoding_provider !== ''
+          ? this.geocoding_provider
+          : this.geocoding_provider_default
       return v
-    }
+    },
   },
   methods: {
     ...mapActions(['setSetting']),
-    async testGeocodingProvider () {
+    async testGeocodingProvider() {
       this.isNewGeocodingTest = true
-      const currentGeocodingProvider = geolocation.getGeocodingProvider(this.settings.geocoding_provider_type)
+      const currentGeocodingProvider = geolocation.getGeocodingProvider(
+        this.settings.geocoding_provider_type
+      )
       // random query
-      const geocodingQuery = Math.random().toString(36).slice(2, 7);
+      const geocodingQuery = Math.random().toString(36).slice(2, 7)
       try {
-        const ret = await this.$axios.$get(`placeOSM/${currentGeocodingProvider.commonName}/${geocodingQuery}`, { timeout: 3000 })
+        const ret = await this.$axios.$get(
+          `placeOSM/${currentGeocodingProvider.commonName}/${geocodingQuery}`,
+          { timeout: 3000 }
+        )
         const res = currentGeocodingProvider.mapQueryResults(ret)
         this.geocodingTestSuccess()
       } catch (e) {
@@ -121,17 +137,17 @@ export default {
       }
       this.isNewGeocodingTest = false
     },
-    testTileLayerProvider () {
+    testTileLayerProvider() {
       this.isNewTilelayerTest = true
       this.mapPreview = true
       this.mapKey++
     },
-    save (key, value) {
+    save(key, value) {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
     },
-    done () {
+    done() {
       this.$emit('close')
     },
     handleMsg(t, s, c) {
@@ -141,18 +157,30 @@ export default {
       this.handleMsg('admin.geocoding_test_error', this.geocodingTest, 'error')
     },
     geocodingTestSuccess() {
-      this.handleMsg('admin.geocoding_test_success', this.geocodingTest, 'success')
+      this.handleMsg(
+        'admin.geocoding_test_success',
+        this.geocodingTest,
+        'success'
+      )
     },
     tilelayerTestError() {
-      this.isNewTilelayerTest && this.handleMsg('admin.tilelayer_test_error', this.tilelayerTest, 'error')
+      this.isNewTilelayerTest &&
+        this.handleMsg(
+          'admin.tilelayer_test_error',
+          this.tilelayerTest,
+          'error'
+        )
       this.isNewTilelayerTest = false
     },
     tilelayerTestSuccess() {
-      this.isNewTilelayerTest && this.handleMsg('admin.tilelayer_test_success', this.tilelayerTest, 'success')
+      this.isNewTilelayerTest &&
+        this.handleMsg(
+          'admin.tilelayer_test_success',
+          this.tilelayerTest,
+          'success'
+        )
       this.isNewTilelayerTest = false
-    }
-
-  }
+    },
+  },
 }
 </script>
-

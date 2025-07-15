@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-card-title {{ $t('common.places') }}
     v-spacer
@@ -51,7 +51,15 @@ v-container
 
 </template>
 <script>
-import { mdiPencil, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiMagnify, mdiEye, mdiMapMarker } from '@mdi/js'
+import {
+  mdiPencil,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiChevronDown,
+  mdiMagnify,
+  mdiEye,
+  mdiMapMarker,
+} from '@mdi/js'
 import SearchAddress from '~/components/SearchAddress.vue'
 import { mapState } from 'vuex'
 
@@ -59,26 +67,38 @@ export default {
   components: { SearchAddress },
   data() {
     return {
-      mdiPencil, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiMagnify, mdiEye, mdiMapMarker,
+      mdiPencil,
+      mdiChevronRight,
+      mdiChevronLeft,
+      mdiChevronDown,
+      mdiMagnify,
+      mdiEye,
+      mdiMapMarker,
       loading: false,
       dialog: false,
       valid: false,
       places: [],
       address: '',
       search: '',
-      place: { name: '', address: '', latitude: null, longitude: null, id: null },
+      place: {
+        name: '',
+        address: '',
+        latitude: null,
+        longitude: null,
+        id: null,
+      },
       headers: [
         { value: 'name', text: this.$t('common.name') },
         { value: 'address', text: this.$t('common.address') },
         { value: 'map', text: 'Map' },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+        { value: 'actions', text: this.$t('common.actions'), align: 'right' },
       ],
     }
   },
   async fetch() {
     this.places = await this.$axios.$get('/places')
     // do not allow edit the online place
-    this.places = this.places.filter(p => p.name !== 'online')
+    this.places = this.places.filter((p) => p.name !== 'online')
   },
   computed: {
     ...mapState(['settings']),
@@ -103,6 +123,6 @@ export default {
       this.loading = false
       this.dialog = false
     },
-  }
+  },
 }
 </script>

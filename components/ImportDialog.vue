@@ -32,10 +32,9 @@ v-card
 import { mdiAttachment } from '@mdi/js'
 import get from 'lodash/get'
 
-
 export default {
   name: 'ImportDialog',
-  data () {
+  data() {
     return {
       mdiAttachment,
       file: null,
@@ -44,24 +43,24 @@ export default {
       loading: false,
       valid: false,
       URL: '',
-      event: {}
+      event: {},
     }
   },
   methods: {
-    importGeneric () {
+    importGeneric() {
       if (this.file) {
         this.importICS()
       } else {
         this.importURL()
       }
     },
-    importICS () {
+    importICS() {
       const reader = new FileReader()
       reader.readAsText(this.file)
       reader.onload = async () => {
         try {
           const response = await this.$axios.post('/ics-import', {
-            icsText: reader.result
+            icsText: reader.result,
           })
 
           const events = response.data.events || []
@@ -75,18 +74,18 @@ export default {
           this.event = events[0]
           // No Place object yet, so create a guess draft for the ui
           this.event.place = {
-            name: this.event.location || 'Unknown Location'
-  }
+            name: this.event.location || 'Unknown Location',
+          }
 
           this.$emit('imported', this.event)
         } catch (e) {
           this.error = true
-          this.errorMessage = this.$t('event.import_error') + ': ' + (e.message || e)
+          this.errorMessage =
+            this.$t('event.import_error') + ': ' + (e.message || e)
         }
       }
-    }
-,
-    async importURL () {
+    },
+    async importURL() {
       if (!this.URL) {
         this.errorMessage = this.$validators.required('common.url')('')
         this.error = true
@@ -100,7 +99,9 @@ export default {
       this.loading = true
 
       try {
-        const ret = await this.$axios.$get('/event/import', { params: { URL: this.URL } })
+        const ret = await this.$axios.$get('/event/import', {
+          params: { URL: this.URL },
+        })
         this.events = ret
         // check if contain an h-event
         this.$emit('imported', ret[0])
@@ -110,7 +111,7 @@ export default {
       }
 
       this.loading = false
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,4 +1,3 @@
-
 <template lang="pug">
 v-dialog(v-model='show'
   :fullscreen='$vuetify.breakpoint.xsOnly'
@@ -46,31 +45,31 @@ export default {
       is_prompt: false,
       color: 'danger',
       width: 450,
-      zIndex: 500
-    }
+      zIndex: 500,
+    },
   }),
   computed: {
     show: {
-      get () {
+      get() {
         return this.dialog
       },
-      set (value) {
+      set(value) {
         this.dialog = value
         if (value === false) {
           this.cancel()
         }
-      }
-    }
+      },
+    },
   },
-  created () {
+  created() {
     this.$root.$confirm = this.open
     this.$root.$prompt = this.openPrompt
   },
   methods: {
-    openPrompt (message, options ) {
+    openPrompt(message, options) {
       return this.open(message, { ...options, is_prompt: true })
     },
-    open (message, options = {}) {
+    open(message, options = {}) {
       this.dialog = true
       this.title = options.title || this.$t('common.confirm')
       this.message = this.$t(message, options)
@@ -80,16 +79,16 @@ export default {
         this.reject = reject
       })
     },
-    agree () {
+    agree() {
       this.resolve(this.options.is_prompt ? this.prompt : true)
       this.prompt = ''
       this.dialog = false
     },
-    cancel () {
+    cancel() {
       this.resolve(false)
       this.prompt = ''
       this.dialog = false
-    }
-  }
+    },
+  },
 }
 </script>

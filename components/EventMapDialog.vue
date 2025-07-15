@@ -15,21 +15,20 @@ v-card
     v-btn(@click='$emit("close")' outlined) {{ $t('common.close') }}
 </template>
 <script>
-
 import { mdiMapMarker } from '@mdi/js'
 import HowToArriveNav from '@/components/HowToArriveNav.vue'
 
 export default {
   components: {
     HowToArriveNav,
-    [process.client && 'Map']: () => import('@/components/Map.vue')
+    [process.client && 'Map']: () => import('@/components/Map.vue'),
   },
-  data () {
+  data() {
     return { mdiMapMarker }
   },
   props: {
     place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) },
     mapHeight: { type: String, default: '55vh' },
-  }
+  },
 }
 </script>

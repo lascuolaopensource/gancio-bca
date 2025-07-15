@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-card-title {{ $t('common.tags') }}
     v-spacer
@@ -52,7 +52,17 @@ v-container
 
 </template>
 <script>
-import { mdiPencil, mdiChevronLeft, mdiChevronRight, mdiMagnify, mdiEye, mdiMapSearch, mdiChevronDown, mdiDeleteForever, mdiTag } from '@mdi/js'
+import {
+  mdiPencil,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiMagnify,
+  mdiEye,
+  mdiMapSearch,
+  mdiChevronDown,
+  mdiDeleteForever,
+  mdiTag,
+} from '@mdi/js'
 import { mapState } from 'vuex'
 import get from 'lodash/get'
 import TBtn from '../../components/TBtn.vue'
@@ -60,7 +70,15 @@ import TBtn from '../../components/TBtn.vue'
 export default {
   data() {
     return {
-      mdiPencil, mdiChevronRight, mdiChevronLeft, mdiMagnify, mdiEye, mdiMapSearch, mdiChevronDown, mdiDeleteForever, mdiTag,
+      mdiPencil,
+      mdiChevronRight,
+      mdiChevronLeft,
+      mdiMagnify,
+      mdiEye,
+      mdiMapSearch,
+      mdiChevronDown,
+      mdiDeleteForever,
+      mdiTag,
       loading: false,
       dialog: false,
       valid: false,
@@ -71,8 +89,8 @@ export default {
       headers: [
         { value: 'tag', text: this.$t('common.tag') },
         { value: 'count', text: 'N.' },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
-      ]
+        { value: 'actions', text: this.$t('common.actions'), align: 'right' },
+      ],
     }
   },
   components: { TBtn },
@@ -97,12 +115,23 @@ export default {
       this.dialog = false
       await this.$fetch()
       this.loading = false
-      this.$root.$message(this.$t('admin.tag_renamed', { oldTag: this.tag.tag, newTag: this.newTag }), { color: 'success' })
+      this.$root.$message(
+        this.$t('admin.tag_renamed', {
+          oldTag: this.tag.tag,
+          newTag: this.newTag,
+        }),
+        { color: 'success' }
+      )
       this.newTag = ''
     },
     async removeTag(tag) {
-      const ret = await this.$root.$confirm('admin.delete_tag_confirm', { tag: tag.tag, n: tag.count })
-      if (!ret) { return }
+      const ret = await this.$root.$confirm('admin.delete_tag_confirm', {
+        tag: tag.tag,
+        n: tag.count,
+      })
+      if (!ret) {
+        return
+      }
       try {
         await this.$axios.$delete(`/tag/${encodeURIComponent(tag.tag)}`)
         await this.$fetch()
@@ -111,7 +140,7 @@ export default {
         this.$root.$message(this.$t(err), { color: 'error' })
         this.loading = false
       }
-    }    
-  }
+    },
+  },
 }
 </script>

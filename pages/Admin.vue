@@ -87,22 +87,45 @@ import { mdiAlert, mdiChevronRight, mdiChevronLeft } from '@mdi/js'
 export default {
   name: 'Admin',
   components: {
-    Settings: () => import(/* webpackChunkName: "admin" */'../components/admin/Settings.vue'),
-    Users:  () => import(/* webpackChunkName: "admin" */'../components/admin/Users'),
-    Events: () => import(/* webpackChunkName: "admin" */'../components/admin/Events'),
-    Places: () => import(/* webpackChunkName: "admin" */'../components/admin/Places'),
-    Tags: () => import(/* webpackChunkName: "admin" */'../components/admin/Tags'),
-    Collections: () => import(/* webpackChunkName: "admin" */'../components/admin/Collections'),
-    [process.client && 'Geolocation']: () => import(/* webpackChunkName: "admin" */'../components/admin/Geolocation.vue'),
-    Federation: () => import(/* webpackChunkName: "admin" */'../components/admin/Federation.vue'),
-    Moderation: () => import(/* webpackChunkName: "admin" */'../components/admin/Moderation.vue'),
-    Plugin: () => import(/* webpackChunkName: "admin" */'../components/admin/Plugin.vue'),
-    Announcement: () => import(/* webpackChunkName: "admin" */'../components/admin/Announcement.vue'),
-    Page: () => import(/* webpackChunkName: "admin" */'../components/admin/Page.vue'),
-    Theme: () => import(/* webpackChunkName: "admin" */'../components/admin/Theme.vue')
+    Settings: () =>
+      import(
+        /* webpackChunkName: "admin" */ '../components/admin/Settings.vue'
+      ),
+    Users: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Users'),
+    Events: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Events'),
+    Places: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Places'),
+    Tags: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Tags'),
+    Collections: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Collections'),
+    [process.client && 'Geolocation']: () =>
+      import(
+        /* webpackChunkName: "admin" */ '../components/admin/Geolocation.vue'
+      ),
+    Federation: () =>
+      import(
+        /* webpackChunkName: "admin" */ '../components/admin/Federation.vue'
+      ),
+    Moderation: () =>
+      import(
+        /* webpackChunkName: "admin" */ '../components/admin/Moderation.vue'
+      ),
+    Plugin: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Plugin.vue'),
+    Announcement: () =>
+      import(
+        /* webpackChunkName: "admin" */ '../components/admin/Announcement.vue'
+      ),
+    Page: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Page.vue'),
+    Theme: () =>
+      import(/* webpackChunkName: "admin" */ '../components/admin/Theme.vue'),
   },
   middleware: ['auth', 'isAdminOrEditor'],
-  async asyncData ({ $axios, req }) {
+  async asyncData({ $axios, req }) {
     let url
     if (process.client) {
       url = window.location.protocol + '//' + window.location.host
@@ -111,55 +134,65 @@ export default {
     }
     // @todo this is weak and needed only to show the badge number...
     try {
-      const users = await $axios.$get('/users').catch( () => [])
-      const { events: unconfirmedEvents, oldEvents: unconfirmedOldEvents } = await $axios.$get('/event/unconfirmed')
-          .catch( () => ({ events: [], oldEvents: [] }))
+      const users = await $axios.$get('/users').catch(() => [])
+      const { events: unconfirmedEvents, oldEvents: unconfirmedOldEvents } =
+        await $axios
+          .$get('/event/unconfirmed')
+          .catch(() => ({ events: [], oldEvents: [] }))
       const selfReachable = await $axios.$get('/reachable').catch(() => false)
-      return { users, unconfirmedEvents, unconfirmedOldEvents, url, selfReachable }
+      return {
+        users,
+        unconfirmedEvents,
+        unconfirmedOldEvents,
+        url,
+        selfReachable,
+      }
     } catch (e) {
       return { users: [], unconfirmedEvents: [], url, selfReachable: false }
     }
   },
-  data () {
+  data() {
     return {
-      mdiAlert, mdiChevronRight, mdiChevronLeft,
+      mdiAlert,
+      mdiChevronRight,
+      mdiChevronLeft,
       users: [],
       description: '',
       unconfirmedEvents: [],
-      selfReachable: false
+      selfReachable: false,
     }
   },
-  head () {
+  head() {
     return { title: `${this.settings.title} - ${this.$t('common.admin')}` }
   },
   computed: {
     ...mapState(['settings']),
-    unconfirmedUsers () {
-      return this.users.filter(u => !u.is_active)
+    unconfirmedUsers() {
+      return this.users.filter((u) => !u.is_active)
     },
     selectedTab: {
-      set (tab) {
+      set(tab) {
         this.$router.replace({ query: { ...this.$route.query, tab } })
       },
-      get () {
+      get() {
         return this.$route.query.tab
-      }
-    }
+      },
+    },
   },
   methods: {
-    async updateUsers () {
+    async updateUsers() {
       this.users = await this.$axios.$get('/users')
     },
-    preview (id) {
+    preview(id) {
       this.$router.push(`/event/${id}`)
     },
-    async confirm (id) {
+    async confirm(id) {
       this.loading = true
       await this.$axios.$get(`/event/confirm/${id}`)
       this.loading = false
       this.$root.$message('event.confirmed', { color: 'success' })
-      this.unconfirmedEvents = this.unconfirmedEvents.filter(e => e.id !== id)
-    }
-  }
+      this.unconfirmedEvents = this.unconfirmedEvents.filter((e) => e.id !== id)
+    },
+  },
 }
 </script>

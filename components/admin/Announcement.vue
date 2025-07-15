@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-card-title {{ $t('common.announcements') }}
   v-card-subtitle(v-html="$t('admin.announcement_description')")
@@ -41,13 +41,29 @@ import Editor from '../Editor'
 import Announcement from '../Announcement'
 import TBtn from '../../components/TBtn.vue'
 
-import { mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff } from '@mdi/js'
+import {
+  mdiPlus,
+  mdiChevronRight,
+  mdiChevronLeft,
+  mdiChevronDown,
+  mdiDeleteForever,
+  mdiPencil,
+  mdiEye,
+  mdiEyeOff,
+} from '@mdi/js'
 
 export default {
   components: { Editor, Announcement, TBtn },
   data() {
     return {
-      mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEyeOff, mdiEye,
+      mdiPlus,
+      mdiChevronRight,
+      mdiChevronLeft,
+      mdiChevronDown,
+      mdiDeleteForever,
+      mdiPencil,
+      mdiEyeOff,
+      mdiEye,
       valid: false,
       dialog: false,
       editing: false,
@@ -55,9 +71,14 @@ export default {
       loading: false,
       headers: [
         { value: 'title', text: this.$t('common.title') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
+        {
+          value: 'actions',
+          text: this.$t('common.actions'),
+          align: 'right',
+          sortable: false,
+        },
       ],
-      announcement: { title: '', announcement: '' }
+      announcement: { title: '', announcement: '' },
     }
   },
   async mounted() {
@@ -80,30 +101,50 @@ export default {
     async toggle(announcement) {
       try {
         announcement.visible = !announcement.visible
-        await this.$axios.$put(`/announcements/${announcement.id}`, announcement)
-        this.announcements = this.announcements.map(a => a.id === announcement.id ? announcement : a)
-        this.setAnnouncements(cloneDeep(this.announcements.filter(a => a.visible)))
-      } catch (e) { }
+        await this.$axios.$put(
+          `/announcements/${announcement.id}`,
+          announcement
+        )
+        this.announcements = this.announcements.map((a) =>
+          a.id === announcement.id ? announcement : a
+        )
+        this.setAnnouncements(
+          cloneDeep(this.announcements.filter((a) => a.visible))
+        )
+      } catch (e) {}
     },
     async remove(announcement) {
       const ret = await this.$root.$confirm('admin.delete_announcement_confirm')
-      if (!ret) { return }
-      this.$axios.delete(`/announcements/${announcement.id}`)
-        .then(() => {
-          this.$root.$message('admin.announcement_remove_ok')
-          this.announcements = this.announcements.filter(a => a.id !== announcement.id)
-        })
+      if (!ret) {
+        return
+      }
+      this.$axios.delete(`/announcements/${announcement.id}`).then(() => {
+        this.$root.$message('admin.announcement_remove_ok')
+        this.announcements = this.announcements.filter(
+          (a) => a.id !== announcement.id
+        )
+      })
     },
     async save() {
-      if (!this.$refs.announcement.validate()) { return }
+      if (!this.$refs.announcement.validate()) {
+        return
+      }
       this.loading = true
       try {
         let announcement = null
         if (this.editing) {
-          announcement = await this.$axios.$put(`/announcements/${this.announcement.id}`, this.announcement)
-          this.announcements = this.announcements.map(a => a.id === announcement.id ? announcement : a)
+          announcement = await this.$axios.$put(
+            `/announcements/${this.announcement.id}`,
+            this.announcement
+          )
+          this.announcements = this.announcements.map((a) =>
+            a.id === announcement.id ? announcement : a
+          )
         } else {
-          announcement = await this.$axios.$post('/announcements', this.announcement)
+          announcement = await this.$axios.$post(
+            '/announcements',
+            this.announcement
+          )
           this.announcements = this.announcements.concat(announcement)
         }
         this.setAnnouncements(cloneDeep(this.announcements))
@@ -115,7 +156,7 @@ export default {
         console.error(e)
       }
       this.loading = false
-    }
-  }
+    },
+  },
 }
 </script>

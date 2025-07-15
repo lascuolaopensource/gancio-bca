@@ -40,8 +40,15 @@ div
 </template>
 
 <script>
-import { mdiMap, mdiLatitude, mdiLongitude, mdiMapSearch,
-  mdiRoadVariant, mdiHome, mdiCityVariant } from '@mdi/js'
+import {
+  mdiMap,
+  mdiLatitude,
+  mdiLongitude,
+  mdiMapSearch,
+  mdiRoadVariant,
+  mdiHome,
+  mdiCityVariant,
+} from '@mdi/js'
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import geolocation from '../server/helpers/geolocation/index'
@@ -49,23 +56,30 @@ import geolocation from '../server/helpers/geolocation/index'
 export default {
   name: 'SearchAddress',
   props: {
-    place: { type: Object, default: () => ({}) }
+    place: { type: Object, default: () => ({}) },
   },
   components: {
-    [process.client && 'Map']: () => import('@/components/Map.vue')
+    [process.client && 'Map']: () => import('@/components/Map.vue'),
   },
-  data ({$store}) {
+  data({ $store }) {
     return {
-      mdiMap, mdiLatitude, mdiLongitude, mdiMapSearch,
-      mdiRoadVariant, mdiHome, mdiCityVariant,
+      mdiMap,
+      mdiLatitude,
+      mdiLongitude,
+      mdiMapSearch,
+      mdiRoadVariant,
+      mdiHome,
+      mdiCityVariant,
       addressList: [],
       loading: false,
       iconsMapper: {
         mdiHome,
         mdiRoadVariant,
-        mdiCityVariant
+        mdiCityVariant,
       },
-      currentGeocodingProvider: geolocation.getGeocodingProvider($store.state.settings.geocoding_provider_type),
+      currentGeocodingProvider: geolocation.getGeocodingProvider(
+        $store.state.settings.geocoding_provider_type
+      ),
       prevAddress: '',
     }
   },
@@ -77,13 +91,15 @@ export default {
       let icon = this.currentGeocodingProvider.loadResultIcon(item)
       return this.iconsMapper[icon]
     },
-    searchAddress: debounce(async function(ev) {
+    searchAddress: debounce(async function (ev) {
       const pre_searchCoordinates = ev.target.value.trim().toLowerCase()
       const searchCoordinates = pre_searchCoordinates.replace('/', ',')
       if (searchCoordinates.length) {
         this.loading = true
         try {
-          const ret = await this.$axios.$get(`placeOSM/${this.currentGeocodingProvider.commonName}/${searchCoordinates}`)
+          const ret = await this.$axios.$get(
+            `placeOSM/${this.currentGeocodingProvider.commonName}/${searchCoordinates}`
+          )
           this.addressList = this.currentGeocodingProvider.mapQueryResults(ret)
         } catch (e) {
           console.error(e)
@@ -91,20 +107,24 @@ export default {
         this.loading = false
       }
     }, 1000),
-    selectAddress (v) {
-      if (!v) { return }
+    selectAddress(v) {
+      if (!v) {
+        return
+      }
       if (typeof v === 'object') {
-          this.place.latitude = v.lat
-          this.place.longitude = v.lon
-          if (this.place.address === '' || this.place.address === this.prevAddress ) {
-            this.place.address = v.address
-          }
+        this.place.latitude = v.lat
+        this.place.longitude = v.lon
+        if (
+          this.place.address === '' ||
+          this.place.address === this.prevAddress
+        ) {
+          this.place.address = v.address
+        }
       } else {
         this.place.latitude = this.place.longitude = null
       }
       this.prevAddress = v.address
     },
-  }
+  },
 }
-
 </script>

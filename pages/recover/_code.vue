@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container
   v-form(@submit.prevent="change_password" v-model='valid')
     v-row.mt-5(align='center' justify='center')
@@ -26,40 +26,45 @@ import { mdiAlert } from '@mdi/js'
 
 export default {
   name: 'Recover',
-  async asyncData ({ params, $axios }) {
+  async asyncData({ params, $axios }) {
     const code = params.code
     try {
-      const user = await $axios.$post('/user/check_recover_code', { recover_code: code })
+      const user = await $axios.$post('/user/check_recover_code', {
+        recover_code: code,
+      })
       return { user, code }
     } catch (e) {
       return { user: false, error: String(e) }
     }
   },
-  data () {
+  data() {
     return { new_password: '', valid: false, mdiAlert }
   },
   computed: mapState(['settings']),
   methods: {
-    async change_password () {
+    async change_password() {
       try {
-        await this.$axios.$post('/user/recover_password', { recover_code: this.code, password: this.new_password })
+        await this.$axios.$post('/user/recover_password', {
+          recover_code: this.code,
+          password: this.new_password,
+        })
         this.$root.$message('common.password_updated')
         this.$router.replace('/login')
       } catch (e) {
         this.$root.$message(e, { color: 'warning' })
       }
-    }
+    },
   },
-  head () {
+  head() {
     return { title: `${this.settings.title} - Authorize` }
-  }
+  },
 }
 </script>
 <style>
-  h4 img {
-    max-height: 40px;
-    border-radius: 20px;
-    background-color: #333;
-    border: 1px solid #333;
-  }
+h4 img {
+  max-height: 40px;
+  border-radius: 20px;
+  background-color: #333;
+  border: 1px solid #333;
+}
 </style>

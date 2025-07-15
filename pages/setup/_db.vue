@@ -20,12 +20,14 @@ v-container.pa-6
         Completed(ref='completed' :isHttp='isHttp')
 </template>
 <script>
-
 export default {
   components: {
-    Settings: () => import(/* webpackChunkName: "setup" */'@/components/admin/Settings.vue'),
-    DbStep: () => import(/* webpackChunkName: "setup" */'@/components/DbStep.vue'),
-    Completed: () => import(/* webpackChunkName: "setup" */'@/components/Completed.vue'),
+    Settings: () =>
+      import(/* webpackChunkName: "setup" */ '@/components/admin/Settings.vue'),
+    DbStep: () =>
+      import(/* webpackChunkName: "setup" */ '@/components/DbStep.vue'),
+    Completed: () =>
+      import(/* webpackChunkName: "setup" */ '@/components/Completed.vue'),
   },
   middleware: 'setup',
   layout: 'clean',
@@ -34,32 +36,36 @@ export default {
   },
   name: 'Setup',
   auth: false,
-  asyncData ({ params, req }) {
-    const protocol = process.client ? window.location.protocol : req.protocol + ':'
+  asyncData({ params, req }) {
+    const protocol = process.client
+      ? window.location.protocol
+      : req.protocol + ':'
     return {
       isHttp: protocol === 'http:',
       dbdone: !!Number(params.db),
       config: {
         db: {
-          dialect: ''
-        }
+          dialect: '',
+        },
       },
-      step: 1 + Number(params.db)
+      step: 1 + Number(params.db),
     }
   },
   methods: {
-    dbCompleted (db) {
+    dbCompleted(db) {
       this.step = this.step + 1
     },
-    async configCompleted () {
+    async configCompleted() {
       try {
         const user = await this.$axios.$post('/setup/restart')
         this.step = this.step + 1
         this.$refs.completed.start(user)
       } catch (e) {
-        this.$root.$message(e.response ? e.response.data : e, { color: 'error' })
+        this.$root.$message(e.response ? e.response.data : e, {
+          color: 'error',
+        })
       }
-    }
-  }
+    },
+  },
 }
 </script>

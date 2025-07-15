@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 .editor(:class='focused')
   .label {{label}}
   editor-menu-bar.menubar.is-hidden(:editor='editor'
@@ -65,9 +65,19 @@
 </template>
 <script>
 import debounce from 'lodash/debounce'
-import { mdiLink, mdiFormatListBulleted, mdiFormatQuoteOpen, mdiCodeTags,
-  mdiFormatHeader1, mdiFormatHeader2, mdiFormatHeader3, mdiFormatItalic,
-  mdiFormatStrikethroughVariant, mdiFormatBold, mdiFormatUnderline } from '@mdi/js'
+import {
+  mdiLink,
+  mdiFormatListBulleted,
+  mdiFormatQuoteOpen,
+  mdiCodeTags,
+  mdiFormatHeader1,
+  mdiFormatHeader2,
+  mdiFormatHeader3,
+  mdiFormatItalic,
+  mdiFormatStrikethroughVariant,
+  mdiFormatBold,
+  mdiFormatUnderline,
+} from '@mdi/js'
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap'
 import {
   Blockquote,
@@ -84,7 +94,7 @@ import {
   History,
   Strike,
   Underline,
-  Placeholder
+  Placeholder,
 } from 'tiptap-extensions'
 
 export default {
@@ -96,31 +106,39 @@ export default {
     border: { type: Boolean, default: false },
     noSave: { type: Boolean, default: false },
     height: { type: String, default: '' },
-    placeholder: { type: String, default: '' }
+    placeholder: { type: String, default: '' },
   },
-  data () {
+  data() {
     return {
-      mdiLink, mdiFormatListBulleted, mdiFormatQuoteOpen, mdiCodeTags,
-      mdiFormatHeader1, mdiFormatHeader2, mdiFormatHeader3, mdiFormatItalic,
-      mdiFormatStrikethroughVariant, mdiFormatBold, mdiFormatUnderline,      
+      mdiLink,
+      mdiFormatListBulleted,
+      mdiFormatQuoteOpen,
+      mdiCodeTags,
+      mdiFormatHeader1,
+      mdiFormatHeader2,
+      mdiFormatHeader3,
+      mdiFormatItalic,
+      mdiFormatStrikethroughVariant,
+      mdiFormatBold,
+      mdiFormatUnderline,
       options: [],
       linkActive: false,
       editor: null,
       blurring: false,
       update: false,
-      focused: ''
+      focused: '',
     }
   },
   watch: {
-    value () {
+    value() {
       if (this.update) {
         this.update = false
         return
       }
       this.editor.setContent(this.value)
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.editor = new Editor({
       onFocus: () => this.focus(),
       onBlur: () => this.blur(),
@@ -149,16 +167,18 @@ export default {
           emptyNodeClass: 'is-empty',
           emptyNodeText: this.placeholder,
           showOnlyWhenEditable: true,
-          showOnlyCurrent: true
-        })
-      ]
+          showOnlyCurrent: true,
+        }),
+      ],
     })
   },
-  beforeDestroy () {
-    if (this.editor) { this.editor.destroy() }
+  beforeDestroy() {
+    if (this.editor) {
+      this.editor.destroy()
+    }
   },
   methods: {
-    blur () {
+    blur() {
       this.blurring = true
       window.setTimeout(() => {
         if (this.blurring) {
@@ -167,17 +187,16 @@ export default {
         }
       }, 200)
     },
-    focus () {
+    focus() {
       this.focused = 'editor--focused'
       this.$nextTick(() => {
         this.blurring = false
       })
-    }
-  }
+    },
+  },
 }
 </script>
-<style lang='scss'>
-
+<style lang="scss">
 .editor {
   margin-top: 4px;
   padding-top: 12px;
@@ -199,13 +218,13 @@ export default {
     left: 0px;
     position: relative;
     transform-origin: top left;
-    transition: transform .3s, scale .3s, color .3s;
+    transition: transform 0.3s, scale 0.3s, color 0.3s;
     transform: translateY(20px);
   }
 
   &.editor--focused {
     .label {
-      color: #FF4500;
+      color: #ff4500;
       transform: translateY(0px) scale(0.75);
     }
 
@@ -215,13 +234,13 @@ export default {
     }
 
     .ProseMirror::after {
-      width : 100% !important;
+      width: 100% !important;
       transform: scaleX(1) !important;
     }
   }
 
   .menubar {
-    transition: opacity .5s;
+    transition: opacity 0.5s;
     opacity: 0;
     visibility: hidden;
     overflow: auto;
@@ -239,9 +258,8 @@ export default {
     height: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #FF4500 transparent;
+    scrollbar-color: #ff4500 transparent;
     overflow-y: auto;
   }
 }
-
 </style>

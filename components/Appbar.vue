@@ -19,7 +19,7 @@
     </div>
 
     <NavSearch />
-    <NavBar v-if="!['event-slug','e-slug'].includes($route.name)"/>
+    <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
   </nav>
 </template>
 <script>

@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-card
   v-card-title(v-text="$t('common.embed_title')")
   v-card-text
@@ -26,13 +26,13 @@ export default {
   },
   mixins: [clipboard],
   props: {
-    event: { type: Object, default: () => ({}) }
+    event: { type: Object, default: () => ({}) },
   },
   computed: {
     ...mapState(['settings']),
-    code () {
+    code() {
       return `<script src='${this.settings.baseurl}\/gancio-events.es.js'><\/script>\n<gancio-event baseurl='${this.settings.baseurl}' id=${this.event.id}></gancio-event>\n\n`
-    }
-  }
+    },
+  },
 }
 </script>

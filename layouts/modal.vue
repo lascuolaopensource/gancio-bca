@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-app(app)
   Snackbar
   Confirm
@@ -19,6 +19,6 @@ import Confirm from '../components/Confirm'
 
 export default {
   name: 'Default',
-  components: { Appbar, Snackbar, Footer, Confirm }
+  components: { Appbar, Snackbar, Footer, Confirm },
 }
 </script>

@@ -15,21 +15,22 @@ export default {
   props: {
     isHttp: { type: Boolean, default: false },
   },
-  data () {
+  data() {
     return {
-      mdiArrowRight, mdiAlert,
+      mdiArrowRight,
+      mdiAlert,
       loading: false,
       user: {
         email: 'admin',
-        password: ''
-      }
+        password: '',
+      },
     }
   },
   methods: {
-    next () {
-      window.location='/admin'
+    next() {
+      window.location = '/admin'
     },
-    async start (user) {
+    async start(user) {
       this.user = { ...user }
       this.loading = true
 
@@ -39,7 +40,7 @@ export default {
       } catch (e) {
         setTimeout(() => this.start(user), 1000)
       }
-    }
-  }
+    },
+  },
 }
 </script>

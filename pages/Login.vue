@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 v-container.pa-0.pa-md-3
   v-row.mt-md-5.ma-0(align='center' justify='center')
     v-col.pa-0.pa-md-3(cols='12' md="6" lg="5" xl="4")
@@ -43,17 +43,17 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Login',
-  data () {
+  data() {
     return {
       password: '',
       email: '',
       loading: false,
-      valid: false
+      valid: false,
     }
   },
   computed: mapState(['settings']),
   methods: {
-    async forgot () {
+    async forgot() {
       if (!this.email) {
         this.$refs.email.focus()
         return
@@ -63,7 +63,7 @@ export default {
       this.loading = false
       this.$root.$message('login.check_email', { color: 'success' })
     },
-    async submit (e) {
+    async submit(e) {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
@@ -74,22 +74,22 @@ export default {
         data.append('client_id', 'self')
         await this.$auth.loginWith('local', { data })
         this.loading = false
-        this.$root.$message('login.ok',{ color: 'success' })
+        this.$root.$message('login.ok', { color: 'success' })
       } catch (e) {
-        this.$root.$message('login.error',{ color: 'error' })
+        this.$root.$message('login.error', { color: 'error' })
         this.loading = false
         return
       }
       this.email = this.password = ''
-    }
+    },
   },
-  head () {
+  head() {
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale
+        lang: this.settings.instance_locale,
       },
-      title: this.settings.title + ' - ' + this.$t('common.login')
+      title: this.settings.title + ' - ' + this.$t('common.login'),
     }
-  }
+  },
 }
 </script>

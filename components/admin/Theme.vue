@@ -137,10 +137,13 @@ import debounce from 'lodash/debounce'
 
 export default {
   name: 'Theme',
-  data ({ $store }) {
+  data({ $store }) {
     const t = new Date().getMilliseconds()
     return {
-      mdiDeleteForever, mdiRestore, mdiPlus, mdiChevronUp,
+      mdiDeleteForever,
+      mdiRestore,
+      mdiPlus,
+      mdiChevronUp,
       valid: false,
       logoKey: t,
       fallbackImageKey: t,
@@ -154,144 +157,167 @@ export default {
   computed: {
     ...mapState(['settings']),
     is_dark: {
-      get () { return this.settings['theme.is_dark'] },
-      set (value) {
+      get() {
+        return this.settings['theme.is_dark']
+      },
+      set(value) {
         this.$vuetify.theme.dark = value
         this.setSetting({ key: 'theme.is_dark', value })
         this.setLocalSetting({ key: 'theme.is_dark', value })
-      }
+      },
     },
     hide_thumbs: {
-      get () { return this.settings.hide_thumbs },
-      set (value) { this.setSetting({ key: 'hide_thumbs', value }) }
+      get() {
+        return this.settings.hide_thumbs
+      },
+      set(value) {
+        this.setSetting({ key: 'hide_thumbs', value })
+      },
     },
     hide_calendar: {
-      get () { return this.settings.hide_calendar },
-      set (value) { this.setSetting({ key: 'hide_calendar', value }) }
+      get() {
+        return this.settings.hide_calendar
+      },
+      set(value) {
+        this.setSetting({ key: 'hide_calendar', value })
+      },
     },
     custom_js: {
-      get () { return this.settings.custom_js },
-      set (value) { this.setSetting({ key: 'custom_js', value })}
+      get() {
+        return this.settings.custom_js
+      },
+      set(value) {
+        this.setSetting({ key: 'custom_js', value })
+      },
     },
     custom_css: {
-      get () { return this.settings.custom_css },
-      set (value) { this.setSetting({ key: 'custom_css', value })}
-    }    
+      get() {
+        return this.settings.custom_css
+      },
+      set(value) {
+        this.setSetting({ key: 'custom_css', value })
+      },
+    },
   },
   methods: {
     ...mapActions(['setSetting', 'setLocalSetting']),
-    reset () {
+    reset() {
       this.setSetting({
         key: 'footerLinks',
         value: [
           { href: '/', label: 'common.home' },
-          { href: '/about', label: 'common.about' }
-        ]
+          { href: '/about', label: 'common.about' },
+        ],
       })
     },
-    forceLogoReload () {
+    forceLogoReload() {
       this.logoKey++
     },
-    forceFallbackImageReload () {
+    forceFallbackImageReload() {
       this.fallbackImageKey++
     },
-    forceHeaderImageReload () {
+    forceHeaderImageReload() {
       this.headerImageKey++
-    },    
-    resetLogo (e) {
-      this.setSetting({ key: 'logo', value: null })
-        .then(this.forceLogoReload)
+    },
+    resetLogo(e) {
+      this.setSetting({ key: 'logo', value: null }).then(this.forceLogoReload)
       e.stopPropagation()
     },
-    resetFallbackImage (e) {
-      this.setSetting({ key: 'fallback_image', value: null })
-        .then(this.forceFallbackImageReload)
+    resetFallbackImage(e) {
+      this.setSetting({ key: 'fallback_image', value: null }).then(
+        this.forceFallbackImageReload
+      )
       e.stopPropagation()
     },
-    resetHeaderImage (e) {
-      this.setSetting({ key: 'header_image', value: null })
-        .then(this.forceHeaderImageReload)
+    resetHeaderImage(e) {
+      this.setSetting({ key: 'header_image', value: null }).then(
+        this.forceHeaderImageReload
+      )
       e.stopPropagation()
     },
-    updateSettingColor: debounce( async function (theme, color, value) {
+    updateSettingColor: debounce(async function (theme, color, value) {
       const key = `${theme}_colors`
-      this.setSetting({ key, value: { ...this.settings[key], [color]: value.hex } })
+      this.setSetting({
+        key,
+        value: { ...this.settings[key], [color]: value.hex },
+      })
     }, 200),
-    updateColor (theme, color, value) {
+    updateColor(theme, color, value) {
       this.$vuetify.theme.themes[theme][color] = value.hex
       this.updateSettingColor(theme, color, value)
     },
-    openLinkModal () {
+    openLinkModal() {
       this.linkModal = true
       this.$nextTick(() => this.$refs.linkModalForm.reset())
     },
-    addFooterLink () {
+    addFooterLink() {
       const link = Object.assign({}, this.link)
-      this.setSetting({ key: 'footerLinks', value: this.settings.footerLinks.concat(link) })
+      this.setSetting({
+        key: 'footerLinks',
+        value: this.settings.footerLinks.concat(link),
+      })
       // this.link = { href: '', label: '' }
       this.$refs.linkModalForm.reset()
       this.linkModal = false
     },
-    async removeFooterLink (item) {
+    async removeFooterLink(item) {
       const ret = await this.$root.$confirm('admin.delete_footer_link_confirm')
-      if (!ret) { return }
-      const footerLinks = this.settings.footerLinks.filter(l => l.label !== item.label)
+      if (!ret) {
+        return
+      }
+      const footerLinks = this.settings.footerLinks.filter(
+        (l) => l.label !== item.label
+      )
       this.setSetting({ key: 'footerLinks', value: footerLinks })
     },
-    async moveUpFooterLink (item, idx) {
+    async moveUpFooterLink(item, idx) {
       const footerLinks = [...this.settings.footerLinks]
-      footerLinks[idx] = footerLinks[idx-1]
-      footerLinks[idx-1] = this.settings.footerLinks[idx]
+      footerLinks[idx] = footerLinks[idx - 1]
+      footerLinks[idx - 1] = this.settings.footerLinks[idx]
       this.setSetting({ key: 'footerLinks', value: footerLinks })
     },
-    editFooterLink (item) {
+    editFooterLink(item) {
       this.link = { href: item.href, label: item.label }
       this.linkModal = true
     },
-    async uploadLogo (file) {
+    async uploadLogo(file) {
       const formData = new FormData()
       formData.append('logo', file)
       try {
         await this.$axios.$post('/settings/logo', formData)
         this.$root.$emit('message', {
-          message: 'Logo updated'
+          message: 'Logo updated',
         })
         this.forceLogoReload()
-      } catch (e) {
-
-      }
+      } catch (e) {}
     },
-    async uploadFallbackImage (file) {
+    async uploadFallbackImage(file) {
       const formData = new FormData()
       formData.append('fallbackImage', file)
       try {
         await this.$axios.$post('/settings/fallbackImage', formData)
         this.$root.$emit('message', {
-          message: 'Fallback image updated'
+          message: 'Fallback image updated',
         })
         this.forceFallbackImageReload()
-      } catch (e) {
-
-      }
+      } catch (e) {}
     },
-    async uploadHeaderImage (file) {
+    async uploadHeaderImage(file) {
       const formData = new FormData()
       formData.append('headerImage', file)
       try {
         await this.$axios.$post('/settings/headerImage', formData)
         this.$root.$emit('message', {
-          message: 'Header image updated'
+          message: 'Header image updated',
         })
         this.forceHeaderImageReload()
-      } catch (e) {
-
-      }
-    },    
-    save (key, value) {
+      } catch (e) {}
+    },
+    save(key, value) {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    }
-  }
+    },
+  },
 }
 </script>

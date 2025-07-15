@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 span
   v-list(dense nav color='transparent')
     v-list-group(:append-icon='mdiChevronUp' :value='true')
@@ -83,48 +83,81 @@ span
 
 </template>
 <script>
-import { mdiChevronUp, mdiRepeat, mdiDelete, mdiCalendarEdit, mdiEyeOff, mdiEye, mdiPause, mdiPlay, mdiDeleteForever, mdiScanner,
-  mdiMessageTextOutline, mdiAccountOff, mdiClipboardAccount } from '@mdi/js'
+import {
+  mdiChevronUp,
+  mdiRepeat,
+  mdiDelete,
+  mdiCalendarEdit,
+  mdiEyeOff,
+  mdiEye,
+  mdiPause,
+  mdiPlay,
+  mdiDeleteForever,
+  mdiScanner,
+  mdiMessageTextOutline,
+  mdiAccountOff,
+  mdiClipboardAccount,
+} from '@mdi/js'
 import { mapState } from 'vuex'
 export default {
   name: 'EventAdmin',
-  data () {
+  data() {
     return {
-      mdiChevronUp, mdiRepeat, mdiDelete, mdiCalendarEdit, mdiEyeOff, mdiEye, mdiPause, mdiPlay, mdiDeleteForever, mdiScanner,
-      mdiMessageTextOutline, mdiAccountOff, mdiClipboardAccount
+      mdiChevronUp,
+      mdiRepeat,
+      mdiDelete,
+      mdiCalendarEdit,
+      mdiEyeOff,
+      mdiEye,
+      mdiPause,
+      mdiPlay,
+      mdiDeleteForever,
+      mdiScanner,
+      mdiMessageTextOutline,
+      mdiAccountOff,
+      mdiClipboardAccount,
     }
   },
   props: {
     event: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
   },
   computed: {
-    ...mapState(['settings'])
+    ...mapState(['settings']),
   },
   methods: {
-    async disableAuthor () {
+    async disableAuthor() {
       const ret = await this.$root.$confirm('event.disable_author_confirm')
-      if (!ret) { return }
+      if (!ret) {
+        return
+      }
       try {
         await this.$axios.$put(`/event/disable_author/${this.event.id}`)
-        this.$root.$message("Author disabled!", { color: 'success' })
+        this.$root.$message('Author disabled!', { color: 'success' })
         this.event.isAnon = true
       } catch (e) {
         this.$root.$message(e, { color: 'warning' })
       }
     },
-    async remove (parent = false) {
-      const ret = await this.$root.$confirm(`event.remove_${parent ? 'recurrent_' : ''}confirmation`, { event: this.event.title })
-      if (!ret) { return }
+    async remove(parent = false) {
+      const ret = await this.$root.$confirm(
+        `event.remove_${parent ? 'recurrent_' : ''}confirmation`,
+        { event: this.event.title }
+      )
+      if (!ret) {
+        return
+      }
       const id = parent ? this.event.parentId : this.event.id
       await this.$axios.delete(`/event/${id}`)
       this.$router.replace('/')
     },
-    async toggle (parent = false) {
+    async toggle(parent = false) {
       const id = parent ? this.event.parentId : this.event.id
-      const is_visible = parent ? this.event.parent.is_visible : this.event.is_visible
+      const is_visible = parent
+        ? this.event.parent.is_visible
+        : this.event.is_visible
       const method = is_visible ? 'unconfirm' : 'confirm'
       try {
         await this.$axios.$put(`/event/${method}/${id}`)
@@ -137,6 +170,6 @@ export default {
         console.error(e)
       }
     },
-  }
+  },
 }
 </script>

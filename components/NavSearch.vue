@@ -41,33 +41,36 @@ import { mdiClose, mdiCog, mdiMagnify } from '@mdi/js'
 export default {
   data: ({ $store }) => ({
     oldRoute: '',
-    mdiClose, mdiCog, mdiMagnify,
+    mdiClose,
+    mdiCog,
+    mdiMagnify,
     show_recurrent: $store.state.settings.recurrent_event_visible,
     show_multidate: true,
-    query: ''
+    query: '',
   }),
   components: { Calendar },
   computed: {
     ...mapState(['collections']),
-    showSearchBar () {
+    showSearchBar() {
       return ['index'].includes(this.$route.name)
     },
-    showCalendar () {
-      return (!this.settings.hide_calendar && 
-        ['index'].includes(this.$route.name))
+    showCalendar() {
+      return (
+        !this.settings.hide_calendar && ['index'].includes(this.$route.name)
+      )
     },
-    showCollectionsBar () {
+    showCollectionsBar() {
       const show = ['index', 'collection-collection'].includes(this.$route.name)
       if (show && this.oldRoute !== this.$route.name) {
         this.oldRoute = this.$route.name
       }
       return show
     },
-    ...mapState(['settings', 'filter'])
+    ...mapState(['settings', 'filter']),
   },
   methods: {
     ...mapActions(['setFilter']),
-  }
+  },
 }
 </script>
 <style>

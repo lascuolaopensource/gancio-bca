@@ -49,16 +49,18 @@ v-card
 <script>
 import { mapActions, mapState } from 'vuex'
 export default {
-  data ({ $store }) {
+  data({ $store }) {
     return {
       isValid: false,
       loading: false,
       smtp: { auth: {} },
-      admin_email: $store.state.settings.admin_email || ''
+      admin_email: $store.state.settings.admin_email || '',
     }
   },
-  async fetch () {
-    this.smtp = await this.$axios.$get('/settings/smtp').catch(_e => ({ auth: {} }))
+  async fetch() {
+    this.smtp = await this.$axios
+      .$get('/settings/smtp')
+      .catch((_e) => ({ auth: {} }))
     if (!this.smtp.auth) {
       this.smtp.auth = {}
     }
@@ -66,12 +68,12 @@ export default {
   computed: mapState(['settings']),
   methods: {
     ...mapActions(['setSetting']),
-    save (key, value) {
+    save(key, value) {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
     },
-    async done (testing) {
+    async done(testing) {
       const smtp = JSON.parse(JSON.stringify(this.smtp))
       if (!smtp.auth.user) {
         delete smtp.auth
@@ -101,7 +103,12 @@ export default {
         this.loading = true
         try {
           await this.$axios.$post('/settings/test_smtp', { smtp })
-          this.$root.$message(this.$t('admin.smtp_test_success', { admin_email: this.admin_email }), { color: 'success' })
+          this.$root.$message(
+            this.$t('admin.smtp_test_success', {
+              admin_email: this.admin_email,
+            }),
+            { color: 'success' }
+          )
         } catch (e) {
           this.$root.$message(e.response && e.response.data, { color: 'error' })
         }
@@ -110,7 +117,7 @@ export default {
         this.setSetting({ key: 'smtp', value: smtp })
         this.$emit('close')
       }
-    }
-  }
+    },
+  },
 }
 </script>

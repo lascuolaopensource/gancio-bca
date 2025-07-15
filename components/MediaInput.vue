@@ -78,9 +78,9 @@ export default {
   name: 'MediaInput',
   props: {
     value: { type: Object, default: () => ({ image: null }) },
-    event: { type: Object, default: () => ({}) }
+    event: { type: Object, default: () => ({}) },
   },
-  data () {
+  data() {
     return {
       mdiCamera,
       useUrl: false,
@@ -89,11 +89,11 @@ export default {
       openMediaDetails: false,
       name: this.value.name || '',
       focalpoint: this.value.focalpoint || [0, 0],
-      dragging: false
+      dragging: false,
     }
   },
   computed: {
-    mediaPreview () {
+    mediaPreview() {
       if (!this.value.url && !this.value.image) {
         return false
       }
@@ -101,73 +101,100 @@ export default {
       const url = this.value.image
         ? URL.createObjectURL(this.value.image)
         : this.isValidUrl(this.value.url)
-          ? this.value.url
-          : `/media/thumb/${this.value.url}`
+        ? this.value.url
+        : `/media/thumb/${this.value.url}`
 
       return url
     },
-    top () {
-      return ((this.focalpoint[1] + 1) * 50) + '%'
+    top() {
+      return (this.focalpoint[1] + 1) * 50 + '%'
     },
-    left () {
-      return ((this.focalpoint[0] + 1) * 50) + '%'
+    left() {
+      return (this.focalpoint[0] + 1) * 50 + '%'
     },
-    savedPosition () {
+    savedPosition() {
       const focalpoint = this.value.focalpoint || [0, 0]
       return `${(focalpoint[0] + 1) * 50}% ${(focalpoint[1] + 1) * 50}%`
     },
-    position () {
+    position() {
       const focalpoint = this.focalpoint || [0, 0]
       return `${(focalpoint[0] + 1) * 50}% ${(focalpoint[1] + 1) * 50}%`
-    }
+    },
   },
   methods: {
-    save () {
-      this.$emit('input', { url: this.value.url, image: this.value.image, name: this.name || (this.event.title) || '', focalpoint: [...this.focalpoint] })
+    save() {
+      this.$emit('input', {
+        url: this.value.url,
+        image: this.value.image,
+        name: this.name || this.event.title || '',
+        focalpoint: [...this.focalpoint],
+      })
       this.openMediaDetails = false
     },
-    async remove () {
+    async remove() {
       const ret = await this.$root.$confirm('event.remove_media_confirmation')
-      if (!ret) { return }
+      if (!ret) {
+        return
+      }
       this.imgUrlInput = ''
       this.useUrl = false
       this.$emit('remove')
     },
-    selectMedia (v) {
-      this.$emit('input', { image: v, name: this.event.title, focalpoint: [0, 0] })
+    selectMedia(v) {
+      this.$emit('input', {
+        image: v,
+        name: this.event.title,
+        focalpoint: [0, 0],
+      })
     },
-    selectUrl () {
+    selectUrl() {
       if (this.validateUrl(this.imgUrlInput) === true) {
         this.$emit('input', {
           ...this.value,
-          url: this.imgUrlInput
+          url: this.imgUrlInput,
         })
       }
     },
-    handleStart (ev) {
+    handleStart(ev) {
       ev.preventDefault()
       this.dragging = true
       this.handleMove(ev, true)
       return false
     },
-    handleStop (ev) {
+    handleStop(ev) {
       this.dragging = false
     },
-    handleMove (ev, manual = false) {
+    handleMove(ev, manual = false) {
       if (!this.dragging && !manual) return
       ev.stopPropagation()
-      const boundingClientRect = document.getElementById('focalPointSelector').getBoundingClientRect()
+      const boundingClientRect = document
+        .getElementById('focalPointSelector')
+        .getBoundingClientRect()
 
-      const clientX = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX
-      const clientY = ev.changedTouches ? ev.changedTouches[0].clientY : ev.clientY
+      const clientX = ev.changedTouches
+        ? ev.changedTouches[0].clientX
+        : ev.clientX
+      const clientY = ev.changedTouches
+        ? ev.changedTouches[0].clientY
+        : ev.clientY
 
       // get relative coordinate
       let x = Math.ceil(clientX - boundingClientRect.left)
       let y = Math.ceil(clientY - boundingClientRect.top)
 
       // snap to border
-      x = x < 30 ? 0 : x > boundingClientRect.width - 30 ? boundingClientRect.width : x
-      y = y < 30 ? 0 : y > boundingClientRect.height - 30 ? boundingClientRect.height : y
+      x =
+        x < 30
+          ? 0
+          : x > boundingClientRect.width - 30
+          ? boundingClientRect.width
+          : x
+      y =
+        y < 30
+          ? 0
+          : y > boundingClientRect.height - 30
+          ? boundingClientRect.height
+          : y
 
       // this.relativeFocalpoint = [x + 'px', y + 'px']
 
@@ -178,15 +205,15 @@ export default {
       this.focalpoint = [posX, posY]
       return false
     },
-    isValidUrl (url) {
+    isValidUrl(url) {
       return /^https?:\/\/.+/i.test(url)
     },
 
-    validateUrl (value) {
+    validateUrl(value) {
       if (!value) return true // empty value is valid, since image is optional
       return this.isValidUrl(value) || this.$t('validators.url')
-    }
-  }
+    },
+  },
 }
 </script>
 <style>
@@ -224,6 +251,6 @@ export default {
   transform: translate(-25px, -25px);
   border-radius: 50%;
   border: 1px solid #ff6d408e;
-  box-shadow: 0 0 0 9999em rgba(0, 0, 0, .65);
+  box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.65);
 }
 </style>

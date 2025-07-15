@@ -25,11 +25,12 @@ import { mdiChevronDown, mdiClose } from '@mdi/js'
 
 export default {
   name: 'Calendar',
-  data ({$time}) {
+  data({ $time }) {
     const month = $time.currentMonth()
     const year = $time.currentYear()
     return {
-      mdiChevronDown, mdiClose,
+      mdiChevronDown,
+      mdiClose,
       selectedDate: null,
       page: { month, year },
     }
@@ -37,22 +38,22 @@ export default {
   computed: {
     ...mapState(['settings', 'events']),
     ...mapGetters(['is_dark']),
-    attributes () {
+    attributes() {
       return this.$time.attributesFromEvents(this.events)
-    }
+    },
   },
   methods: {
-    updatePage (page) {
+    updatePage(page) {
       if (page.month !== this.page.month || page.year !== this.page.year) {
         this.page.month = page.month
         this.page.year = page.year
         this.$root.$emit('monthchange', page)
       }
     },
-    click (day) {
+    click(day) {
       this.$root.$emit('dayclick', day)
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -132,9 +132,31 @@ import EmbedEvent from '@/components/embedEvent'
 import EventMapDialog from '@/components/EventMapDialog'
 import EventModeration from '@/components/EventModeration'
 
-import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap, mdiMessageTextOutline,
-  mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll, mdiTimerSandComplete,
-  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar } from '@mdi/js'
+import {
+  mdiArrowLeft,
+  mdiArrowRight,
+  mdiDotsVertical,
+  mdiCodeTags,
+  mdiClose,
+  mdiMap,
+  mdiMessageTextOutline,
+  mdiEye,
+  mdiEyeOff,
+  mdiDelete,
+  mdiRepeat,
+  mdiLock,
+  mdiFileDownloadOutline,
+  mdiShareAll,
+  mdiTimerSandComplete,
+  mdiCalendarExport,
+  mdiCalendar,
+  mdiContentCopy,
+  mdiMapMarker,
+  mdiChevronUp,
+  mdiMonitorAccount,
+  mdiBookmark,
+  mdiStar,
+} from '@mdi/js'
 
 export default {
   name: 'Event',
@@ -143,12 +165,13 @@ export default {
     EventAdmin,
     EventResource,
     EventModeration,
-    EventAssignAuthor: () => import(/* webpackChunkName: "admin" */ '@/components/EventAssignAuthor'),
+    EventAssignAuthor: () =>
+      import(/* webpackChunkName: "admin" */ '@/components/EventAssignAuthor'),
     EmbedEvent,
     MyPicture,
-    EventMapDialog
+    EventMapDialog,
   },
-  async asyncData ({ $axios, params, error }) {
+  async asyncData({ $axios, params, error }) {
     try {
       const event = await $axios.$get(`/event/detail/${params.slug}`)
       return { event }
@@ -156,84 +179,112 @@ export default {
       error({ statusCode: 404, message: 'Event not found' })
     }
   },
-  data ({$route}) {
+  data({ $route }) {
     return {
-      mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline, mdiMessageTextOutline, mdiTimerSandComplete,
-      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar, mdiShareAll,
+      mdiArrowLeft,
+      mdiArrowRight,
+      mdiDotsVertical,
+      mdiCodeTags,
+      mdiCalendarExport,
+      mdiCalendar,
+      mdiFileDownloadOutline,
+      mdiMessageTextOutline,
+      mdiTimerSandComplete,
+      mdiMapMarker,
+      mdiContentCopy,
+      mdiClose,
+      mdiDelete,
+      mdiEye,
+      mdiEyeOff,
+      mdiRepeat,
+      mdiMap,
+      mdiChevronUp,
+      mdiMonitorAccount,
+      mdiBookmark,
+      mdiStar,
+      mdiShareAll,
       currentAttachment: 0,
       event: {},
       showEmbed: false,
       mapModal: false,
       openModeration: $route?.query?.moderation ? true : false,
       openAssignAuthor: false,
-      reporting: false
+      reporting: false,
     }
   },
-  head () {
+  head() {
     if (!this.event) {
       return {}
     }
-    const tags_feed = this.event.tags && this.event.tags.map(tag => ({
-      rel: 'alternate',
-      type: 'application/rss+xml',
-      title: `${this.settings.title} events tagged ${tag}`,
-      href: this.settings.baseurl + `/feed/rss?tags=${tag}`
-    }))
+    const tags_feed =
+      this.event.tags &&
+      this.event.tags.map((tag) => ({
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        title: `${this.settings.title} events tagged ${tag}`,
+        href: this.settings.baseurl + `/feed/rss?tags=${tag}`,
+      }))
     const place_feed = {
       rel: 'alternate',
       type: 'application/rss+xml',
       title: `${this.settings.title} events  @${this.event?.place?.name}`,
-      href: this.settings.baseurl + `/feed/rss?places=${this.event?.place?.id}`
+      href: this.settings.baseurl + `/feed/rss?places=${this.event?.place?.id}`,
     }
 
     return {
       title: `${this.settings.title} - ${this.event.title}`,
       htmlAttrs: {
-        lang: this.settings.instance_locale
+        lang: this.settings.instance_locale,
       },
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: 'description',
           name: 'description',
-          content: this.plainDescription
+          content: this.plainDescription,
         },
         {
           hid: 'og-description',
           name: 'og:description',
-          content: this.plainDescription
+          content: this.plainDescription,
         },
         { hid: 'og-title', property: 'og:title', content: this.event.title },
         {
           hid: 'og-url',
           property: 'og:url',
-          content: `${this.settings.baseurl}/event/${this.event.slug || this.event.id}`
+          content: `${this.settings.baseurl}/event/${
+            this.event.slug || this.event.id
+          }`,
         },
         { property: 'og:type', content: 'event' },
         {
           property: 'og:image',
-          content: this.$helper.mediaURL(this.event)
+          content: this.$helper.mediaURL(this.event),
         },
         { property: 'og:site_name', content: this.settings.title },
         {
           property: 'og:updated_time',
-          content: DateTime.fromSeconds(this.event.start_datetime, { zone: this.settings.instance_timezone }).toISO()
+          content: DateTime.fromSeconds(this.event.start_datetime, {
+            zone: this.settings.instance_timezone,
+          }).toISO(),
         },
         {
           property: 'article:published_time',
-          content: DateTime.fromSeconds(this.event.start_datetime, { zone: this.settings.instance_timezone }).toISO()
+          content: DateTime.fromSeconds(this.event.start_datetime, {
+            zone: this.settings.instance_timezone,
+          }).toISO(),
         },
         { property: 'article:section', content: 'event' },
         { property: 'twitter:card', content: 'summary' },
         { property: 'twitter:title', content: this.event.title },
         {
           property: 'twitter:image',
-          content: this.$helper.mediaURL(this.event)
+          content: this.$helper.mediaURL(this.event),
         },
         {
           property: 'twitter:description',
-          content: this.plainDescription
-        }
+          content: this.plainDescription,
+        },
       ],
       link: [
         { rel: 'image_src', href: this.$helper.mediaURL(this.event) },
@@ -241,62 +292,80 @@ export default {
           rel: 'alternate',
           type: 'application/rss+xml',
           title: this.settings.title,
-          href: this.settings.baseurl + '/feed/rss'
+          href: this.settings.baseurl + '/feed/rss',
         },
         ...tags_feed,
-        place_feed
-      ]
+        place_feed,
+      ],
     }
   },
   computed: {
     ...mapState(['settings']),
-    hasOnlineLocations () {
+    hasOnlineLocations() {
       return this.event.online_locations && this.event.online_locations.length
     },
-    showModeration () {
-      return this.settings.enable_moderation && this.$auth?.user && (this.event.isMine || this.$auth?.user?.is_admin || this.$auth?.user?.is_editor)
+    showModeration() {
+      return (
+        this.settings.enable_moderation &&
+        this.$auth?.user &&
+        (this.event.isMine ||
+          this.$auth?.user?.is_admin ||
+          this.$auth?.user?.is_editor)
+      )
     },
-    showMap () {
-      return this.settings.allow_geolocation && this.event.place?.latitude && this.event.place?.longitude
+    showMap() {
+      return (
+        this.settings.allow_geolocation &&
+        this.event.place?.latitude &&
+        this.event.place?.longitude
+      )
     },
-    hasMedia () {
+    hasMedia() {
       return this.event.media && this.event.media.length
     },
-    plainDescription () {
+    plainDescription() {
       return this.event.plain_description || ''
     },
-    can_edit () {
+    can_edit() {
       if (!this.$auth.user) {
         return false
       }
       return (
-        this.event.isMine || this.$auth.user.is_admin || this.$auth.user.is_editor
+        this.event.isMine ||
+        this.$auth.user.is_admin ||
+        this.$auth.user.is_editor
       )
     },
-    showResources () {
-      return this.settings.enable_federation &&
-      ( (!this.settings.hide_boosts && (this.event.boost?.length || this.event?.likes?.length)) ||
-      ( this.settings.enable_resources && this.event?.resources?.length))
+    showResources() {
+      return (
+        this.settings.enable_federation &&
+        ((!this.settings.hide_boosts &&
+          (this.event.boost?.length || this.event?.likes?.length)) ||
+          (this.settings.enable_resources && this.event?.resources?.length))
+      )
     },
     isPast() {
       const now = new Date()
       if (this.event.end_datetime) {
-        return new Date(this.event.end_datetime*1000) < now
+        return new Date(this.event.end_datetime * 1000) < now
       } else {
-        return new Date((3*60*60+this.event.start_datetime)*1000) < now
+        return new Date((3 * 60 * 60 + this.event.start_datetime) * 1000) < now
       }
-    }
+    },
   },
-  mounted () {
+  mounted() {
     window.addEventListener('keydown', this.keyDown)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener('keydown', this.keyDown)
   },
   methods: {
-    async report () {
+    async report() {
       this.reporting = true
-      const message = await this.$root.$prompt(this.$t('event.report_message_confirmation'), { title: this.$t('common.report') })
+      const message = await this.$root.$prompt(
+        this.$t('event.report_message_confirmation'),
+        { title: this.$t('common.report') }
+      )
       if (!message) {
         return
       }
@@ -308,11 +377,13 @@ export default {
         this.$root.$message(e, { color: 'warning' })
       }
     },
-    keyDown (ev) {
+    keyDown(ev) {
       if (this.openModeration || this.reporting) {
         return
       }
-      if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) { return }
+      if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) {
+        return
+      }
       if (ev.key === 'ArrowRight' && this.event.next) {
         this.goNext()
       }
@@ -320,19 +391,19 @@ export default {
         this.goPrev()
       }
     },
-    goPrev () {
+    goPrev() {
       if (this.event.prev) {
         this.$router.replace(`/event/${this.event.prev}`)
       }
     },
-    goNext () {
+    goNext() {
       if (this.event.next) {
         this.$router.replace(`/event/${this.event.next}`)
       }
     },
-    copyLink () {
+    copyLink() {
       this.$root.$message('common.copied', { color: 'success' })
     },
-  }
+  },
 }
 </script>
