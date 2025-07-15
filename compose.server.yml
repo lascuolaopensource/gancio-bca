@@ -38,7 +38,7 @@ services:
     volumes:
       - /var/gancio/data:/home/node/data
     ports:
-      - "127.0.0.1:13120:13120"
+      - "0.0.0.0:13120:13120"
     depends_on:
       db:
         condition: service_healthy
