@@ -1,5 +1,13 @@
+@font-face {
+  font-family: 'geist-regular';
+  src: url('/fonts/Geist-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
+  font-family: 'geist-regular';
   scrollbar-width: thin;
   overflow-y: auto !important;
   overflow-x: hidden;
