@@ -27,6 +27,7 @@
         <Event :event="event" :lazy="idx > 9" />
       </v-lazy>
     </section>
+
     <section v-else class="text-center">
       <v-progress-circular
         class="mt-5 justify-center align-center mx-auto"
@@ -43,12 +44,11 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import { DateTime } from 'luxon'
 import Event from '@/components/Event'
 import Announcement from '@/components/Announcement'
-import ThemeView from '@/components/ThemeView'
 import { mdiMagnify, mdiCloseCircle } from '@mdi/js'
 
 export default {
   name: 'Index',
-  components: { Event, Announcement, ThemeView },
+  components: { Event, Announcement },
   middleware: 'setup',
   data({ $time }) {
     return {
@@ -212,6 +212,7 @@ export default {
         return
       }
       const date = DateTime.fromJSDate(day)
+
       this.selectedDay = day
         ? DateTime.local({ zone: this.settings.instance_timezone }).set({
             year: date.year,

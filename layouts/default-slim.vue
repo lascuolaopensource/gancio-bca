@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Appbar />
+    <Appbar :hide-title="true" />
     <v-main>
       <Snackbar />
       <Confirm />
@@ -20,7 +20,7 @@ import Confirm from '../components/Confirm.vue'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: 'Default',
+  name: 'DefaultSlim',
   // eslint-disable-next-line vue/no-reserved-component-names
   components: { Appbar, Snackbar, Footer, Confirm },
   head() {

@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex pa-4">
     <v-btn icon large nuxt to="/">
+      <!-- eslint-disable-next-line vue/html-self-closing -->
       <img src="/logo.png" height="40" />
     </v-btn>
 
@@ -26,21 +27,21 @@
           bottom
           max-height="600"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-btn
               icon
               large
               v-bind="attrs"
-              v-on="on"
               aria-label="Language"
+              v-on="on"
               v-text="$i18n.locale"
             />
           </template>
           <v-list dense>
             <v-list-item
               v-for="locale in $i18n.locales"
-              @click.prevent.stop="$i18n.setLocale(locale.code)"
               :key="locale.code"
+              @click.prevent.stop="$i18n.setLocale(locale.code)"
             >
               <v-list-item-content>
                 <v-list-item-title v-text="locale.name" />
@@ -57,40 +58,42 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn slot="placeholder" large icon arial-label="Language">{{
-          $i18n.locale
-        }}</v-btn>
+        <template #placeholder>
+          <v-btn large icon arial-label="Language">
+            {{ $i18n.locale }}
+          </v-btn>
+        </template>
       </client-only>
 
       <client-only>
         <v-menu v-if="$auth.loggedIn" offset-y transition="slide-y-transition">
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-btn
               class="mr-0"
               large
               icon
               v-bind="attrs"
-              v-on="on"
               title="Menu"
               aria-label="Menu"
+              v-on="on"
             >
               <v-icon v-text="mdiDotsVertical" />
             </v-btn>
           </template>
           <v-list>
             <v-list-item nuxt to="/settings">
-              <v-list-item-icon
-                ><v-icon v-text="mdiCog"></v-icon
-              ></v-list-item-icon>
+              <v-list-item-icon>
+                <v-icon v-text="mdiCog" />
+              </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title v-text="$t('common.settings')" />
               </v-list-item-content>
             </v-list-item>
 
             <v-list-item nuxt to="/my_events">
-              <v-list-item-icon
-                ><v-icon v-text="mdiCalendarAccount"></v-icon
-              ></v-list-item-icon>
+              <v-list-item-icon>
+                <v-icon v-text="mdiCalendarAccount" />
+              </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title v-text="$t('common.my_events')" />
               </v-list-item-content>
@@ -135,8 +138,8 @@
 
       <!-- login button -->
       <v-btn
-        class="mr-0"
         v-if="!$auth.loggedIn"
+        class="mr-0"
         large
         icon
         nuxt
@@ -180,7 +183,7 @@ export default {
   },
   methods: {
     ...mapActions(['setLocalSetting']),
-    async toggleDark() {
+    toggleDark() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
       this.setLocalSetting({ key: 'theme.is_dark', value: !this.is_dark })
     },

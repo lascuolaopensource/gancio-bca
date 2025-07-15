@@ -90,8 +90,6 @@
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.embed')")
 
-
-
           //- admin actions
           template(v-if='can_edit')
             EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
@@ -144,7 +142,6 @@ import {
   mdiEyeOff,
   mdiDelete,
   mdiRepeat,
-  mdiLock,
   mdiFileDownloadOutline,
   mdiShareAll,
   mdiTimerSandComplete,
@@ -160,7 +157,6 @@ import {
 
 export default {
   name: 'Event',
-  mixins: [clipboard],
   components: {
     EventAdmin,
     EventResource,
@@ -171,6 +167,8 @@ export default {
     MyPicture,
     EventMapDialog
   },
+  mixins: [clipboard],
+  layout: 'default-slim',
   async asyncData({ $axios, params, error }) {
     try {
       const event = await $axios.$get(`/event/detail/${params.slug}`)
@@ -207,7 +205,7 @@ export default {
       event: {},
       showEmbed: false,
       mapModal: false,
-      openModeration: $route?.query?.moderation ? true : false,
+      openModeration: !!$route?.query?.moderation,
       openAssignAuthor: false,
       reporting: false
     }
@@ -356,7 +354,7 @@ export default {
   mounted() {
     window.addEventListener('keydown', this.keyDown)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('keydown', this.keyDown)
   },
   methods: {

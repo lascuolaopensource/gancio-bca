@@ -8,6 +8,7 @@ v-app(app)
       nuxt
 
 </template>
+
 <script>
 import Snackbar from '../components/Snackbar'
 import Confirm from '../components/Confirm'

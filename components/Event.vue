@@ -1,3 +1,6 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable vue/no-v-text-v-html-on-component -->
+
 <template>
   <article
     class="h-event"
@@ -8,23 +11,25 @@
     <nuxt-link :to="`/event/${event.slug || event.id}`" itemprop="url">
       <MyPicture v-if="!hide_thumbs" :event="event" thumb :lazy="lazy" />
       <v-icon
-        class="float-right mt-1 mr-1"
         v-if="event.parentId"
+        class="float-right mt-1 mr-1"
         color="success"
         v-text="mdiRepeat"
       />
       <v-icon
-        class="float-right mt-1 mr-1"
         v-if="isPast"
+        class="float-right mt-1 mr-1"
         color="warning"
         v-text="mdiTimerSandComplete"
       />
-      <h2 class="title p-name" itemprop="name">{{ event.title }}</h2>
+      <h2 class="title p-name" itemprop="name">
+        {{ event.title }}
+      </h2>
     </nuxt-link>
 
     <v-img
-      contain
       v-if="event?.ap_user?.image"
+      contain
       :src="event?.ap_user?.image"
       max-height="30"
       max-width="30"
@@ -40,16 +45,17 @@
           $time.unixFormat(event.start_datetime, 'yyyy-MM-dd\'T\'HH:mm')
         "
       >
+        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
         <v-icon v-text="mdiCalendar" /> {{ $time.when(event) }}
       </time>
       <time
-        class="d-none dt-end"
         v-if="event.end_datetime"
+        class="d-none dt-end"
         itemprop="endDate"
         :content="$time.unixFormat(event.end_datetime, 'yyyy-MM-dd\'T\'HH:mm')"
       >
-        {{ $time.unixFormat(event.end_datetime) }}</time
-      >
+        {{ $time.unixFormat(event.end_datetime) }}
+      </time>
 
       <div
         class="p-location"
@@ -64,7 +70,8 @@
             event.place.name
           )}`"
         >
-          <v-icon v-text="mdiMapMarker"></v-icon>
+          <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+          <v-icon v-text="mdiMapMarker" />
           <span itemprop="name">{{ event.place.name }}</span>
         </nuxt-link>
         <div class="d-none p-street-address" itemprop="address">
@@ -75,19 +82,21 @@
 
     <v-card-actions class="flex-wrap">
       <v-chip
-        class="ml-1 mt-1"
         v-for="tag in event.tags.slice(0, 6)"
+        :key="tag"
+        class="ml-1 mt-1"
         small
         label
         :to="`/tag/${encodeURIComponent(tag)}`"
-        :key="tag"
         outlined
         color="primary"
-        >{{ tag }}</v-chip
       >
+        {{ tag }}
+      </v-chip>
     </v-card-actions>
   </article>
 </template>
+
 <script>
 import { mapGetters } from 'vuex'
 import MyPicture from '~/components/MyPicture'
@@ -99,15 +108,15 @@ import {
 } from '@mdi/js'
 
 export default {
-  data() {
-    return { mdiRepeat, mdiMapMarker, mdiCalendar, mdiTimerSandComplete }
-  },
   components: {
     MyPicture
   },
   props: {
     event: { type: Object, default: () => ({}) },
     lazy: Boolean
+  },
+  data() {
+    return { mdiRepeat, mdiMapMarker, mdiCalendar, mdiTimerSandComplete }
   },
   computed: {
     ...mapGetters(['hide_thumbs']),

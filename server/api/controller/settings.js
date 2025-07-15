@@ -38,14 +38,27 @@ const defaultSettings = {
   geocoding_provider: 'https://nominatim.openstreetmap.org/search',
   geocoding_countrycodes: [],
   tilelayer_provider: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  tilelayer_provider_attribution: "<a target=\"_blank\" href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors",
+  tilelayer_provider_attribution:
+    '<a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   enable_federation: true,
   federated_events_in_home: true,
   enable_resources: false,
   hide_boosts: true,
   'theme.is_dark': true,
-  dark_colors: { primary: '#FF6E40', error: '#FF5252', info: '#2196F3', success: '#4CAF50', warning: '#FB8C00' },
-  light_colors: { primary: '#FF4500', error: '#FF5252', info: '#2196F3', success: '#4CAF50', warning: '#FB8C00' },
+  dark_colors: {
+    primary: '#676cf0',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FB8C00'
+  },
+  light_colors: {
+    primary: '#0911eb',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FB8C00'
+  },
   hide_thumbs: false,
   hide_calendar: false,
   footerLinks: [
@@ -71,19 +84,21 @@ const settingsController = {
   user_locale: {},
   secretSettings: {},
 
-  async load () {
+  async load() {
     if (config.status !== 'CONFIGURED') {
       settingsController.settings = defaultSettings
       return
     }
-    if (settingsController.settings.initialized) return
+    if (settingsController.settings.initialized) {
+      return
+    }
     settingsController.settings.initialized = true
     // initialize instance settings from db
     // note that this is done only once when the server starts
     // and not for each request
     const settings = await DB.Setting.findAll()
     settingsController.settings = defaultSettings
-    settings.forEach(s => {
+    settings.forEach((s) => {
       if (s.is_secret) {
         settingsController.secretSettings[s.key] = s.value
       } else {
@@ -114,13 +129,19 @@ const settingsController = {
     await pluginController._load()
   },
 
-  async set (key, value, is_secret = false) {
+  async set(key, value, is_secret = false) {
     // If the key is 'smtp', handle it specially
     if (key === 'smtp') {
       if (!value.auth.pass) {
         value.auth.pass = settingsController.settings.smtp.auth.pass
       }
-      log.info(`SET SMTP: ${JSON.stringify({ host: value.host, port: value.port, user: value.auth.user })}`)
+      log.info(
+        `SET SMTP: ${JSON.stringify({
+          host: value.host,
+          port: value.port,
+          user: value.auth.user
+        })}`
+      )
     } else {
       log.info(`SET ${key} ${is_secret ? '*****' : JSON.stringify(value)}`)
     }
@@ -130,7 +151,9 @@ const settingsController = {
         where: { key },
         defaults: { value, is_secret }
       })
-      if (!created) { await setting.update({ value, is_secret }) }
+      if (!created) {
+        await setting.update({ value, is_secret })
+      }
       settingsController[is_secret ? 'secretSettings' : 'settings'][key] = value
       return true
     } catch (e) {
@@ -139,7 +162,7 @@ const settingsController = {
     }
   },
 
-  async setRequest (req, res) {
+  async setRequest(req, res) {
     const { key, value, is_secret } = req.body
     const ret = await settingsController.set(key, value, is_secret)
 
@@ -158,10 +181,14 @@ const settingsController = {
       }
     }
 
-    if (ret) { res.sendStatus(200) } else { res.sendStatus(400) }
+    if (ret) {
+      res.sendStatus(200)
+    } else {
+      res.sendStatus(400)
+    }
   },
 
-  async testSMTP (req, res) {
+  async testSMTP(req, res) {
     const smtp = req.body
     await settingsController.set('smtp', smtp.smtp)
     const mail = require('../mail')
@@ -175,17 +202,17 @@ const settingsController = {
     }
   },
 
-  getSMTPSettings (_req, res) {
+  getSMTPSettings(_req, res) {
     const smtpSettings = clone(settingsController.settings.smtp)
     delete smtpSettings.auth.pass
     return res.json(smtpSettings)
   },
 
-  getAll (_req, res) {
+  getAll(_req, res) {
     return res.json(settingsController.settings)
   },
 
-  setLogo (req, res) {
+  setLogo(req, res) {
     if (!req.file) {
       settingsController.set('logo', false)
       return res.status(200)
@@ -208,7 +235,7 @@ const settingsController = {
       })
   },
 
-  setFallbackImage (req, res) {
+  setFallbackImage(req, res) {
     if (!req.file) {
       settingsController.set('fallback_image', false)
       return res.status(200)
@@ -231,7 +258,7 @@ const settingsController = {
       })
   },
 
-  setHeaderImage (req, res) {
+  setHeaderImage(req, res) {
     if (!req.file) {
       settingsController.set('header_image', false)
       return res.status(200)
@@ -253,7 +280,6 @@ const settingsController = {
         res.sendStatus(200)
       })
   }
-
 }
 
 module.exports = settingsController

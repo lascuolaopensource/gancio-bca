@@ -30,6 +30,8 @@ module.exports = {
     'import/order': 'off',
     'space-in-parens': 'off',
     'eol-last': 'off',
-    'space-before-function-paren': 'off'
+    'space-before-function-paren': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/no-v-text-v-html-on-component': 'off'
   }
 }

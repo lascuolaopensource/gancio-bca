@@ -1,27 +1,33 @@
+<!-- eslint-disable vue/no-v-html -->
+
 <template>
   <nav>
     <NavHeader />
 
     <!-- title -->
-    <h1 v-if="$route.name === 'index'" class="text-center">
-      <nuxt-link id="title" v-text="settings.title" to="/" />
-      <div
-        class="text-body-1 font-weight-light pb-3"
-        v-html="settings?.description"
-      />
-    </h1>
-    <div v-else class="text-center">
-      <nuxt-link id="title" v-text="settings.title" to="/" />
-      <div
-        class="text-body-1 font-weight-light pb-3"
-        v-html="settings?.description"
-      />
-    </div>
+    <template v-if="!hideTitle">
+      <h1 v-if="$route.name === 'index'" class="text-center">
+        <nuxt-link id="title" to="/" v-text="settings.title" />
+        <div
+          class="text-body-1 font-weight-light pb-3"
+          v-html="settings?.description"
+        />
+      </h1>
+
+      <div v-else class="text-center">
+        <nuxt-link id="title" to="/" v-text="settings.title" />
+        <div
+          class="text-body-1 font-weight-light pb-3"
+          v-html="settings?.description"
+        />
+      </div>
+    </template>
 
     <NavSearch />
     <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
   </nav>
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import NavHeader from './NavHeader.vue'
@@ -31,9 +37,16 @@ import NavSearch from './NavSearch.vue'
 export default {
   name: 'Appbar',
   components: { NavHeader, NavBar, NavSearch },
+  props: {
+    hideTitle: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: mapState(['settings'])
 }
 </script>
+
 <style>
 nav {
   background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.7)),
