@@ -38,7 +38,7 @@ services:
     volumes:
       - ../data:/home/node/data
     ports:
-      - "0.0.0.0:8080:13120"
+      - "0.0.0.0:80:13120"
     depends_on:
       db:
         condition: service_healthy
