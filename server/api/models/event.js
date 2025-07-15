@@ -39,30 +39,45 @@ module.exports = (sequelize, DataTypes) => {
       index: true
     }
   })
-  
-  Event.prototype.toAP = function (settings, to = ['https://www.w3.org/ns/activitystreams#Public'], type = 'Create') {
 
+  Event.prototype.toAP = function (
+    settings,
+    to = ['https://www.w3.org/ns/activitystreams#Public'],
+    type = 'Create'
+  ) {
     const username = settings.instance_name
     const opt = {
       zone: settings.instance_timezone,
       locale: settings.instance_locale
     }
 
-    const datetime = DateTime.fromSeconds(this.start_datetime, opt).toLocaleString({ weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })
-    
+    const datetime = DateTime.fromSeconds(
+      this.start_datetime,
+      opt
+    ).toLocaleString({
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short'
+    })
+
     // https://framagit.org/les/gancio/-/issues/304
     // https://www.w3.org/TR/activitystreams-vocabulary/#dfn-summary
-    const summary = `<p>${this.place && this.place.name}, ${datetime}</p>${this.description}`
-    
+    const summary = `<p>${this.place && this.place.name}, ${datetime}</p>${
+      this.description
+    }`
+
     let attachment = []
     let location = []
 
     if (this?.online_locations?.length) {
-      location = this.online_locations.map(url => ({
+      location = this.online_locations.map((url) => ({
         type: 'VirtualLocation',
         url
       }))
-      attachment = this.online_locations.map( href => ({
+      attachment = this.online_locations.map((href) => ({
         type: 'Link',
         mediaType: 'text/html',
         name: href,
@@ -78,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
     if (location.length === 1) {
       location = location[0]
     }
-        
+
     if (this?.media?.length) {
       attachment.push({
         type: 'Document',
@@ -89,18 +104,19 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
 
-    let tags = this.tags.map(tag => tag.tag)
-    
+    let tags = this.tags.map((tag) => tag.tag)
+
     // add default fedi hashtags if needed on local events only
     if (!this.ap_id && settings.default_fedi_hashtags.length) {
       tags = union(tags, settings.default_fedi_hashtags)
     }
 
-    tags = tags?.map(tag => ({
-      type: 'Hashtag',
-      name: '#' + tag,
-      href: `${config.baseurl}/tag/${encodeURIComponent(tag)}`
-    })) ?? []
+    tags =
+      tags?.map((tag) => ({
+        type: 'Hashtag',
+        name: '#' + tag,
+        href: `${config.baseurl}/tag/${encodeURIComponent(tag)}`
+      })) ?? []
 
     return {
       id: this?.ap_id ?? `${config.baseurl}/federation/m/${this.id}`,
@@ -108,7 +124,9 @@ module.exports = (sequelize, DataTypes) => {
       url: `${config.baseurl}/event/${this.slug || this.id}`,
       type: 'Event',
       startTime: DateTime.fromSeconds(this.start_datetime, opt).toISO(),
-      ...( this.end_datetime ? { endTime: DateTime.fromSeconds(this.end_datetime, opt).toISO() } : {} ),
+      ...(this.end_datetime
+        ? { endTime: DateTime.fromSeconds(this.end_datetime, opt).toISO() }
+        : {}),
       location,
       attachment,
       tag: tags,

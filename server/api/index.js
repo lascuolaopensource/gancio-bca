@@ -27,14 +27,15 @@ const pageController = require('./controller/page')
 const pluginController = require('./controller/plugins')
 const geocodingController = require('./controller/geocoding')
 const localeController = require('./controller/locale')
-const { DDOSProtectionApiRateLimiter, SPAMProtectionApiRateLimiter } = require('./limiter')
+const {
+  DDOSProtectionApiRateLimiter,
+  SPAMProtectionApiRateLimiter
+} = require('./limiter')
 const helpers = require('../helpers')
 const storage = require('./storage')
 const icsController = require('./controller/ics')
 
-
 module.exports = () => {
-
   const api = express.Router()
   api.use(express.urlencoded({ extended: false }))
   api.use(express.json())
@@ -43,17 +44,13 @@ module.exports = () => {
     api.use(DDOSProtectionApiRateLimiter)
   }
 
-
   if (config.status !== 'READY') {
-
     api.post('/settings', settingsController.setRequest)
     api.post('/setup/db', setupController.setupDb)
     api.post('/setup/restart', setupController.restart)
     api.post('/settings/smtp', settingsController.testSMTP)
     api.get('/locale/:locale', localeController.get)
-
   } else {
-
     const { isAuth, isAdmin, isAdminOrEditor } = require('./auth')
     const upload = multer({ storage })
 
@@ -81,12 +78,24 @@ module.exports = () => {
     api.get('/reachable', helpers.reachable)
     api.get('/user', isAuth, (req, res) => res.json(req.user))
 
-    api.post('/user/recover', SPAMProtectionApiRateLimiter, userController.forgotPassword)
+    api.post(
+      '/user/recover',
+      SPAMProtectionApiRateLimiter,
+      userController.forgotPassword
+    )
     api.post('/user/check_recover_code', userController.checkRecoverCode)
-    api.post('/user/recover_password', SPAMProtectionApiRateLimiter, userController.updatePasswordWithRecoverCode)
+    api.post(
+      '/user/recover_password',
+      SPAMProtectionApiRateLimiter,
+      userController.updatePasswordWithRecoverCode
+    )
 
     // register and add users
-    api.post('/user/register', SPAMProtectionApiRateLimiter, userController.register)
+    api.post(
+      '/user/register',
+      SPAMProtectionApiRateLimiter,
+      userController.register
+    )
     api.post('/user', isAdmin, userController.create)
 
     // update user
@@ -149,7 +158,13 @@ module.exports = () => {
      */
 
     // allow anyone to add an event (anon event has to be confirmed, flood protection)
-    api.post('/event', eventController.isAnonEventAllowed, SPAMProtectionApiRateLimiter, upload.single('image'), eventController.add)
+    api.post(
+      '/event',
+      eventController.isAnonEventAllowed,
+      SPAMProtectionApiRateLimiter,
+      upload.single('image'),
+      eventController.add
+    )
 
     api.post('/ics-import', icsController.importICSFile)
     api.post('/ics-import/url', icsController.importICSURL)
@@ -182,7 +197,11 @@ module.exports = () => {
      */
     api.put('/event', isAuth, upload.single('image'), eventController.update)
     api.put('/event/assign_to_author', isAdmin, eventController.assignToAuthor)
-    api.get('/event/import', eventController.isAnonEventAllowed, helpers.importURL)
+    api.get(
+      '/event/import',
+      eventController.isAnonEventAllowed,
+      helpers.importURL
+    )
 
     // remove event
     api.delete('/event/:id', isAuth, eventController.remove)
@@ -196,30 +215,56 @@ module.exports = () => {
 
     api.post('/settings', isAdmin, settingsController.setRequest)
     api.get('/settings', isAdmin, settingsController.getAll)
-    api.post('/settings/logo', isAdmin, multer({ dest: config.upload_path }).single('logo'), settingsController.setLogo)
-    api.post('/settings/fallbackImage', isAdmin, multer({ dest: config.upload_path }).single('fallbackImage'), settingsController.setFallbackImage)
-    api.post('/settings/headerImage', isAdmin, multer({ dest: config.upload_path }).single('headerImage'), settingsController.setHeaderImage)
+    api.post(
+      '/settings/logo',
+      isAdmin,
+      multer({ dest: config.upload_path }).single('logo'),
+      settingsController.setLogo
+    )
+    api.post(
+      '/settings/fallbackImage',
+      isAdmin,
+      multer({ dest: config.upload_path }).single('fallbackImage'),
+      settingsController.setFallbackImage
+    )
+    api.post(
+      '/settings/headerImage',
+      isAdmin,
+      multer({ dest: config.upload_path }).single('headerImage'),
+      settingsController.setHeaderImage
+    )
     api.post('/settings/test_smtp', isAdmin, settingsController.testSMTP)
     api.get('/settings/smtp', isAdmin, settingsController.getSMTPSettings)
 
     // moderation
-    api.post('/event/messages/:event_id', SPAMProtectionApiRateLimiter, eventController.report)
+    api.post(
+      '/event/messages/:event_id',
+      SPAMProtectionApiRateLimiter,
+      eventController.report
+    )
     api.get('/event/messages/:event_id', isAuth, eventController.getMessages)
 
     // get unconfirmed events
-    api.get('/event/unconfirmed', isAdminOrEditor, eventController.getUnconfirmed)
+    api.get(
+      '/event/unconfirmed',
+      isAdminOrEditor,
+      eventController.getUnconfirmed
+    )
 
     // [un]confirm event
     api.put('/event/confirm/:event_id', isAuth, eventController.confirm)
     api.put('/event/unconfirm/:event_id', isAuth, eventController.unconfirm)
-    api.put('/event/disable_author/:event_id', isAdminOrEditor, eventController.disableAuthor)
+    api.put(
+      '/event/disable_author/:event_id',
+      isAdminOrEditor,
+      eventController.disableAuthor
+    )
 
     // get event
     api.get('/event/detail/:event_slug.:format?', cors, eventController.get)
 
     // export events (rss/ics)
     api.get('/export/:format', cors, exportController.export)
-
 
     // - PLACES
     api.get('/places', isAdmin, placeController.getAll)
@@ -228,8 +273,18 @@ module.exports = () => {
     api.put('/place', isAdmin, placeController.updatePlace)
 
     // - GEOCODING
-    api.get('/placeOSM/Nominatim/:place_details', helpers.isGeocodingEnabled, geocodingController.nominatimRateLimit, geocodingController._nominatim)
-    api.get('/placeOSM/Photon/:place_details', helpers.isGeocodingEnabled, geocodingController.photonRateLimit, geocodingController._photon)
+    api.get(
+      '/placeOSM/Nominatim/:place_details',
+      helpers.isGeocodingEnabled,
+      geocodingController.nominatimRateLimit,
+      geocodingController._nominatim
+    )
+    api.get(
+      '/placeOSM/Photon/:place_details',
+      helpers.isGeocodingEnabled,
+      geocodingController.photonRateLimit,
+      geocodingController._photon
+    )
 
     // - TAGS
     api.get('/tags', isAdmin, tagController.getAll)
@@ -238,28 +293,46 @@ module.exports = () => {
     api.delete('/tag/:tag', isAdmin, tagController.remove)
     api.put('/tag', isAdmin, tagController.updateTag)
 
-
     // - FEDIVERSE INSTANCES, MODERATION, RESOURCES
-    api.post('/ap_actors/toggle_block', isAdminOrEditor, apUserController.toggleBlock)
+    api.post(
+      '/ap_actors/toggle_block',
+      isAdminOrEditor,
+      apUserController.toggleBlock
+    )
     api.get('/ap_actors/trusted', apUserController.getTrusted)
     api.post('/ap_actors/add_trust', isAdmin, apUserController.addTrust)
     api.delete('/ap_actors/trust', isAdmin, apUserController.removeTrust)
     api.put('/ap_actors/follow', isAdminOrEditor, apUserController.toggleFollow)
     api.get('/ap_actors/stats', apUserController.stats)
 
-
     api.get('/instances', isAdminOrEditor, instanceController.getAll)
-    api.post('/instances/toggle_block', isAdminOrEditor, instanceController.toggleBlock)
-    api.get('/instances/:instance_domain', isAdminOrEditor, instanceController.get)
+    api.post(
+      '/instances/toggle_block',
+      isAdminOrEditor,
+      instanceController.toggleBlock
+    )
+    api.get(
+      '/instances/:instance_domain',
+      isAdminOrEditor,
+      instanceController.get
+    )
     api.put('/resources/:resource_id', isAdminOrEditor, resourceController.hide)
-    api.delete('/resources/:resource_id', isAdminOrEditor, resourceController.remove)
+    api.delete(
+      '/resources/:resource_id',
+      isAdminOrEditor,
+      resourceController.remove
+    )
     api.get('/resources', isAdminOrEditor, resourceController.getAll)
 
     // - ADMIN ANNOUNCEMENTS
     api.get('/announcements', isAdmin, announceController.getAll)
     api.post('/announcements', isAdmin, announceController.add)
     api.put('/announcements/:announce_id', isAdmin, announceController.update)
-    api.delete('/announcements/:announce_id', isAdmin, announceController.remove)
+    api.delete(
+      '/announcements/:announce_id',
+      isAdmin,
+      announceController.remove
+    )
     api.get('/announcements/:announce_id', announceController.get)
 
     // - ADMIN PAGES
@@ -275,7 +348,11 @@ module.exports = () => {
     api.post('/collections', isAdmin, collectionController.add)
     api.delete('/collection/:id', isAdmin, collectionController.remove)
     api.put('/collection/toggle/:id', isAdmin, collectionController.togglePin)
-    api.put('/collection/moveup/:sort_index', isAdmin, collectionController.moveUp)
+    api.put(
+      '/collection/moveup/:sort_index',
+      isAdmin,
+      collectionController.moveUp
+    )
     api.get('/filter/:collection_id', isAdmin, collectionController.getFilters)
     api.post('/filter', isAdmin, collectionController.addFilter)
     api.put('/filter/:id', isAdmin, collectionController.updateFilter)
@@ -290,7 +367,11 @@ module.exports = () => {
     // OAUTH
     api.get('/clients', isAuth, oauthController.getClients)
     api.get('/client/:client_id', isAuth, oauthController.getClient)
-    api.post('/client', SPAMProtectionApiRateLimiter, oauthController.createClient)
+    api.post(
+      '/client',
+      SPAMProtectionApiRateLimiter,
+      oauthController.createClient
+    )
 
     // CUSTOM LOCALE
     api.get('/locale/:locale', localeController.get)
