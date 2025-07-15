@@ -51,6 +51,14 @@ export default {
       valid: true
     }
   },
+  head() {
+    return {
+      htmlAttrs: {
+        lang: this.settings.instance_locale
+      },
+      title: this.settings.title + ' - ' + this.$t('common.register')
+    }
+  },
   computed: {
     ...mapState(['settings'])
   },
@@ -78,14 +86,6 @@ export default {
         this.$root.$message(error, { color: 'error' })
       }
       this.loading = false
-    }
-  },
-  head() {
-    return {
-      htmlAttrs: {
-        lang: this.settings.instance_locale
-      },
-      title: this.settings.title + ' - ' + this.$t('common.register')
     }
   }
 }
