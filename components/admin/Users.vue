@@ -70,7 +70,7 @@ import {
   mdiChevronLeft,
   mdiChevronRight,
   mdiChevronDown,
-  mdiDeleteForever,
+  mdiDeleteForever
 } from '@mdi/js'
 import TBtn from '../../components/TBtn.vue'
 
@@ -78,7 +78,7 @@ export default {
   name: 'Users',
   components: { TBtn },
   props: {
-    users: { type: Array, default: () => [] },
+    users: { type: Array, default: () => [] }
   },
   data() {
     return {
@@ -97,7 +97,7 @@ export default {
       valid: false,
       new_user: {
         email: '',
-        is_admin: false,
+        is_admin: false
       },
       search: '',
       headers: [
@@ -107,7 +107,7 @@ export default {
         {
           value: 'to_notify',
           text: this.$t('admin.receive_confirm_notification'),
-          width: 50,
+          width: 50
         },
         { value: 'role', text: this.$t('common.role'), width: 150 },
         // { value: 'is_editor', text: this.$t('common.editor') },
@@ -116,16 +116,16 @@ export default {
           text: this.$t('common.actions'),
           align: 'right',
           width: 100,
-          sortable: false,
-        },
-      ],
+          sortable: false
+        }
+      ]
     }
   },
   computed: mapState(['settings']),
   methods: {
     async deleteUser(user) {
       const ret = await this.$root.$confirm('admin.delete_user_confirm', {
-        user: user.email,
+        user: user.email
       })
       if (!ret) {
         return
@@ -145,7 +145,7 @@ export default {
       // ask confirmation only to disable
       if (user.is_active) {
         const ret = await this.$root.$confirm('admin.disable_user_confirm', {
-          user: user.email,
+          user: user.email
         })
         if (!ret) {
           return
@@ -163,7 +163,7 @@ export default {
       const ret = await this.$root.$confirm('admin.change_role_confirm', {
         user: user.email,
         from_role: user.role,
-        to_role: role,
+        to_role: role
       })
       if (!ret) {
         return
@@ -193,7 +193,7 @@ export default {
         this.$root.$message(this.$t(err), { color: 'error' })
         this.loading = false
       }
-    },
-  },
+    }
+  }
 }
 </script>

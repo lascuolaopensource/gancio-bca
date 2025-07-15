@@ -51,7 +51,7 @@ import {
   mdiPencil,
   mdiEye,
   mdiEyeOff,
-  mdiArrowRight,
+  mdiArrowRight
 } from '@mdi/js'
 
 export default {
@@ -78,10 +78,10 @@ export default {
           value: 'actions',
           text: this.$t('common.actions'),
           align: 'right',
-          sortable: false,
-        },
+          sortable: false
+        }
       ],
-      page: { title: '', content: '' },
+      page: { title: '', content: '' }
     }
   },
   async mounted() {
@@ -110,7 +110,7 @@ export default {
     },
     async remove(page) {
       const ret = await this.$root.$confirm('admin.delete_page_confirm', {
-        title: page.title,
+        title: page.title
       })
       if (!ret) {
         return
@@ -142,7 +142,7 @@ export default {
         console.error(e)
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

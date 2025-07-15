@@ -68,7 +68,7 @@ export default {
   components: {
     Event,
     HowToArriveNav,
-    [process.client && 'Map']: () => import('@/components/Map.vue'),
+    [process.client && 'Map']: () => import('@/components/Map.vue')
   },
   head() {
     const title = `${this.settings.title} - ${this.place.name}`
@@ -79,20 +79,20 @@ export default {
           rel: 'alternate',
           type: 'application/rss+xml',
           title,
-          href: this.settings.baseurl + `/feed/rss/place/${this.place.id}`,
+          href: this.settings.baseurl + `/feed/rss/place/${this.place.id}`
         },
         {
           rel: 'alternate',
           type: 'text/calendar',
           title,
-          href: this.settings.baseurl + `/feed/ics/place/${this.place.id}`,
-        },
-      ],
+          href: this.settings.baseurl + `/feed/ics/place/${this.place.id}`
+        }
+      ]
     }
   },
   computed: {
     ...mapState(['settings']),
-    ...mapGetters(['hide_thumbs', 'is_dark']),
+    ...mapGetters(['hide_thumbs', 'is_dark'])
   },
   async asyncData({ $axios, params, error }) {
     try {
@@ -103,6 +103,6 @@ export default {
     } catch (e) {
       error({ statusCode: 404, message: 'Place not found!' })
     }
-  },
+  }
 }
 </script>

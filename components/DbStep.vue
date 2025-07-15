@@ -30,9 +30,9 @@ export default {
         dialect: 'sqlite',
         storage: './gancio.sqlite',
         host: 'localhost',
-        database: 'gancio',
+        database: 'gancio'
       },
-      loading: false,
+      loading: false
     }
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
         this.$root.$message(e.response.data, { color: 'error' })
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

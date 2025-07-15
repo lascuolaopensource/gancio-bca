@@ -17,13 +17,13 @@ import SearchAddress from './SearchAddress.vue'
 export default {
   name: 'WhereInputAdvanced',
   props: {
-    place: { type: Object, default: () => ({}) },
+    place: { type: Object, default: () => ({}) }
   },
   components: { SearchAddress },
   methods: {
     close() {
       this.$emit('close')
-    },
-  },
+    }
+  }
 }
 </script>

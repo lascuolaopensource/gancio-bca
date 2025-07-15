@@ -69,7 +69,7 @@ import {
   mdiLink,
   mdiCloseCircle,
   mdiLaptopAccount,
-  mdiMapSearch,
+  mdiMapSearch
 } from '@mdi/js'
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -80,7 +80,7 @@ export default {
   name: 'WhereInput',
   props: {
     value: { type: Object, default: () => ({}) },
-    event: { type: Object, default: () => null },
+    event: { type: Object, default: () => null }
   },
   components: { WhereInputAdvanced, TBtn },
   data() {
@@ -98,7 +98,7 @@ export default {
       placeName: '',
       disableAddress: true,
       whereInputAdvancedDialog: false,
-      onlineLocations: this.event.online_locations || [],
+      onlineLocations: this.event.online_locations || []
     }
   },
   computed: {
@@ -118,7 +118,7 @@ export default {
       if (!this.place.isNew) return false
 
       return true
-    },
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -219,7 +219,7 @@ export default {
 
         this.event.online_locations = this.onlineLocations
       }
-    },
-  },
+    }
+  }
 }
 </script>

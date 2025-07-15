@@ -25,7 +25,7 @@ import {
   LTileLayer,
   LMarker,
   LPopup,
-  LControlAttribution,
+  LControlAttribution
 } from 'vue2-leaflet'
 import { Icon } from 'leaflet'
 
@@ -35,7 +35,7 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    LControlAttribution,
+    LControlAttribution
   },
   data({ $store }) {
     return {
@@ -44,7 +44,7 @@ export default {
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         $store.state.settings.tilelayer_provider_attribution ||
-        '<a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        '<a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }
   },
   computed: {
@@ -63,9 +63,9 @@ export default {
     marker() {
       return {
         address: this.place.address,
-        coordinates: { lat: this.place.latitude, lon: this.place.longitude },
+        coordinates: { lat: this.place.latitude, lon: this.place.longitude }
       }
-    },
+    }
   },
   props: {
     place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) },
@@ -73,14 +73,14 @@ export default {
     mapCenter: { type: Array, default: () => [] },
     zoom: { type: Number, default: () => 16 },
     draggable: { type: Boolean, default: false },
-    LMapStyles: { type: Object, default: () => ({}) },
+    LMapStyles: { type: Object, default: () => ({}) }
   },
   mounted() {
     delete Icon.Default.prototype._getIconUrl
     Icon.Default.mergeOptions({
       iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
       iconUrl: require('leaflet/dist/images/marker-icon.png'),
-      shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+      shadowUrl: require('leaflet/dist/images/marker-shadow.png')
     })
 
     setTimeout(() => {
@@ -93,8 +93,8 @@ export default {
     updateCoords(v) {
       this.place.latitude = Number.parseFloat(v.lat).toFixed(7)
       this.place.longitude = Number.parseFloat(v.lng).toFixed(7)
-    },
-  },
+    }
+  }
 }
 </script>
 

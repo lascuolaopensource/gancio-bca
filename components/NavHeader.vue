@@ -158,7 +158,7 @@ import {
   mdiCog,
   mdiInformation,
   mdiContrastCircle,
-  mdiCalendarAccount,
+  mdiCalendarAccount
 } from '@mdi/js'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -172,11 +172,11 @@ export default {
       mdiCog,
       mdiInformation,
       mdiContrastCircle,
-      mdiCalendarAccount,
+      mdiCalendarAccount
     }
   },
   computed: {
-    ...mapGetters(['hide_thumbs', 'is_dark']),
+    ...mapGetters(['hide_thumbs', 'is_dark'])
   },
   methods: {
     ...mapActions(['setLocalSetting']),
@@ -187,7 +187,7 @@ export default {
     logout() {
       this.$root.$message('common.logout_ok')
       this.$auth.logout()
-    },
-  },
+    }
+  }
 }
 </script>

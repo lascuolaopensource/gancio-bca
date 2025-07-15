@@ -26,7 +26,7 @@ export default {
     color: String,
     to: String,
     large: { type: Boolean, default: false },
-    small: { type: Boolean, default: false },
-  },
+    small: { type: Boolean, default: false }
+  }
 }
 </script>

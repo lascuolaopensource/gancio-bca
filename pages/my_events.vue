@@ -12,7 +12,7 @@
           :header-props="{ sortIcon: mdiChevronDown }"
           :footer-props="{
             prevIcon: mdiChevronLeft,
-            nextIcon: mdiChevronRight,
+            nextIcon: mdiChevronRight
           }"
           :headers="headers"
         >
@@ -114,7 +114,7 @@ import {
   mdiPause,
   mdiPlay,
   mdiDebugStepOver,
-  mdiDeleteForever,
+  mdiDeleteForever
 } from '@mdi/js'
 import { mapState } from 'vuex'
 import TBtn from '../components/TBtn.vue'
@@ -150,9 +150,9 @@ export default {
           value: 'actions',
           text: this.$t('common.actions'),
           align: 'right',
-          sortable: false,
-        },
-      ],
+          sortable: false
+        }
+      ]
     }
   },
   computed: mapState(['settings']),
@@ -181,12 +181,12 @@ export default {
       await this.$axios.delete(`/event/${event.id}`)
       this.$fetch()
       this.$root.$message('admin.event_remove_ok')
-    },
+    }
   },
   head() {
     return {
-      title: `${this.settings.title} - ${this.$t('common.my_events')}`,
+      title: `${this.settings.title} - ${this.$t('common.my_events')}`
     }
-  },
+  }
 }
 </script>

@@ -13,7 +13,7 @@ import { mdiArrowRight, mdiAlert } from '@mdi/js'
 
 export default {
   props: {
-    isHttp: { type: Boolean, default: false },
+    isHttp: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -22,8 +22,8 @@ export default {
       loading: false,
       user: {
         email: 'admin',
-        password: '',
-      },
+        password: ''
+      }
     }
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
       } catch (e) {
         setTimeout(() => this.start(user), 1000)
       }
-    },
-  },
+    }
+  }
 }
 </script>

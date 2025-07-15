@@ -17,6 +17,6 @@ export default {
   head() {
     return { title: `${this.settings.title} - Error` }
   },
-  computed: mapState(['settings']),
+  computed: mapState(['settings'])
 }
 </script>

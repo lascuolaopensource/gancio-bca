@@ -47,7 +47,7 @@ import {
   mdiChevronLeft,
   mdiChevronRight,
   mdiMagnify,
-  mdiEye,
+  mdiEye
 } from '@mdi/js'
 import { mapActions, mapState } from 'vuex'
 
@@ -67,8 +67,8 @@ export default {
       headers: [
         { value: 'name', text: 'Name' },
         { value: 'description', text: 'Address' },
-        { value: 'actions', text: 'Actions', align: 'right' },
-      ],
+        { value: 'actions', text: 'Actions', align: 'right' }
+      ]
     }
   },
   async mounted() {
@@ -81,7 +81,7 @@ export default {
       this.loading = true
       await this.setSetting({
         key: 'plugin_' + this.selectedPlugin.name,
-        value: this.selectedPlugin.settingsValue,
+        value: this.selectedPlugin.settingsValue
       })
       this.loading = false
       if (close) {
@@ -94,7 +94,7 @@ export default {
         .$post(`/plugin/test/${this.selectedPlugin.name}`)
         .catch((e) => {
           this.$root.$message(e?.response?.data?.message ?? e, {
-            color: 'warning',
+            color: 'warning'
           })
         })
     },
@@ -104,7 +104,7 @@ export default {
     setOptions(plugin) {
       this.selectedPlugin = plugin
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>

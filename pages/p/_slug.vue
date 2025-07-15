@@ -34,11 +34,11 @@ export default {
     }
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
-      title: `${this.settings.title} - ${this.page.title}`,
+      title: `${this.settings.title} - ${this.page.title}`
     }
   },
-  computed: mapState(['settings']),
+  computed: mapState(['settings'])
 }
 </script>

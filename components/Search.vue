@@ -72,7 +72,7 @@ import debounce from 'lodash/debounce'
 export default {
   name: 'Search',
   props: {
-    value: { type: Object, default: () => ({}) },
+    value: { type: Object, default: () => ({}) }
   },
   data() {
     return {
@@ -84,14 +84,14 @@ export default {
       filters: [],
       collection: null,
       collections: [],
-      show_recurrent: this.value.show_recurrent || false,
+      show_recurrent: this.value.show_recurrent || false
     }
   },
   async fetch() {
     this.collections = await this.$axios.$get('/collections')
   },
   computed: {
-    ...mapState(['settings']),
+    ...mapState(['settings'])
   },
   methods: {
     search: debounce(async function (search) {
@@ -114,7 +114,7 @@ export default {
           collection: this.collection,
           places: [],
           tags: [],
-          show_recurrent: this.show_recurrent,
+          show_recurrent: this.show_recurrent
         })
       } else {
         const filters = {
@@ -124,11 +124,11 @@ export default {
           places: this.filters
             .filter((p) => p.type === 'place')
             .map((p) => p.id),
-          show_recurrent: this.show_recurrent,
+          show_recurrent: this.show_recurrent
         }
         this.$emit('input', filters)
       }
-    },
-  },
+    }
+  }
 }
 </script>

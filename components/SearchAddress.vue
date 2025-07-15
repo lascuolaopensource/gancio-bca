@@ -47,7 +47,7 @@ import {
   mdiMapSearch,
   mdiRoadVariant,
   mdiHome,
-  mdiCityVariant,
+  mdiCityVariant
 } from '@mdi/js'
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -56,10 +56,10 @@ import geolocation from '../server/helpers/geolocation/index'
 export default {
   name: 'SearchAddress',
   props: {
-    place: { type: Object, default: () => ({}) },
+    place: { type: Object, default: () => ({}) }
   },
   components: {
-    [process.client && 'Map']: () => import('@/components/Map.vue'),
+    [process.client && 'Map']: () => import('@/components/Map.vue')
   },
   data({ $store }) {
     return {
@@ -75,16 +75,16 @@ export default {
       iconsMapper: {
         mdiHome,
         mdiRoadVariant,
-        mdiCityVariant,
+        mdiCityVariant
       },
       currentGeocodingProvider: geolocation.getGeocodingProvider(
         $store.state.settings.geocoding_provider_type
       ),
-      prevAddress: '',
+      prevAddress: ''
     }
   },
   computed: {
-    ...mapState(['settings']),
+    ...mapState(['settings'])
   },
   methods: {
     loadCoordinatesResultIcon(item) {
@@ -124,7 +124,7 @@ export default {
         this.place.latitude = this.place.longitude = null
       }
       this.prevAddress = v.address
-    },
-  },
+    }
+  }
 }
 </script>

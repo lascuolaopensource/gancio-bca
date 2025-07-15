@@ -32,6 +32,6 @@ export default {
   data() {
     return { mdiPlus, mdiShareVariant, mdiHome, mdiInformation }
   },
-  computed: mapState(['settings']),
+  computed: mapState(['settings'])
 }
 </script>

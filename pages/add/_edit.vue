@@ -78,7 +78,7 @@ import {
   mdiFileImport,
   mdiFormatTitle,
   mdiTagMultiple,
-  mdiCloseCircle,
+  mdiCloseCircle
 } from '@mdi/js'
 
 import Editor from '@/components/Editor'
@@ -94,7 +94,7 @@ export default {
     ImportDialog,
     MediaInput,
     WhereInput,
-    DateInput,
+    DateInput
   },
   validate({ store, params, error }) {
     // should we allow anon event?
@@ -138,7 +138,7 @@ export default {
         fromHour: from.toFormat('HH:mm'),
         dueHour:
           due &&
-          (due.toFormat('HH:mm') === '23:59' ? null : due.toFormat('HH:mm')),
+          (due.toFormat('HH:mm') === '23:59' ? null : due.toFormat('HH:mm'))
       }
 
       data.event.title = event.title
@@ -174,7 +174,7 @@ export default {
         title: '',
         description: '',
         tags: [],
-        media: [],
+        media: []
       },
       tags: [],
       page: { month, year },
@@ -182,7 +182,7 @@ export default {
       date: { from: null, due: null, recurrent: null },
       edit: false,
       loading: false,
-      disableAddress: false,
+      disableAddress: false
     }
   },
   mounted() {
@@ -190,7 +190,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.settings.title} - ${this.$t('common.add_event')}`,
+      title: `${this.settings.title} - ${this.$t('common.add_event')}`
     }
   },
   computed: mapState(['settings']),
@@ -211,7 +211,7 @@ export default {
 
       this.$refs.where.selectPlace({
         name: event.place.name || event.place,
-        address: event.place.address,
+        address: event.place.address
       })
       const from = this.$time.fromUnix(this.event.start_datetime)
       const due =
@@ -222,7 +222,7 @@ export default {
         due: due && due.toJSDate(),
         multidate: event.multidate,
         fromHour: from.toFormat('HH:mm'),
-        dueHour: due && due.toFormat('HH:mm'),
+        dueHour: due && due.toFormat('HH:mm')
       }
       this.openImportDialog = false
     },
@@ -333,7 +333,7 @@ export default {
         }
         this.loading = false
       }
-    },
-  },
+    }
+  }
 }
 </script>

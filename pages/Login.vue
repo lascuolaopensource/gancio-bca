@@ -48,7 +48,7 @@ export default {
       password: '',
       email: '',
       loading: false,
-      valid: false,
+      valid: false
     }
   },
   computed: mapState(['settings']),
@@ -81,15 +81,15 @@ export default {
         return
       }
       this.email = this.password = ''
-    },
+    }
   },
   head() {
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
-      title: this.settings.title + ' - ' + this.$t('common.login'),
+      title: this.settings.title + ' - ' + this.$t('common.login')
     }
-  },
+  }
 }
 </script>

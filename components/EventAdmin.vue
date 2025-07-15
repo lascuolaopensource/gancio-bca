@@ -96,7 +96,7 @@ import {
   mdiScanner,
   mdiMessageTextOutline,
   mdiAccountOff,
-  mdiClipboardAccount,
+  mdiClipboardAccount
 } from '@mdi/js'
 import { mapState } from 'vuex'
 export default {
@@ -115,17 +115,17 @@ export default {
       mdiScanner,
       mdiMessageTextOutline,
       mdiAccountOff,
-      mdiClipboardAccount,
+      mdiClipboardAccount
     }
   },
   props: {
     event: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   computed: {
-    ...mapState(['settings']),
+    ...mapState(['settings'])
   },
   methods: {
     async disableAuthor() {
@@ -169,7 +169,7 @@ export default {
       } catch (e) {
         console.error(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>

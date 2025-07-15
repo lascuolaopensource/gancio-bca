@@ -177,7 +177,7 @@ import {
   mdiWeb,
   mdiInformation,
   mdiNotEqualVariant,
-  mdiEqualBox,
+  mdiEqualBox
 } from '@mdi/js'
 
 export default {
@@ -221,15 +221,15 @@ export default {
           value: 'pin',
           text: this.$t('common.pin'),
           align: 'right',
-          sortable: false,
+          sortable: false
         },
         {
           value: 'actions',
           text: this.$t('common.actions'),
           align: 'right',
           width: 150,
-          sortable: false,
-        },
+          sortable: false
+        }
       ],
       filterHeaders: [
         { value: 'negate', text: '', width: 20, sortable: false },
@@ -240,10 +240,10 @@ export default {
           value: 'actions',
           text: this.$t('common.actions'),
           align: 'right',
-          sortable: false,
-        },
+          sortable: false
+        }
       ],
-      in_home: $store.state.settings.collection_in_home !== null,
+      in_home: $store.state.settings.collection_in_home !== null
     }
   },
   async fetch() {
@@ -262,13 +262,13 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'collection_in_home', value })
-      },
-    },
+      }
+    }
   },
   watch: {
     in_home(val) {
       this.collection_in_home = null
-    },
+    }
   },
   methods: {
     ...mapActions(['setSetting', 'setCollections']),
@@ -288,14 +288,14 @@ export default {
       const actors = this.filterActors.map((a) => ({
         ap_id: a.ap_id,
         name: a.object?.preferredUsername ?? a.object?.username ?? a?.name,
-        domain: a?.instanceDomain ?? a.domain,
+        domain: a?.instanceDomain ?? a.domain
       }))
       const filter = {
         collectionId: this.collection.id,
         tags,
         places,
         actors,
-        negate: this.negateFilter,
+        negate: this.negateFilter
       }
 
       // tags and places are JSON field and there's no way to use them inside a unique constrain
@@ -383,7 +383,7 @@ export default {
     },
     async removeCollection(collection) {
       const ret = await this.$root.$confirm('admin.delete_collection_confirm', {
-        collection: collection.name,
+        collection: collection.name
       })
       if (!ret) {
         return
@@ -399,8 +399,8 @@ export default {
         this.$root.$message(this.$t(err), { color: 'error' })
         this.loading = false
       }
-    },
-  },
+    }
+  }
 }
 </script>
 <style>

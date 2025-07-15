@@ -24,7 +24,7 @@ export default {
       mdiMagnify,
       events: [],
       start: $time.startMonth(),
-      end: null,
+      end: null
     }
   },
   async fetch() {
@@ -35,7 +35,7 @@ export default {
   methods: {
     destroy(id) {
       this.events = this.events.filter((e) => e.id !== id)
-    },
-  },
+    }
+  }
 }
 </script>

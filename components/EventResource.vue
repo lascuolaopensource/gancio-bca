@@ -81,7 +81,7 @@ import {
   mdiDelete,
   mdiLock,
   mdiShareAll,
-  mdiStar,
+  mdiStar
 } from '@mdi/js'
 
 export default {
@@ -100,11 +100,11 @@ export default {
       mdiDelete,
       currentAttachment: 0,
       showResources: false,
-      selectedResource: { data: { attachment: [] } },
+      selectedResource: { data: { attachment: [] } }
     }
   },
   props: {
-    event: Object,
+    event: Object
   },
   computed: {
     ...mapState(['settings']),
@@ -114,7 +114,7 @@ export default {
         `data.attachment[${this.currentAttachment}].name`,
         ''
       )
-    },
+    }
   },
   methods: {
     isImg(attachment) {
@@ -151,17 +151,17 @@ export default {
     async blockUser(resource) {
       try {
         const ret = await this.$root.$confirm('admin.user_block_confirm', {
-          user: resource.ap_user.ap_id,
+          user: resource.ap_user.ap_id
         })
         if (!ret) {
           return
         }
         await this.$axios.post('/ap_actor/toggle_block', {
-          ap_id: resource.ap_user.ap_id,
+          ap_id: resource.ap_user.ap_id
         })
         this.$root.$message('admin.user_blocked', {
           user: resource.ap_user.ap_id,
-          color: 'success',
+          color: 'success'
         })
       } catch (e) {}
     },
@@ -176,7 +176,7 @@ export default {
           (r) => r.id !== resource.id
         )
       } catch (e) {}
-    },
-  },
+    }
+  }
 }
 </script>

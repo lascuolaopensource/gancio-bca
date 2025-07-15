@@ -19,6 +19,6 @@ import Confirm from '../components/Confirm'
 
 export default {
   name: 'Default',
-  components: { Appbar, Snackbar, Footer, Confirm },
+  components: { Appbar, Snackbar, Footer, Confirm }
 }
 </script>

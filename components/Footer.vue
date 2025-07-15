@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       showFollowMe: false,
-      trusted_sources: [],
+      trusted_sources: []
     }
   },
   async mounted() {
@@ -57,18 +57,18 @@ export default {
             href: link.href,
             label: link.label.startsWith('common.')
               ? this.$t(link.label)
-              : link.label,
+              : link.label
           }
         } else {
           return {
             to: link.href,
             label: link.label.startsWith('common.')
               ? this.$t(link.label)
-              : link.label,
+              : link.label
           }
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>

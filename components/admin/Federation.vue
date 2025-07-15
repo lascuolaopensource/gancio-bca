@@ -113,7 +113,7 @@ import {
   mdiDownload,
   mdiUpload,
   mdiTagMultiple,
-  mdiCloseCircle,
+  mdiCloseCircle
 } from '@mdi/js'
 
 export default {
@@ -145,8 +145,8 @@ export default {
         { value: 'url', text: 'URL' },
         { value: 'following', text: 'Following' },
         { value: 'follower', text: 'Follower' },
-        { value: 'actions', text: 'Actions', align: 'right', sortable: false },
-      ],
+        { value: 'actions', text: 'Actions', align: 'right', sortable: false }
+      ]
     }
   },
   async fetch() {
@@ -165,7 +165,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'enable_federation', value })
-      },
+      }
     },
     enable_resources: {
       get() {
@@ -173,7 +173,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'enable_resources', value })
-      },
+      }
     },
     federated_events_in_home: {
       get() {
@@ -181,7 +181,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'federated_events_in_home', value })
-      },
+      }
     },
     default_fedi_hashtags: {
       get() {
@@ -189,7 +189,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'default_fedi_hashtags', value })
-      },
+      }
     },
     hide_boosts: {
       get() {
@@ -197,8 +197,8 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'hide_boosts', value })
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapActions(['setSetting']),
@@ -210,7 +210,7 @@ export default {
       try {
         this.source_url = this.source_url.replace(/\/$/, '')
         await this.$axios.$post('/ap_actors/add_trust', {
-          url: this.source_url,
+          url: this.source_url
         })
         this.$refs.form.reset()
         this.$fetch()
@@ -230,12 +230,12 @@ export default {
       }
       try {
         await this.$axios.$delete('/ap_actors/trust', {
-          params: { ap_id: trusted_source.ap_id },
+          params: { ap_id: trusted_source.ap_id }
         })
         this.$fetch()
         this.$root.$emit('update_trusted_sources')
         this.$root.$message('admin.trusted_source_removed', {
-          color: 'success',
+          color: 'success'
         })
       } catch (e) {
         this.$root.$message(e, { color: 'error' })
@@ -245,7 +245,7 @@ export default {
       try {
         trusted_source.loading = true
         await this.$axios.$put('/ap_actors/follow', {
-          ap_id: trusted_source.ap_id,
+          ap_id: trusted_source.ap_id
         })
         this.$root.$message('common.ok', { color: 'success' })
       } catch (e) {
@@ -258,7 +258,7 @@ export default {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    },
-  },
+    }
+  }
 }
 </script>

@@ -28,6 +28,6 @@ export default {
     const events = await $axios.$get(`/export/json${params}`)
 
     return { events, title }
-  },
+  }
 }
 </script>

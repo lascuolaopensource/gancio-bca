@@ -124,7 +124,7 @@ const locales = require('../../locales/index')
 
 export default {
   props: {
-    setup: { type: Boolean, default: false },
+    setup: { type: Boolean, default: false }
   },
   components: { SMTP, Geolocation },
   name: 'Settings',
@@ -138,10 +138,10 @@ export default {
       instance_name: 'events',
       locales: Object.keys(locales).map((locale) => ({
         value: locale,
-        text: locales[locale],
+        text: locales[locale]
       })),
       showSMTP: false,
-      showGeolocationConfigs: false,
+      showGeolocationConfigs: false
     }
   },
   computed: {
@@ -150,27 +150,27 @@ export default {
       return [
         {
           value: null,
-          text: this.$i18n.t('admin.calendar_first_day_of_week_default'),
+          text: this.$i18n.t('admin.calendar_first_day_of_week_default')
         },
         // TODO: could be refactored with luxon Info utils: Info.weekdays('long', {  locale: this.$i18n.locale } )[6] }
         {
           value: 1,
           text: DateTime.fromISO('1970-01-04T00:00:00.000Z').toFormat('EEEE', {
-            locale: this.$i18n.locale,
-          }),
+            locale: this.$i18n.locale
+          })
         },
         {
           value: 2,
           text: DateTime.fromISO('1970-01-05T00:00:00.000Z').toFormat('EEEE', {
-            locale: this.$i18n.locale,
-          }),
+            locale: this.$i18n.locale
+          })
         },
         {
           value: 7,
           text: DateTime.fromISO('1970-01-03T00:00:00.000Z').toFormat('EEEE', {
-            locale: this.$i18n.locale,
-          }),
-        },
+            locale: this.$i18n.locale
+          })
+        }
       ]
     },
     ap_handler() {
@@ -182,7 +182,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'instance_locale', value })
-      },
+      }
     },
     instance_timezone: {
       get() {
@@ -190,7 +190,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'instance_timezone', value })
-      },
+      }
     },
     allow_registration: {
       get() {
@@ -198,7 +198,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_registration', value })
-      },
+      }
     },
     allow_anon_event: {
       get() {
@@ -206,7 +206,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_anon_event', value })
-      },
+      }
     },
     allow_recurrent_event: {
       get() {
@@ -214,7 +214,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_recurrent_event', value })
-      },
+      }
     },
     allow_event_without_end_time: {
       get() {
@@ -222,7 +222,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_event_without_end_time', value })
-      },
+      }
     },
     allow_multidate_event: {
       get() {
@@ -230,7 +230,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_multidate_event', value })
-      },
+      }
     },
     recurrent_event_visible: {
       get() {
@@ -238,7 +238,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'recurrent_event_visible', value })
-      },
+      }
     },
     allow_geolocation: {
       get() {
@@ -246,7 +246,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_geolocation', value })
-      },
+      }
     },
     calendar_first_day_of_week: {
       get() {
@@ -254,7 +254,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'calendar_first_day_of_week', value })
-      },
+      }
     },
     show_download_media: {
       get() {
@@ -262,7 +262,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'show_download_media', value })
-      },
+      }
     },
     allow_online_event: {
       get() {
@@ -270,7 +270,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'allow_online_event', value })
-      },
+      }
     },
     enable_moderation: {
       get() {
@@ -278,7 +278,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'enable_moderation', value })
-      },
+      }
     },
     enable_report: {
       get() {
@@ -286,13 +286,13 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'enable_report', value })
-      },
+      }
     },
     filteredTimezones() {
       const current_timezone = DateTime.local().zoneName
       tzNames.unshift(current_timezone)
       return tzNames
-    },
+    }
   },
   methods: {
     ...mapActions(['setSetting']),
@@ -300,7 +300,7 @@ export default {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    },
-  },
+    }
+  }
 }
 </script>

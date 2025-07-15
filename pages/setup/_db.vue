@@ -19,6 +19,7 @@ v-container.pa-6
       v-stepper-content(step='3')
         Completed(ref='completed' :isHttp='isHttp')
 </template>
+
 <script>
 export default {
   components: {
@@ -27,12 +28,12 @@ export default {
     DbStep: () =>
       import(/* webpackChunkName: "setup" */ '@/components/DbStep.vue'),
     Completed: () =>
-      import(/* webpackChunkName: "setup" */ '@/components/Completed.vue'),
+      import(/* webpackChunkName: "setup" */ '@/components/Completed.vue')
   },
   middleware: 'setup',
   layout: 'clean',
   head: {
-    title: 'Setup',
+    title: 'Setup'
   },
   name: 'Setup',
   auth: false,
@@ -45,10 +46,10 @@ export default {
       dbdone: !!Number(params.db),
       config: {
         db: {
-          dialect: '',
-        },
+          dialect: ''
+        }
       },
-      step: 1 + Number(params.db),
+      step: 1 + Number(params.db)
     }
   },
   methods: {
@@ -62,10 +63,10 @@ export default {
         this.$refs.completed.start(user)
       } catch (e) {
         this.$root.$message(e.response ? e.response.data : e, {
-          color: 'error',
+          color: 'error'
         })
       }
-    },
-  },
+    }
+  }
 }
 </script>

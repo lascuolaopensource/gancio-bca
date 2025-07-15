@@ -61,7 +61,7 @@ import {
   mdiMapSearch,
   mdiChevronDown,
   mdiDeleteForever,
-  mdiTag,
+  mdiTag
 } from '@mdi/js'
 import { mapState } from 'vuex'
 import get from 'lodash/get'
@@ -89,8 +89,8 @@ export default {
       headers: [
         { value: 'tag', text: this.$t('common.tag') },
         { value: 'count', text: 'N.' },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' },
-      ],
+        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+      ]
     }
   },
   components: { TBtn },
@@ -98,7 +98,7 @@ export default {
     this.tags = await this.$axios.$get('/tags')
   },
   computed: {
-    ...mapState(['settings']),
+    ...mapState(['settings'])
   },
   methods: {
     editTag(item) {
@@ -118,7 +118,7 @@ export default {
       this.$root.$message(
         this.$t('admin.tag_renamed', {
           oldTag: this.tag.tag,
-          newTag: this.newTag,
+          newTag: this.newTag
         }),
         { color: 'success' }
       )
@@ -127,7 +127,7 @@ export default {
     async removeTag(tag) {
       const ret = await this.$root.$confirm('admin.delete_tag_confirm', {
         tag: tag.tag,
-        n: tag.count,
+        n: tag.count
       })
       if (!ret) {
         return
@@ -140,7 +140,7 @@ export default {
         this.$root.$message(this.$t(err), { color: 'error' })
         this.loading = false
       }
-    },
-  },
+    }
+  }
 }
 </script>

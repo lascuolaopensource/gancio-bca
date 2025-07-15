@@ -27,7 +27,7 @@ export default {
     const code = params.code
     try {
       const user = await $axios.$post('/user/check_recover_code', {
-        recover_code: code,
+        recover_code: code
       })
       return { user, code }
     } catch (e) {
@@ -43,14 +43,14 @@ export default {
       try {
         await this.$axios.$post('/user/recover_password', {
           recover_code: this.code,
-          password: this.new_password,
+          password: this.new_password
         })
         this.$root.$message('common.password_updated', { color: 'success' })
         this.$router.push('/login')
       } catch (e) {
         this.$root.$message(e, { color: 'warning' })
       }
-    },
-  },
+    }
+  }
 }
 </script>

@@ -17,6 +17,6 @@ export default {
   components: { Snackbar, Confirm },
   created() {
     this.$vuetify.theme.dark = false
-  },
+  }
 }
 </script>

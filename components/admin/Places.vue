@@ -58,7 +58,7 @@ import {
   mdiChevronDown,
   mdiMagnify,
   mdiEye,
-  mdiMapMarker,
+  mdiMapMarker
 } from '@mdi/js'
 import SearchAddress from '~/components/SearchAddress.vue'
 import { mapState } from 'vuex'
@@ -85,14 +85,14 @@ export default {
         address: '',
         latitude: null,
         longitude: null,
-        id: null,
+        id: null
       },
       headers: [
         { value: 'name', text: this.$t('common.name') },
         { value: 'address', text: this.$t('common.address') },
         { value: 'map', text: 'Map' },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' },
-      ],
+        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+      ]
     }
   },
   async fetch() {
@@ -101,7 +101,7 @@ export default {
     this.places = this.places.filter((p) => p.name !== 'online')
   },
   computed: {
-    ...mapState(['settings']),
+    ...mapState(['settings'])
   },
   methods: {
     editPlace(item) {
@@ -122,7 +122,7 @@ export default {
       await this.$fetch()
       this.loading = false
       this.dialog = false
-    },
-  },
+    }
+  }
 }
 </script>

@@ -54,7 +54,7 @@ export default {
       isValid: false,
       loading: false,
       smtp: { auth: {} },
-      admin_email: $store.state.settings.admin_email || '',
+      admin_email: $store.state.settings.admin_email || ''
     }
   },
   async fetch() {
@@ -105,7 +105,7 @@ export default {
           await this.$axios.$post('/settings/test_smtp', { smtp })
           this.$root.$message(
             this.$t('admin.smtp_test_success', {
-              admin_email: this.admin_email,
+              admin_email: this.admin_email
             }),
             { color: 'success' }
           )
@@ -117,7 +117,7 @@ export default {
         this.setSetting({ key: 'smtp', value: smtp })
         this.$emit('close')
       }
-    },
-  },
+    }
+  }
 }
 </script>

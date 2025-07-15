@@ -78,7 +78,7 @@ export default {
   name: 'MediaInput',
   props: {
     value: { type: Object, default: () => ({ image: null }) },
-    event: { type: Object, default: () => ({}) },
+    event: { type: Object, default: () => ({}) }
   },
   data() {
     return {
@@ -89,7 +89,7 @@ export default {
       openMediaDetails: false,
       name: this.value.name || '',
       focalpoint: this.value.focalpoint || [0, 0],
-      dragging: false,
+      dragging: false
     }
   },
   computed: {
@@ -119,7 +119,7 @@ export default {
     position() {
       const focalpoint = this.focalpoint || [0, 0]
       return `${(focalpoint[0] + 1) * 50}% ${(focalpoint[1] + 1) * 50}%`
-    },
+    }
   },
   methods: {
     save() {
@@ -127,7 +127,7 @@ export default {
         url: this.value.url,
         image: this.value.image,
         name: this.name || this.event.title || '',
-        focalpoint: [...this.focalpoint],
+        focalpoint: [...this.focalpoint]
       })
       this.openMediaDetails = false
     },
@@ -144,14 +144,14 @@ export default {
       this.$emit('input', {
         image: v,
         name: this.event.title,
-        focalpoint: [0, 0],
+        focalpoint: [0, 0]
       })
     },
     selectUrl() {
       if (this.validateUrl(this.imgUrlInput) === true) {
         this.$emit('input', {
           ...this.value,
-          url: this.imgUrlInput,
+          url: this.imgUrlInput
         })
       }
     },
@@ -212,8 +212,8 @@ export default {
     validateUrl(value) {
       if (!value) return true // empty value is valid, since image is optional
       return this.isValidUrl(value) || this.$t('validators.url')
-    },
-  },
+    }
+  }
 }
 </script>
 <style>

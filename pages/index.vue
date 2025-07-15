@@ -1,10 +1,10 @@
 <template>
-  <v-container class="px-2 px-sm-6 pt-0" id="home">
+  <v-container id="home" class="px-2 px-sm-6 pt-0">
     <!-- Announcements -->
     <section
+      v-if="announcements?.length"
       id="announcements"
       class="mt-2 mt-sm-4"
-      v-if="announcements?.length"
     >
       <Announcement
         v-for="announcement in announcements"
@@ -14,12 +14,12 @@
     </section>
 
     <!-- Events -->
-    <section id="events" class="mt-sm-4 mt-2" v-if="!$fetchState.pending">
+    <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
       <v-lazy
-        class="event v-card"
-        :value="idx < 9"
         v-for="(event, idx) in visibleEvents"
         :key="event.id"
+        class="event v-card"
+        :value="idx < 9"
         :min-height="hide_thumbs ? 105 : undefined"
         :options="{ threshold: 0.5, rootMargin: '500px' }"
         :class="{ 'theme--dark': is_dark }"
@@ -27,7 +27,7 @@
         <Event :event="event" :lazy="idx > 9" />
       </v-lazy>
     </section>
-    <section class="text-center" v-else>
+    <section v-else class="text-center">
       <v-progress-circular
         class="mt-5 justify-center align-center mx-auto"
         color="primary"
@@ -50,20 +50,6 @@ export default {
   name: 'Index',
   components: { Event, Announcement, ThemeView },
   middleware: 'setup',
-  fetch() {
-    if (process.server) return
-    if (this.filter.query) {
-      return this.getEvents({
-        query: this.filter.query,
-        older: true,
-      })
-    } else {
-      return this.getEvents({
-        start: this.start,
-        end: this.end,
-      })
-    }
-  },
   data({ $time }) {
     return {
       mdiMagnify,
@@ -74,30 +60,46 @@ export default {
       end: null,
       tmpEvents: [],
       selectedDay: null,
-      storeUnsubscribe: null,
+      storeUnsubscribe: null
+    }
+  },
+  fetch() {
+    if (process.server) {
+      return
+    }
+    if (this.filter.query) {
+      return this.getEvents({
+        query: this.filter.query,
+        older: true
+      })
+    } else {
+      return this.getEvents({
+        start: this.start,
+        end: this.end
+      })
     }
   },
   head() {
     return {
       title: this.settings.title,
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: 'description',
           name: 'description',
-          content: this.settings?.description,
+          content: this.settings?.description
         },
         {
           hid: 'og-description',
           name: 'og:description',
-          content: this.settings?.description,
+          content: this.settings?.description
         },
         { hid: 'og-title', property: 'og:title', content: this.settings.title },
         { hid: 'og-url', property: 'og:url', content: this.settings.baseurl },
-        { property: 'og:image', content: this.settings.baseurl + '/logo.png' },
+        { property: 'og:image', content: this.settings.baseurl + '/logo.png' }
       ],
       link: [
         { rel: 'apple-touch-icon', href: this.settings.baseurl + '/logo.png' },
@@ -105,19 +107,19 @@ export default {
           rel: 'alternate',
           type: 'application/rss+xml',
           title: this.settings.title,
-          href: this.settings.baseurl + '/feed/rss',
+          href: this.settings.baseurl + '/feed/rss'
         },
         {
           rel: 'alternate',
           type: 'text/calendar',
           title: this.settings.title,
-          href: this.settings.baseurl + '/feed/ics',
+          href: this.settings.baseurl + '/feed/ics'
         },
         {
           rel: 'me',
-          href: `${this.settings.baseurl}/federation/u/${this.settings.instance_name}`,
-        },
-      ],
+          href: `${this.settings.baseurl}/federation/u/${this.settings.instance_name}`
+        }
+      ]
     }
   },
   computed: {
@@ -149,7 +151,7 @@ export default {
           (e) => this.filter.show_recurrent || !e.parentId
         )
       }
-    },
+    }
   },
   created() {
     this.$root.$on('dayclick', this.dayChange)
@@ -160,11 +162,11 @@ export default {
           if (action.type === 'setFilter') {
             this.$fetch()
           }
-        },
+        }
       })
     }
   },
-  destroyed() {
+  unmounted() {
     this.$root.$off('dayclick')
     this.$root.$off('monthchange')
     if (typeof this.storeUnsubscribe === 'function') {
@@ -174,7 +176,9 @@ export default {
   methods: {
     ...mapActions(['getEvents']),
     async monthChange({ year, month }) {
-      if (this.filter.query) return
+      if (this.filter.query) {
+        return
+      }
       this.$nuxt.$loading.start()
       let isCurrentMonth
 
@@ -189,10 +193,10 @@ export default {
       } else {
         isCurrentMonth = false
         this.start = DateTime.local(year, month, {
-          zone: this.settings.instance_timezone,
+          zone: this.settings.instance_timezone
         }).toUnixInteger()
         this.end = DateTime.local(year, month, {
-          zone: this.settings.instance_timezone,
+          zone: this.settings.instance_timezone
         })
           .plus({ month: !this.$vuetify.breakpoint.smAndDown ? 1 : 0 })
           .endOf('month')
@@ -212,10 +216,10 @@ export default {
         ? DateTime.local({ zone: this.settings.instance_timezone }).set({
             year: date.year,
             month: date.month,
-            day: date.day,
+            day: date.day
           })
         : null
-    },
-  },
+    }
+  }
 }
 </script>

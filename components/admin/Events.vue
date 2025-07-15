@@ -57,7 +57,7 @@ import {
   mdiEyeOff,
   mdiCheckBold,
   mdiArrowRight,
-  mdiMessageText,
+  mdiMessageText
 } from '@mdi/js'
 import TBtn from '../../components/TBtn.vue'
 import EventModeration from '@/components/EventModeration'
@@ -65,7 +65,7 @@ import EventModeration from '@/components/EventModeration'
 export default {
   props: {
     unconfirmedEvents: { type: Array, default: () => [] },
-    unconfirmedOldEvents: { type: Array, default: () => [] },
+    unconfirmedOldEvents: { type: Array, default: () => [] }
   },
   components: { TBtn, EventModeration },
   data({ $route }) {
@@ -94,9 +94,9 @@ export default {
           text: this.$t('common.actions'),
           align: 'right',
           sortable: false,
-          width: 220,
-        },
-      ],
+          width: 220
+        }
+      ]
     }
   },
   methods: {
@@ -112,7 +112,7 @@ export default {
     },
     async remove(event) {
       const ret = await this.$root.$confirm('event.remove_confirmation', {
-        event: event.title,
+        event: event.title
       })
       if (!ret) {
         return
@@ -122,7 +122,7 @@ export default {
         this.$root.$message('admin.event_remove_ok')
         this.$emit('removed', event.id)
       } catch (e) {}
-    },
-  },
+    }
+  }
 }
 </script>

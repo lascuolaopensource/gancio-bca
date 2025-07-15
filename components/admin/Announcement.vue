@@ -49,7 +49,7 @@ import {
   mdiDeleteForever,
   mdiPencil,
   mdiEye,
-  mdiEyeOff,
+  mdiEyeOff
 } from '@mdi/js'
 
 export default {
@@ -75,10 +75,10 @@ export default {
           value: 'actions',
           text: this.$t('common.actions'),
           align: 'right',
-          sortable: false,
-        },
+          sortable: false
+        }
       ],
-      announcement: { title: '', announcement: '' },
+      announcement: { title: '', announcement: '' }
     }
   },
   async mounted() {
@@ -156,7 +156,7 @@ export default {
         console.error(e)
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

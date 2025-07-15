@@ -38,21 +38,21 @@ import { mdiChevronRight } from '@mdi/js'
 
 export default {
   name: 'Register',
-  data() {
-    return {
-      mdiChevronRight,
-      loading: false,
-      user: {},
-      valid: true,
-    }
-  },
   // https://nuxtjs.org/api/pages-validate/
   // If the validate method does not return true, Nuxt.js will automatically load the 404 error page.
   validate({ store }) {
     return store.state.settings.allow_registration
   },
+  data() {
+    return {
+      mdiChevronRight,
+      loading: false,
+      user: {},
+      valid: true
+    }
+  },
   computed: {
-    ...mapState(['settings']),
+    ...mapState(['settings'])
   },
   mounted() {
     this.$refs.email.focus()
@@ -78,15 +78,15 @@ export default {
         this.$root.$message(error, { color: 'error' })
       }
       this.loading = false
-    },
+    }
   },
   head() {
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
-      title: this.settings.title + ' - ' + this.$t('common.register'),
+      title: this.settings.title + ' - ' + this.$t('common.register')
     }
-  },
+  }
 }
 </script>

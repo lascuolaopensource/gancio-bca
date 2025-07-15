@@ -32,6 +32,6 @@ export default {
   computed: mapState(['settings']),
   head() {
     return { title: `${this.settings.title} - Authorize` }
-  },
+  }
 }
 </script>

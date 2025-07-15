@@ -31,7 +31,7 @@ import NavSearch from './NavSearch.vue'
 export default {
   name: 'Appbar',
   components: { NavHeader, NavBar, NavSearch },
-  computed: mapState(['settings']),
+  computed: mapState(['settings'])
 }
 </script>
 <style>

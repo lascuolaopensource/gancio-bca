@@ -76,7 +76,7 @@ import {
   mdiFormatItalic,
   mdiFormatStrikethroughVariant,
   mdiFormatBold,
-  mdiFormatUnderline,
+  mdiFormatUnderline
 } from '@mdi/js'
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap'
 import {
@@ -94,7 +94,7 @@ import {
   History,
   Strike,
   Underline,
-  Placeholder,
+  Placeholder
 } from 'tiptap-extensions'
 
 export default {
@@ -106,7 +106,7 @@ export default {
     border: { type: Boolean, default: false },
     noSave: { type: Boolean, default: false },
     height: { type: String, default: '' },
-    placeholder: { type: String, default: '' },
+    placeholder: { type: String, default: '' }
   },
   data() {
     return {
@@ -126,7 +126,7 @@ export default {
       editor: null,
       blurring: false,
       update: false,
-      focused: '',
+      focused: ''
     }
   },
   watch: {
@@ -136,7 +136,7 @@ export default {
         return
       }
       this.editor.setContent(this.value)
-    },
+    }
   },
   mounted() {
     this.editor = new Editor({
@@ -167,9 +167,9 @@ export default {
           emptyNodeClass: 'is-empty',
           emptyNodeText: this.placeholder,
           showOnlyWhenEditable: true,
-          showOnlyCurrent: true,
-        }),
-      ],
+          showOnlyCurrent: true
+        })
+      ]
     })
   },
   beforeDestroy() {
@@ -192,8 +192,8 @@ export default {
       this.$nextTick(() => {
         this.blurring = false
       })
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss">

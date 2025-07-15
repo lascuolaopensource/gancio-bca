@@ -32,7 +32,7 @@ import {
   mdiPause,
   mdiPlay,
   mdiDebugStepOver,
-  mdiDeleteForever,
+  mdiDeleteForever
 } from '@mdi/js'
 import { mapState } from 'vuex'
 import TBtn from '../components/TBtn.vue'
@@ -58,7 +58,7 @@ export default {
       mdiPlay,
       mdiDebugStepOver,
       mdiDeleteForever,
-      events: [],
+      events: []
     }
   },
   computed: mapState(['settings']),
@@ -71,18 +71,18 @@ export default {
     },
     async remove_account() {
       const ret = await this.$root.$confirm('settings.remove_account_confirm', {
-        color: 'error',
+        color: 'error'
       })
       if (!ret) return
       this.$axios.$delete('/user')
       this.$auth.logout()
       this.$router.replace('/')
-    },
+    }
   },
   head() {
     return {
-      title: `${this.settings.title} - ${this.$t('common.settings')}`,
+      title: `${this.settings.title} - ${this.$t('common.settings')}`
     }
-  },
+  }
 }
 </script>

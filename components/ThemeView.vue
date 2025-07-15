@@ -15,7 +15,7 @@ export default {
     return { mdiViewModule, mdiViewList, mdiContrastCircle }
   },
   computed: {
-    ...mapGetters(['hide_thumbs', 'is_dark']),
+    ...mapGetters(['hide_thumbs', 'is_dark'])
   },
   methods: {
     ...mapActions(['setLocalSetting']),
@@ -25,7 +25,7 @@ export default {
     },
     async toggleHideThumbs() {
       this.setLocalSetting({ key: 'hide_thumbs', value: !this.hide_thumbs })
-    },
-  },
+    }
+  }
 }
 </script>

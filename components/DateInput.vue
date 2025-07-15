@@ -106,7 +106,7 @@ import List from '@/components/List'
 import {
   mdiClockTimeFourOutline,
   mdiClockTimeEightOutline,
-  mdiClose,
+  mdiClose
 } from '@mdi/js'
 
 export default {
@@ -120,10 +120,10 @@ export default {
         due: null,
         recurrent: null,
         fromHour: null,
-        dueHour: null,
-      }),
+        dueHour: null
+      })
     },
-    event: { type: Object, default: () => null },
+    event: { type: Object, default: () => null }
   },
   data() {
     return {
@@ -138,8 +138,8 @@ export default {
         { value: '1w', text: this.$t('event.each_week') },
         { value: '2w', text: this.$t('event.each_2w') },
         { value: '1m', text: this.$t('event.each_month') },
-        { value: '1y', text: this.$t('event.each_year') },
-      ],
+        { value: '1y', text: this.$t('event.each_year') }
+      ]
     }
   },
   computed: {
@@ -150,7 +150,7 @@ export default {
         if (this.value.multidate) {
           return {
             start: new Date(this.value.from),
-            end: new Date(this.value.due),
+            end: new Date(this.value.due)
           }
         } else {
           return new Date(this.value.from)
@@ -183,7 +183,7 @@ export default {
       const month = date.toFormat('MMMM')
       if (freq === '1w' || freq === '2w') {
         return this.$t(`event.recurrent_${freq}_days`, {
-          days: weekDay,
+          days: weekDay
         }).toUpperCase()
       } else if (freq === '1m' || freq === '2m' || freq === '1y') {
         const n = Math.floor((date.day - 1) / 7) + 1
@@ -192,10 +192,10 @@ export default {
           {
             label: this.$t(`event.recurrent_${freq}_days`, {
               days: date.day,
-              months: month,
+              months: month
             }),
-            key: 'ordinal',
-          },
+            key: 'ordinal'
+          }
           // { label: this.$tc(`event.recurrent_${freq}_ordinal`, { n, days: weekDay }), key: 'weekday' }
         ]
 
@@ -204,9 +204,9 @@ export default {
             label: this.$t(`event.recurrent_${freq}_ordinal`, {
               n: this.$t(`ordinal.${n}`),
               days: weekDay,
-              months: month,
+              months: month
             }),
-            key: n,
+            key: n
           })
         }
 
@@ -217,9 +217,9 @@ export default {
             label: this.$t(`event.recurrent_${freq}_ordinal`, {
               n: this.$t('ordinal.-1'),
               days: weekDay,
-              months: month,
+              months: month
             }),
-            key: -1,
+            key: -1
           })
         }
 
@@ -228,7 +228,7 @@ export default {
         return this.$t('event.recurrent_each_day')
       }
       return ''
-    },
+    }
   },
   async mounted() {
     if (this.value.multidate) {
@@ -259,20 +259,20 @@ export default {
               ...this.value,
               due: this.value.from,
               recurrent: { frequency: '1w' },
-              multidate: false,
+              multidate: false
             })
           } else {
             this.$emit('input', {
               ...this.value,
               recurrent: { frequency: '1w' },
-              multidate: false,
+              multidate: false
             })
           }
         } else if (value === 'multidate') {
           this.$emit('input', {
             ...this.value,
             recurrent: null,
-            multidate: true,
+            multidate: true
           })
         } else {
           let from = this.value.from
@@ -288,7 +288,7 @@ export default {
             from,
             due,
             recurrent: null,
-            multidate: false,
+            multidate: false
           })
         }
       } else if (what === 'frequency') {
@@ -297,12 +297,12 @@ export default {
         }
         this.$emit('input', {
           ...this.value,
-          recurrent: { ...this.value.recurrent, frequency: value },
+          recurrent: { ...this.value.recurrent, frequency: value }
         })
       } else if (what === 'recurrentType') {
         this.$emit('input', {
           ...this.value,
-          recurrent: { ...this.value.recurrent, type: value },
+          recurrent: { ...this.value.recurrent, type: value }
         })
       } else if (what === 'fromHour') {
         if (value) {
@@ -318,18 +318,18 @@ export default {
           if (!this.value.multidate) {
             if (hour < fromHour) {
               this.value.due = DateTime.fromJSDate(this.value.from, {
-                zone: this.settings.instance_timezone,
+                zone: this.settings.instance_timezone
               })
                 .plus({ day: 1 })
                 .toJSDate()
             } else {
               this.value.due = DateTime.fromJSDate(this.value.from, {
-                zone: this.settings.instance_timezone,
+                zone: this.settings.instance_timezone
               }).toJSDate()
             }
           } else {
             this.value.due = DateTime.fromJSDate(this.value.due, {
-              zone: this.settings.instance_timezone,
+              zone: this.settings.instance_timezone
             })
               .set({ hour, minute })
               .toJSDate()
@@ -339,7 +339,7 @@ export default {
             this.value.due = null
           } else {
             this.value.due = DateTime.fromJSDate(this.value.due, {
-              zone: this.settings.instance_timezone,
+              zone: this.settings.instance_timezone
             })
               .set({ hour: 23, minute: 59 })
               .toJSDate()
@@ -355,7 +355,7 @@ export default {
             from: null,
             due: null,
             fromHour: null,
-            dueHour: null,
+            dueHour: null
           })
           return
         }
@@ -372,7 +372,7 @@ export default {
             if (this.value.dueHour < this.value.fromHour) {
               newDueDate = new Date(
                 DateTime.fromJSDate(from, {
-                  zone: this.settings.instance_timezone,
+                  zone: this.settings.instance_timezone
                 })
                   .plus({ day: 1 })
                   .toJSDate()
@@ -383,8 +383,8 @@ export default {
           this.$emit('input', { ...this.value, from, due })
         }
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

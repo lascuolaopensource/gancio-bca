@@ -73,7 +73,7 @@ import {
   mdiCheckboxBlankOutline,
   mdiChevronLeft,
   mdiChevronRight,
-  mdiChevronDown,
+  mdiChevronDown
 } from '@mdi/js'
 
 export default {
@@ -94,23 +94,23 @@ export default {
       users: [],
       usersHeader: [
         { value: 'object.preferredUsername', text: this.$t('common.name') },
-        { value: 'blocked', text: this.$t('admin.blocked') },
+        { value: 'blocked', text: this.$t('admin.blocked') }
       ],
       instancesHeader: [
         { value: 'domain', text: this.$t('admin.domain') },
         { value: 'name', text: this.$t('common.name') },
         { value: 'blocked', text: this.$t('admin.blocked') },
-        { value: 'users', text: this.$t('admin.known_users') },
+        { value: 'users', text: this.$t('admin.known_users') }
       ],
       resourcesHeader: [
         { value: 'created', text: this.$t('admin.created_at') },
         { value: 'event', text: this.$t('common.event') },
         { value: 'user', text: this.$t('common.user') },
         { value: 'content', text: this.$t('common.content') },
-        { value: 'actions', text: this.$t('common.actions') },
+        { value: 'actions', text: this.$t('common.actions') }
       ],
       usersFilter: '',
-      instancesFilter: '',
+      instancesFilter: ''
     }
   },
   computed: mapState(['settings']),
@@ -134,7 +134,7 @@ export default {
     async instanceSelected(instance) {
       this.users = await this.$axios.$get(`/instances/${instance.domain}`)
       this.resources = await this.$axios.$get('/resources', {
-        filters: { instance: instance.domain },
+        filters: { instance: instance.domain }
       })
     },
     async hideResource(resource, hidden) {
@@ -148,14 +148,14 @@ export default {
             ap_user,
             'object.preferredUsername',
             ap_user.preferredUsername
-          ),
+          )
         })
         if (!ret) {
           return
         }
       }
       await this.$axios.post('/ap_actors/toggle_block', {
-        ap_id: ap_user.ap_id,
+        ap_id: ap_user.ap_id
       })
       ap_user.blocked = !ap_user.blocked
     },
@@ -170,7 +170,7 @@ export default {
     async toggleBlock(instance) {
       if (!instance.blocked) {
         const ret = await this.$root.$confirm('admin.instance_block_confirm', {
-          instance: instance.domain,
+          instance: instance.domain
         })
         if (!ret) {
           return
@@ -178,10 +178,10 @@ export default {
       }
       await this.$axios.post('/instances/toggle_block', {
         instance: instance.domain,
-        blocked: !instance.blocked,
+        blocked: !instance.blocked
       })
       instance.blocked = !instance.blocked
-    },
-  },
+    }
+  }
 }
 </script>

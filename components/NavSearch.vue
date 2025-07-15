@@ -46,7 +46,7 @@ export default {
     mdiMagnify,
     show_recurrent: $store.state.settings.recurrent_event_visible,
     show_multidate: true,
-    query: '',
+    query: ''
   }),
   components: { Calendar },
   computed: {
@@ -66,11 +66,11 @@ export default {
       }
       return show
     },
-    ...mapState(['settings', 'filter']),
+    ...mapState(['settings', 'filter'])
   },
   methods: {
-    ...mapActions(['setFilter']),
-  },
+    ...mapActions(['setFilter'])
+  }
 }
 </script>
 <style>

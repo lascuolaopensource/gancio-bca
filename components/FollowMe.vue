@@ -40,7 +40,7 @@ export default {
       instance: {},
       stats: {},
       loading: false,
-      get_instance_info: debounce(this.getInstanceInfo, 300),
+      get_instance_info: debounce(this.getInstanceInfo, 300)
     }
   },
   async fetch() {
@@ -56,7 +56,7 @@ export default {
     link() {
       // check if exists
       return `https://${this.instance_hostname}/authorize_interaction?uri=${this.settings.instance_name}@${this.settings.hostname}`
-    },
+    }
   },
   methods: {
     getInstanceInfo() {
@@ -78,8 +78,8 @@ export default {
           this.proceed = false
           this.loading = false
         })
-    },
-  },
+    }
+  }
 }
 </script>
 <style>

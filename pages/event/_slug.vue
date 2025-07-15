@@ -155,7 +155,7 @@ import {
   mdiChevronUp,
   mdiMonitorAccount,
   mdiBookmark,
-  mdiStar,
+  mdiStar
 } from '@mdi/js'
 
 export default {
@@ -169,7 +169,7 @@ export default {
       import(/* webpackChunkName: "admin" */ '@/components/EventAssignAuthor'),
     EmbedEvent,
     MyPicture,
-    EventMapDialog,
+    EventMapDialog
   },
   async asyncData({ $axios, params, error }) {
     try {
@@ -209,7 +209,7 @@ export default {
       mapModal: false,
       openModeration: $route?.query?.moderation ? true : false,
       openAssignAuthor: false,
-      reporting: false,
+      reporting: false
     }
   },
   head() {
@@ -222,31 +222,31 @@ export default {
         rel: 'alternate',
         type: 'application/rss+xml',
         title: `${this.settings.title} events tagged ${tag}`,
-        href: this.settings.baseurl + `/feed/rss?tags=${tag}`,
+        href: this.settings.baseurl + `/feed/rss?tags=${tag}`
       }))
     const place_feed = {
       rel: 'alternate',
       type: 'application/rss+xml',
       title: `${this.settings.title} events  @${this.event?.place?.name}`,
-      href: this.settings.baseurl + `/feed/rss?places=${this.event?.place?.id}`,
+      href: this.settings.baseurl + `/feed/rss?places=${this.event?.place?.id}`
     }
 
     return {
       title: `${this.settings.title} - ${this.event.title}`,
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: 'description',
           name: 'description',
-          content: this.plainDescription,
+          content: this.plainDescription
         },
         {
           hid: 'og-description',
           name: 'og:description',
-          content: this.plainDescription,
+          content: this.plainDescription
         },
         { hid: 'og-title', property: 'og:title', content: this.event.title },
         {
@@ -254,37 +254,37 @@ export default {
           property: 'og:url',
           content: `${this.settings.baseurl}/event/${
             this.event.slug || this.event.id
-          }`,
+          }`
         },
         { property: 'og:type', content: 'event' },
         {
           property: 'og:image',
-          content: this.$helper.mediaURL(this.event),
+          content: this.$helper.mediaURL(this.event)
         },
         { property: 'og:site_name', content: this.settings.title },
         {
           property: 'og:updated_time',
           content: DateTime.fromSeconds(this.event.start_datetime, {
-            zone: this.settings.instance_timezone,
-          }).toISO(),
+            zone: this.settings.instance_timezone
+          }).toISO()
         },
         {
           property: 'article:published_time',
           content: DateTime.fromSeconds(this.event.start_datetime, {
-            zone: this.settings.instance_timezone,
-          }).toISO(),
+            zone: this.settings.instance_timezone
+          }).toISO()
         },
         { property: 'article:section', content: 'event' },
         { property: 'twitter:card', content: 'summary' },
         { property: 'twitter:title', content: this.event.title },
         {
           property: 'twitter:image',
-          content: this.$helper.mediaURL(this.event),
+          content: this.$helper.mediaURL(this.event)
         },
         {
           property: 'twitter:description',
-          content: this.plainDescription,
-        },
+          content: this.plainDescription
+        }
       ],
       link: [
         { rel: 'image_src', href: this.$helper.mediaURL(this.event) },
@@ -292,11 +292,11 @@ export default {
           rel: 'alternate',
           type: 'application/rss+xml',
           title: this.settings.title,
-          href: this.settings.baseurl + '/feed/rss',
+          href: this.settings.baseurl + '/feed/rss'
         },
         ...tags_feed,
-        place_feed,
-      ],
+        place_feed
+      ]
     }
   },
   computed: {
@@ -351,7 +351,7 @@ export default {
       } else {
         return new Date((3 * 60 * 60 + this.event.start_datetime) * 1000) < now
       }
-    },
+    }
   },
   mounted() {
     window.addEventListener('keydown', this.keyDown)
@@ -403,7 +403,7 @@ export default {
     },
     copyLink() {
       this.$root.$message('common.copied', { color: 'success' })
-    },
-  },
+    }
+  }
 }
 </script>

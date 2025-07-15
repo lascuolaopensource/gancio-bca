@@ -71,7 +71,7 @@ import { mdiChevronDown } from '@mdi/js'
 
 export default {
   components: {
-    [process.client && 'Map']: () => import('@/components/Map.vue'),
+    [process.client && 'Map']: () => import('@/components/Map.vue')
   },
   data({ $store }) {
     return {
@@ -96,7 +96,7 @@ export default {
         $store.state.settings.tilelayer_provider_attribution || '',
       tilelayer_provider_attribution_default:
         '<a target=\'_blank\' href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      countries: isoCountries,
+      countries: isoCountries
     }
   },
   computed: {
@@ -114,7 +114,7 @@ export default {
           ? this.geocoding_provider
           : this.geocoding_provider_default
       return v
-    },
+    }
   },
   methods: {
     ...mapActions(['setSetting']),
@@ -180,7 +180,7 @@ export default {
           'success'
         )
       this.isNewTilelayerTest = false
-    },
-  },
+    }
+  }
 }
 </script>

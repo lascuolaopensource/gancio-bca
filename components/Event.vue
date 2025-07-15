@@ -95,7 +95,7 @@ import {
   mdiRepeat,
   mdiCalendar,
   mdiMapMarker,
-  mdiTimerSandComplete,
+  mdiTimerSandComplete
 } from '@mdi/js'
 
 export default {
@@ -103,11 +103,11 @@ export default {
     return { mdiRepeat, mdiMapMarker, mdiCalendar, mdiTimerSandComplete }
   },
   components: {
-    MyPicture,
+    MyPicture
   },
   props: {
     event: { type: Object, default: () => ({}) },
-    lazy: Boolean,
+    lazy: Boolean
   },
   computed: {
     ...mapGetters(['hide_thumbs']),
@@ -118,7 +118,7 @@ export default {
       } else {
         return new Date((3 * 60 * 60 + this.event.start_datetime) * 1000) < now
       }
-    },
-  },
+    }
+  }
 }
 </script>

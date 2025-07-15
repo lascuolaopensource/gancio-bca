@@ -31,7 +31,7 @@ export default {
       right: true,
       active: false,
       timeout: 5000,
-      message: '',
+      message: ''
     }
   },
   created() {
@@ -42,6 +42,6 @@ export default {
       this.icon =
         opts.icon || (this.color === 'success' ? mdiInformation : mdiAlert)
     }
-  },
+  }
 }
 </script>

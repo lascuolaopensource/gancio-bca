@@ -25,35 +25,35 @@ export default {
         type: 'application/javascript',
         defer: true,
         src: '/custom_js',
-        body: true,
-      },
+        body: true
+      }
     ]
     const custom_style = [
-      { rel: 'stylesheet', href: this.settings.baseurl + '/custom_css' },
+      { rel: 'stylesheet', href: this.settings.baseurl + '/custom_css' }
     ]
     return {
       htmlAttrs: {
-        lang: this.locale,
+        lang: this.locale
       },
       link: [
         {
           rel: 'icon',
           type: 'image/png',
-          href: this.settings.baseurl + '/logo.png',
+          href: this.settings.baseurl + '/logo.png'
         },
-        ...custom_style,
+        ...custom_style
       ],
       script: [
         { src: '/gancio-events.es.js', body: true, defer: true },
-        ...custom_script,
-      ],
+        ...custom_script
+      ]
     }
   },
   name: 'Default',
   components: { Appbar, Snackbar, Footer, Confirm },
   computed: {
     ...mapState(['settings']),
-    ...mapGetters(['is_dark']),
+    ...mapGetters(['is_dark'])
   },
   created() {
     try {
@@ -61,6 +61,6 @@ export default {
     } catch (e) {
       console.error(e)
     }
-  },
+  }
 }
 </script>

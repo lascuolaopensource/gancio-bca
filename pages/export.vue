@@ -90,14 +90,14 @@ export default {
   name: 'Exports',
   components: {
     FollowMe,
-    Search,
+    Search
   },
   mixins: [clipboard],
   async asyncData({ $api, $time }) {
     try {
       const events = await $api.getEvents({
         start: $time.currentTimestamp(),
-        show_recurrent: false,
+        show_recurrent: false
       })
       return { events }
     } catch (e) {
@@ -116,23 +116,23 @@ export default {
         title: $store.state.settings.title,
         maxEvents: null,
         theme: $store.state.settings['theme.is_dark'] ? 'dark' : 'light',
-        sidebar: 'true',
+        sidebar: 'true'
       },
       filters: {
         tags: [],
         places: [],
         collection: undefined,
-        show_recurrent: $store.state.settings.recurrent_event_visible,
+        show_recurrent: $store.state.settings.recurrent_event_visible
       },
-      events: [],
+      events: []
     }
   },
   head() {
     return {
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
-      title: `${this.settings.title} - ${this.$t('common.export')}`,
+      title: `${this.settings.title} - ${this.$t('common.export')}`
     }
   },
   computed: {
@@ -205,7 +205,7 @@ export default {
     },
     showLink() {
       return ['rss', 'ics'].includes(this.type)
-    },
+    }
   },
   methods: {
     async add_notification() {
@@ -220,7 +220,7 @@ export default {
     },
     imgPath(event) {
       return event.media && event.media[0].url
-    },
-  },
+    }
+  }
 }
 </script>

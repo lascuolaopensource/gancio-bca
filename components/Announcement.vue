@@ -19,7 +19,7 @@ export default {
     return { mdiInformation }
   },
   props: {
-    announcement: { type: Object, default: () => ({}) },
-  },
+    announcement: { type: Object, default: () => ({}) }
+  }
 }
 </script>

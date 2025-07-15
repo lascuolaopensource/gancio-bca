@@ -3,25 +3,22 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    'jest/globals': true,
+    'jest/globals': true
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
     requireConfigFile: false,
     babelOptions: {
       babelrc: false,
-      configFile: false,
-    },
+      configFile: false
+    }
   },
   extends: [
-    '@nuxtjs/eslint-config',
-    'plugin:prettier/recommended',
-    // OLD Settings
-    // '@nuxtjs/eslint-config'
-    // // 'plugin:nuxt/recommended',
-    // // 'plugin:prettier/recommended',
-    // // 'prettier',
-    // // 'prettier/vue'
+    '@nuxtjs/eslint-config'
+    // 'plugin:nuxt/recommended',
+    // 'plugin:prettier/recommended',
+    // 'prettier',
+    // 'prettier/vue',
   ],
   plugins: ['jest'],
   // add your custom rules here
@@ -33,5 +30,6 @@ module.exports = {
     'import/order': 'off',
     'space-in-parens': 'off',
     'eol-last': 'off',
-  },
+    'space-before-function-paren': 'off'
+  }
 }

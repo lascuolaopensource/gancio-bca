@@ -32,7 +32,7 @@ export default {
       mdiChevronDown,
       mdiClose,
       selectedDate: null,
-      page: { month, year },
+      page: { month, year }
     }
   },
   computed: {
@@ -40,7 +40,7 @@ export default {
     ...mapGetters(['is_dark']),
     attributes() {
       return this.$time.attributesFromEvents(this.events)
-    },
+    }
   },
   methods: {
     updatePage(page) {
@@ -52,8 +52,8 @@ export default {
     },
     click(day) {
       this.$root.$emit('dayclick', day)
-    },
-  },
+    }
+  }
 }
 </script>
 

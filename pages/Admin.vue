@@ -122,7 +122,7 @@ export default {
     Page: () =>
       import(/* webpackChunkName: "admin" */ '../components/admin/Page.vue'),
     Theme: () =>
-      import(/* webpackChunkName: "admin" */ '../components/admin/Theme.vue'),
+      import(/* webpackChunkName: "admin" */ '../components/admin/Theme.vue')
   },
   middleware: ['auth', 'isAdminOrEditor'],
   async asyncData({ $axios, req }) {
@@ -145,7 +145,7 @@ export default {
         unconfirmedEvents,
         unconfirmedOldEvents,
         url,
-        selfReachable,
+        selfReachable
       }
     } catch (e) {
       return { users: [], unconfirmedEvents: [], url, selfReachable: false }
@@ -159,7 +159,7 @@ export default {
       users: [],
       description: '',
       unconfirmedEvents: [],
-      selfReachable: false,
+      selfReachable: false
     }
   },
   head() {
@@ -176,8 +176,8 @@ export default {
       },
       get() {
         return this.$route.query.tab
-      },
-    },
+      }
+    }
   },
   methods: {
     async updateUsers() {
@@ -192,7 +192,7 @@ export default {
       this.loading = false
       this.$root.$message('event.confirmed', { color: 'success' })
       this.unconfirmedEvents = this.unconfirmedEvents.filter((e) => e.id !== id)
-    },
-  },
+    }
+  }
 }
 </script>

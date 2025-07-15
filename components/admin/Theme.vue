@@ -151,7 +151,7 @@ export default {
       link: { href: '', label: '' },
       linkModal: false,
       dark_menu: [false, false, false, false],
-      light_menu: [false, false, false, false],
+      light_menu: [false, false, false, false]
     }
   },
   computed: {
@@ -164,7 +164,7 @@ export default {
         this.$vuetify.theme.dark = value
         this.setSetting({ key: 'theme.is_dark', value })
         this.setLocalSetting({ key: 'theme.is_dark', value })
-      },
+      }
     },
     hide_thumbs: {
       get() {
@@ -172,7 +172,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'hide_thumbs', value })
-      },
+      }
     },
     hide_calendar: {
       get() {
@@ -180,7 +180,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'hide_calendar', value })
-      },
+      }
     },
     custom_js: {
       get() {
@@ -188,7 +188,7 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'custom_js', value })
-      },
+      }
     },
     custom_css: {
       get() {
@@ -196,8 +196,8 @@ export default {
       },
       set(value) {
         this.setSetting({ key: 'custom_css', value })
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapActions(['setSetting', 'setLocalSetting']),
@@ -206,8 +206,8 @@ export default {
         key: 'footerLinks',
         value: [
           { href: '/', label: 'common.home' },
-          { href: '/about', label: 'common.about' },
-        ],
+          { href: '/about', label: 'common.about' }
+        ]
       })
     },
     forceLogoReload() {
@@ -239,7 +239,7 @@ export default {
       const key = `${theme}_colors`
       this.setSetting({
         key,
-        value: { ...this.settings[key], [color]: value.hex },
+        value: { ...this.settings[key], [color]: value.hex }
       })
     }, 200),
     updateColor(theme, color, value) {
@@ -254,7 +254,7 @@ export default {
       const link = Object.assign({}, this.link)
       this.setSetting({
         key: 'footerLinks',
-        value: this.settings.footerLinks.concat(link),
+        value: this.settings.footerLinks.concat(link)
       })
       // this.link = { href: '', label: '' }
       this.$refs.linkModalForm.reset()
@@ -286,7 +286,7 @@ export default {
       try {
         await this.$axios.$post('/settings/logo', formData)
         this.$root.$emit('message', {
-          message: 'Logo updated',
+          message: 'Logo updated'
         })
         this.forceLogoReload()
       } catch (e) {}
@@ -297,7 +297,7 @@ export default {
       try {
         await this.$axios.$post('/settings/fallbackImage', formData)
         this.$root.$emit('message', {
-          message: 'Fallback image updated',
+          message: 'Fallback image updated'
         })
         this.forceFallbackImageReload()
       } catch (e) {}
@@ -308,7 +308,7 @@ export default {
       try {
         await this.$axios.$post('/settings/headerImage', formData)
         this.$root.$emit('message', {
-          message: 'Header image updated',
+          message: 'Header image updated'
         })
         this.forceHeaderImageReload()
       } catch (e) {}
@@ -317,7 +317,7 @@ export default {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    },
-  },
+    }
+  }
 }
 </script>

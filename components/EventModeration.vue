@@ -78,8 +78,8 @@ export default {
   props: {
     event: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   data() {
     return {
@@ -88,7 +88,7 @@ export default {
       mdiChevronRight,
       message: '',
       messages: [],
-      loading: false,
+      loading: false
     }
   },
   async mounted() {
@@ -97,7 +97,7 @@ export default {
   computed: {
     isAdmin() {
       return this.$auth.user?.is_admin || this.$auth.user?.is_editor
-    },
+    }
   },
   methods: {
     async sendMessage(is_author_visible) {
@@ -105,7 +105,7 @@ export default {
         this.loading = true
         await this.$axios.$post(`/event/messages/${this.event.id}`, {
           is_author_visible,
-          message: this.message,
+          message: this.message
         })
         this.message = ''
         this.loading = false
@@ -117,8 +117,8 @@ export default {
         this.loading = false
         console.error(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 <style>

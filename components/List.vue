@@ -24,34 +24,34 @@ export default {
   props: {
     title: {
       type: String,
-      default: '',
+      default: ''
     },
     events: {
       type: Array,
       default: () => {
         return []
-      },
+      }
     },
     maxEvents: {
       type: Number,
-      default: 0,
+      default: 0
     },
     minimal: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showTags: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showImage: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showDescription: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   computed: {
     computedEvents() {
@@ -59,8 +59,8 @@ export default {
         return this.events
       }
       return this.events.slice(0, this.maxEvents)
-    },
-  },
+    }
+  }
 }
 </script>
 <style>

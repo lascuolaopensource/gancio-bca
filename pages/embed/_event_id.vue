@@ -25,9 +25,9 @@ export default {
   data() {
     return {
       settings: { baseurl: '' },
-      loading: true,
+      loading: true
     }
-  },
+  }
 }
 
 // <iframe src='http://localhost:13120/embed/1' class='embedded_gancio'></iframe>

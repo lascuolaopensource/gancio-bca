@@ -34,7 +34,7 @@ export default {
     return {
       title,
       htmlAttrs: {
-        lang: this.settings.instance_locale,
+        lang: this.settings.instance_locale
       },
       link: [
         {
@@ -42,21 +42,21 @@ export default {
           type: 'application/rss+xml',
           title,
           href:
-            this.settings.baseurl + `/feed/rss/collection/${this.collection}`,
+            this.settings.baseurl + `/feed/rss/collection/${this.collection}`
         },
         {
           rel: 'alternate',
           type: 'text/calendar',
           title,
           href:
-            this.settings.baseurl + `/feed/ics/collection/${this.collection}`,
-        },
-      ],
+            this.settings.baseurl + `/feed/ics/collection/${this.collection}`
+        }
+      ]
     }
   },
   computed: {
     ...mapState(['settings']),
-    ...mapGetters(['hide_thumbs', 'is_dark']),
+    ...mapGetters(['hide_thumbs', 'is_dark'])
   },
   async asyncData({ $axios, params, error }) {
     try {
@@ -69,6 +69,6 @@ export default {
       console.error(e)
       error({ statusCode: 400, message: 'Error!' })
     }
-  },
+  }
 }
 </script>

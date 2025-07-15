@@ -20,6 +20,7 @@ v-container
             v-spacer
             v-btn(v-if='user' outlined color='primary' type='submit' :disabled='!valid') {{$t('common.send')}}
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import { mdiAlert } from '@mdi/js'
@@ -30,7 +31,7 @@ export default {
     const code = params.code
     try {
       const user = await $axios.$post('/user/check_recover_code', {
-        recover_code: code,
+        recover_code: code
       })
       return { user, code }
     } catch (e) {
@@ -46,18 +47,18 @@ export default {
       try {
         await this.$axios.$post('/user/recover_password', {
           recover_code: this.code,
-          password: this.new_password,
+          password: this.new_password
         })
         this.$root.$message('common.password_updated')
         this.$router.replace('/login')
       } catch (e) {
         this.$root.$message(e, { color: 'warning' })
       }
-    },
+    }
   },
   head() {
     return { title: `${this.settings.title} - Authorize` }
-  },
+  }
 }
 </script>
 <style>

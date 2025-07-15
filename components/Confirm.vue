@@ -45,8 +45,8 @@ export default {
       is_prompt: false,
       color: 'danger',
       width: 450,
-      zIndex: 500,
-    },
+      zIndex: 500
+    }
   }),
   computed: {
     show: {
@@ -58,8 +58,8 @@ export default {
         if (value === false) {
           this.cancel()
         }
-      },
-    },
+      }
+    }
   },
   created() {
     this.$root.$confirm = this.open
@@ -88,7 +88,7 @@ export default {
       this.resolve(false)
       this.prompt = ''
       this.dialog = false
-    },
-  },
+    }
+  }
 }
 </script>

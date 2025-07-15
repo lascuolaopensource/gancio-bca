@@ -17,7 +17,7 @@ export default {
     return { mdiWalk, mdiBike, mdiCar }
   },
   props: {
-    place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) },
+    place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) }
   },
   methods: {
     ...mapActions(['setSetting']),
@@ -36,10 +36,10 @@ export default {
         foot: 'engine=fossgis_osrm_foot',
         bike: 'engine=fossgis_osrm_bike',
         transit: null,
-        car: 'engine=fossgis_osrm_car',
+        car: 'engine=fossgis_osrm_car'
       }
       return `https://www.openstreetmap.org/directions?from=&to=${lat},${lon}&${routingType[type]}#map=14/${lat}/${lon}`
-    },
-  },
+    }
+  }
 }
 </script>

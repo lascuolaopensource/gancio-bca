@@ -43,11 +43,11 @@ export default {
       mdiAccount,
       loading: false,
       selectedUser: {},
-      users: [],
+      users: []
     }
   },
   props: {
-    event: { type: Object, default: () => ({}) },
+    event: { type: Object, default: () => ({}) }
   },
   async mounted() {
     this.users = await this.$axios.$get(`/users`)
@@ -58,7 +58,7 @@ export default {
         this.loading = true
         await this.$axios.$put('/event/assign_to_author', {
           id: this.event.id,
-          user_id: this.selectedUser,
+          user_id: this.selectedUser
         })
         this.loading = false
         this.$emit('close')
@@ -67,7 +67,7 @@ export default {
         this.loading = false
         this.$root.$message(e, { color: 'warning' })
       }
-    },
-  },
+    }
+  }
 }
 </script>

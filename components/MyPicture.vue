@@ -27,7 +27,7 @@ export default {
     event: { type: Object, default: () => ({}) },
     thumb: { type: Boolean, default: false },
     lazy: { type: Boolean, default: false },
-    showPreview: { type: Boolean, default: true },
+    showPreview: { type: Boolean, default: true }
   },
   computed: {
     backgroundPreview() {
@@ -35,7 +35,7 @@ export default {
         return {
           backgroundPosition: this.thumbnailPosition,
           backgroundImage:
-            "url('data:image/png;base64," + this.media.preview + "')",
+            "url('data:image/png;base64," + this.media.preview + "')"
         }
       }
     },
@@ -66,8 +66,8 @@ export default {
         return `${(focalpoint[0] + 1) * 50}% ${(focalpoint[1] + 1) * 50}%`
       }
       return 'center center'
-    },
-  },
+    }
+  }
 }
 </script>
 <style>
