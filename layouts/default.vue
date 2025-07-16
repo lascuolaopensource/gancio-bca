@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <Appbar />
+    <TimeFilters @filter-change="handleFilterChange" />
     <v-main>
       <Snackbar />
       <Confirm />
@@ -17,12 +18,13 @@ import Appbar from '../components/Appbar.vue'
 import Snackbar from '../components/Snackbar.vue'
 import Footer from '../components/Footer.vue'
 import Confirm from '../components/Confirm.vue'
+import TimeFilters from '../components/TimeFilters.vue'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'Default',
   // eslint-disable-next-line vue/no-reserved-component-names
-  components: { Appbar, Snackbar, Footer, Confirm },
+  components: { Appbar, Snackbar, Footer, Confirm, TimeFilters },
   head() {
     const custom_script = [
       {

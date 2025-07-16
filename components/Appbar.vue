@@ -45,7 +45,7 @@
           <Calendar v-if="showCalendar" class="" />
           <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
         </div>-->
-        <TimeFilters @filter-change="handleFilterChange" />
+        <!-- <TimeFilters @filter-change="handleFilterChange" /> -->
       </div>
     </template>
     
@@ -59,11 +59,10 @@ import NavBar from './NavBar.vue'
 import NavSearch from './NavSearch.vue'
 import Tags from './Tags.vue'
 import Calendar from './Calendar.vue'
-import TimeFilters from './TimeFilters.vue'
 
 export default {
   name: 'Appbar',
-  components: { NavHeader, NavBar, NavSearch, Tags, Calendar, TimeFilters },
+  components: { NavHeader, NavBar, NavSearch, Tags, Calendar },
   props: {
     hideTitle: {
       type: Boolean,

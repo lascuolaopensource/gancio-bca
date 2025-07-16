@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex pa-4">
+  <div class="d-flex">
     <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
       <!--<img src="/logo.png" height="40" />-->
@@ -8,7 +8,7 @@
 
     <v-spacer />
 
-    <div class="d-flex">
+    <div class="d-flex navigation">
       <v-btn
         v-for="nav in navLinks"
         :key="nav.to"
@@ -21,10 +21,10 @@
         :aria-label="$t(nav.title)"
         v-if="!nav.hide"
       >
-        <v-icon v-text="nav.icon" />
+        Cos'è
       </v-btn>
       <v-btn icon large @click="toggleDark">
-        <v-icon v-text="mdiContrastCircle" />
+        Darkmode
       </v-btn>
       <client-only>
         <v-menu

@@ -21,6 +21,10 @@ export default {
       activeFilter: 'tutti',
       timeFilters: [
         {
+          id: 'oggi',
+          label: 'Oggi'
+        },
+        {
           id: 'questo-weekend',
           label: 'Questo weekend'
         },
@@ -53,6 +57,13 @@ export default {
       let endDate = null
       
       switch (filterId) {
+        case 'oggi':
+          // Get today's events
+          startDate = today
+          endDate = new Date(today)
+          endDate.setHours(23, 59, 59, 999)
+          break
+          
         case 'questo-weekend':
           // Get this weekend (Saturday and Sunday)
           const dayOfWeek = now.getDay()
@@ -137,6 +148,6 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  padding: 16px;
+  /* padding: 16px; */
 }
 </style> 
