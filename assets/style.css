@@ -420,5 +420,83 @@ pre {
 }
 
 #events {
-      justify-content: flex-start !important;
+      
+}
+
+#events .event.v-card {
+  border: 0px !important;
+  background-color: var(--primary) !important;
+}
+
+#events .event.v-card:hover {
+  box-shadow: none;
+}
+
+#events .event.v-card:hover .thumb img {
+  mix-blend-mode: normal;
+}
+
+#events .event.v-card .thumb {
+
+}
+
+#events .event.v-card .thumb img {
+  mix-blend-mode: multiply;
+  filter: grayscale(1);
+}
+
+#events .event.v-card h2.title {
+  color: var(--white);
+  text-decoration: none !important;
+  font-size: var(--medium) !important;
+}
+
+#events .event.v-card h2.title:hover {
+   text-decoration: none !important;
+}
+
+#events .event.v-card > article > a:hover {
+  text-decoration: none !important;
+}
+
+#events .event.v-card .v-card__text {
+
+}
+
+#events .event.v-card .v-card__text time {
+  color: var(--white);
+  font-size: var(--small) !important;
+}
+
+#events .event.v-card .v-card__text time span {
+  display: none;
+}
+
+#events .event.v-card .v-card__text .p-location {
+  color: var(--white);
+}
+
+#events .event.v-card .v-card__text .p-location a {
+  color: var(--white);
+  font-size: var(--small) !important;
+}
+
+#events .event.v-card .v-card__text .p-location span.v-icon {
+  display: none;
+}
+
+#events .event.v-card .v-card__text .v-card__actions {
+
+}
+
+#events .event.v-card .v-card__actions a {
+  padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1.5) !important;
+  background-color: transparent !important;
+  border: 1px solid var(--black) !important;
+  color: var(--black) !important;
+  font-size: var(--small) !important;
+  text-decoration: none !important;
+  border-radius: 100vw !important;
+  margin-right: calc(var(--spacer) / 2) !important;
+  margin-bottom: calc(var(--spacer) / 2) !important;
 }
