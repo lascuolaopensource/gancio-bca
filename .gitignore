@@ -108,3 +108,6 @@ dist
 
 # Service worker
 sw.*
+
+postgres
+data
