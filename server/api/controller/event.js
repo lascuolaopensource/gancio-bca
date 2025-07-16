@@ -451,6 +451,7 @@ const eventController = {
 
             // notify author
             if (event['user.email']) {
+                const mail = require('../mail')
                 mail.send(event['user.email'], 'report', {
                     event,
                     message: body.message,
