@@ -4,7 +4,7 @@
   <nav>
     <NavHeader />
 
-    <!-- title -->
+    <!-- title -
     <template v-if="!hideTitle">
       <h1 v-if="$route.name === 'index'" class="text-center">
         <nuxt-link id="title" to="/" v-text="settings.title" />
@@ -21,9 +21,14 @@
           v-html="settings?.description"
         />
       </div>
-    </template>
+    </template>-->
 
+    <div class="main-search-button">
+      <p>Cerca un evento</p>
+    </div>
     <NavSearch />
+    Tags:
+    <Tags />
     <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
   </nav>
 </template>

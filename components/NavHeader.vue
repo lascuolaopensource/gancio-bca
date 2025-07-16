@@ -1,8 +1,9 @@
 <template>
   <div class="d-flex pa-4">
-    <v-btn icon large nuxt to="/">
+    <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
-      <img src="/logo.png" height="40" />
+      <!--<img src="/logo.png" height="40" />-->
+      <p class="site-title">Nome progetto</p>
     </v-btn>
 
     <v-spacer />
@@ -116,7 +117,6 @@
               <v-list-item-icon>
                 <v-icon v-text="mdiLogout" />
               </v-list-item-icon>
-
               <v-list-item-content>
                 <v-list-item-title v-text="$t('common.logout')" />
               </v-list-item-content>

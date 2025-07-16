@@ -1,12 +1,12 @@
 <template lang="pug">
 #navsearch.mt-2.mt-sm-4(v-if='showCollectionsBar || showSearchBar || showCalendar')
-  div.mx-2
+  div
     client-only(v-if='showSearchBar')
       v-menu(offset-y :close-on-content-click='false' tile)
         template(v-slot:activator="{on ,attrs}")
-          v-text-field(hide-details outlined v-model='query'
+          v-text-field(hide-details v-model='query'
             :placeholder='$t("common.search")' @click:clear="setFilter(['query', null])"
-            @keypress.enter="setFilter(['query', query])" clearable :clear-icon='mdiClose')
+            @keypress.enter="setFilter(['query', query])" clearable :clear-icon='mdiClose' class='search-input')
             template(v-slot:append)
               v-icon.mr-2(v-if='query' v-text='mdiMagnify' @click="setFilter(['query', query])")
               v-icon(v-if='settings.allow_recurrent_event || settings.allow_multidate_event' v-text='mdiCog' v-bind='attrs' v-on='on')
