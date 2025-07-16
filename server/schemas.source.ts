@@ -76,13 +76,15 @@ const valoriSchema = z.enum([
   'ambiente_positivo'
 ])
 
-const eventMetadataSchema = z.object({
+export const eventMetadataSchema = z.object({
   categoria: z.array(categoriaSchema),
   mood: z.array(moodSchema),
   accessibilita: z.array(accessibilitaSchema),
   eta: z.array(etaSchema),
   valori: z.array(valoriSchema)
 })
+
+// Export
 
 const code =
   'module.exports = { eventSchema: ' +
