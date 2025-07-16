@@ -1,9 +1,9 @@
-module.exports = (sequelize, DataTypes) => 
+module.exports = (sequelize, DataTypes) =>
   sequelize.define('tag', {
-  tag: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    index: true,
-    primaryKey: true
-  }
-})
+    tag: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      index: true,
+      primaryKey: true
+    }
+  })

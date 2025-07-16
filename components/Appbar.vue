@@ -3,8 +3,17 @@
 <template>
   <nav>
     <NavHeader />
+    <div class="hero-section">
+      <div class="hero-text-above">
+        <p>Oggi ho voglia di</p>
+      </div>
+      <NavSearch />
+      <div class="hero-text-below">
+        <p>Adaxi</p>
+      </div>
+    </div>
 
-    <!-- title -->
+    <!-- title -
     <template v-if="!hideTitle">
       <h1 v-if="$route.name === 'index'" class="text-center">
         <nuxt-link id="title" to="/" v-text="settings.title" />
@@ -21,10 +30,16 @@
           v-html="settings?.description"
         />
       </div>
-    </template>
+    </template>-->
 
-    <NavSearch />
-    <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+    <div class="main-search-button" @click="toggleSearch">
+      <p>Usa il calendario</p>
+    </div>
+    <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
+      <Calendar v-if="showCalendar" class="" />
+      <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+    </div>
+    <Tags />
   </nav>
 </template>
 
@@ -33,17 +48,36 @@ import { mapState } from 'vuex'
 import NavHeader from './NavHeader.vue'
 import NavBar from './NavBar.vue'
 import NavSearch from './NavSearch.vue'
+import Tags from './Tags.vue'
+import Calendar from './Calendar.vue'
 
 export default {
   name: 'Appbar',
-  components: { NavHeader, NavBar, NavSearch },
+  components: { NavHeader, NavBar, NavSearch, Tags, Calendar },
   props: {
     hideTitle: {
       type: Boolean,
       default: false
     }
   },
-  computed: mapState(['settings'])
+  data() {
+    return {
+      showSearchContainer: false
+    }
+  },
+  computed: {
+    ...mapState(['settings']),
+    showCalendar() {
+      return (
+        !this.settings.hide_calendar && ['index'].includes(this.$route.name)
+      )
+    }
+  },
+  methods: {
+    toggleSearch() {
+      this.showSearchContainer = !this.showSearchContainer
+    }
+  }
 }
 </script>
 

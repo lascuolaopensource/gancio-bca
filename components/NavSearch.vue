@@ -1,12 +1,12 @@
 <template lang="pug">
 #navsearch.mt-2.mt-sm-4(v-if='showCollectionsBar || showSearchBar || showCalendar')
-  div.mx-2
+  div
     client-only(v-if='showSearchBar')
       v-menu(offset-y :close-on-content-click='false' tile)
         template(v-slot:activator="{on ,attrs}")
-          v-text-field(hide-details outlined v-model='query'
+          v-text-field(hide-details v-model='query'
             :placeholder='$t("common.search")' @click:clear="setFilter(['query', null])"
-            @keypress.enter="setFilter(['query', query])" clearable :clear-icon='mdiClose')
+            @keypress.enter="setFilter(['query', query])" clearable :clear-icon='mdiClose' class='search-input')
             template(v-slot:append)
               v-icon.mr-2(v-if='query' v-text='mdiMagnify' @click="setFilter(['query', query])")
               v-icon(v-if='settings.allow_recurrent_event || settings.allow_multidate_event' v-text='mdiCog' v-bind='attrs' v-on='on')
@@ -29,16 +29,15 @@
         color='primary' :key='collection.id'
         :to='`/collection/${encodeURIComponent(collection.name)}`') {{collection.name}}
 
-    Calendar.mt-2(v-if='showCalendar')
-
-    
 </template>
+
 <script>
 import { mapState, mapActions } from 'vuex'
 import Calendar from '@/components/Calendar'
 import { mdiClose, mdiCog, mdiMagnify } from '@mdi/js'
 
 export default {
+  components: { Calendar },
   data: ({ $store }) => ({
     oldRoute: '',
     mdiClose,
@@ -48,7 +47,6 @@ export default {
     show_multidate: true,
     query: ''
   }),
-  components: { Calendar },
   computed: {
     ...mapState(['collections']),
     showSearchBar() {
@@ -62,6 +60,7 @@ export default {
     showCollectionsBar() {
       const show = ['index', 'collection-collection'].includes(this.$route.name)
       if (show && this.oldRoute !== this.$route.name) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.oldRoute = this.$route.name
       }
       return show
