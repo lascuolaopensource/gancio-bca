@@ -35,6 +35,8 @@ services:
       - GANCIO_DB_USERNAME=gancio
       - GANCIO_DB_PASSWORD=gancio
       - config_path=/home/node/data/config.json
+      - N8N_WEBHOOK_URL=https://n8n.baricittaperta.xyz/webhook/ganciobot
+      - N8N_TOKEN=supersegreto
     volumes:
       - ../data:/home/node/data
     ports:
