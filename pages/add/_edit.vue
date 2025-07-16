@@ -67,8 +67,8 @@ v-container.container.pa-0.pa-md-3
       <v-spacer />
       <v-btn @click='done' :loading='loading' :disabled='!valid || loading' outlined color='primary'>{{ edit ? $t('common.save') : $t('common.send') }}</v-btn>
     </v-card-actions>
-
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -113,7 +113,7 @@ export default {
     if (params.edit) {
       const data = { event: { place: {}, media: [] } }
       data.id = params.edit
-      data.edit = query.clone ? false : true
+      data.edit = !query.clone
       let event
       try {
         event = await $axios.$get('/event/detail/' + data.id)
@@ -185,13 +185,13 @@ export default {
       disableAddress: false
     }
   },
-  mounted() {
-    this.$nextTick(async () => (this.tags = await this.$axios.$get('/tag')))
-  },
   head() {
     return {
       title: `${this.settings.title} - ${this.$t('common.add_event')}`
     }
+  },
+  mounted() {
+    this.$nextTick(async () => (this.tags = await this.$axios.$get('/tag')))
   },
   computed: mapState(['settings']),
   methods: {
@@ -203,7 +203,9 @@ export default {
     },
     searchTags: debounce(async function (ev) {
       const search = ev.target.value
-      if (!search) return
+      if (!search) {
+        return
+      }
       this.tags = await this.$axios.$get(`/tag?search=${search}`)
     }, 200),
     eventImported(event) {
@@ -282,7 +284,7 @@ export default {
         'start_datetime',
         this.$time.fromDateInput(this.date.from, this.date.fromHour)
       )
-      if (!!this.date.multidate) {
+      if (this.date.multidate) {
         formData.append(
           'end_datetime',
           this.$time.fromDateInput(this.date.due, this.date.dueHour || '23:59')
