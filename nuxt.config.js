@@ -21,7 +21,11 @@ module.exports = {
 
   vue: {
     config: {
-      ignoredElements: ['gancio-events', 'gancio-event']
+      ignoredElements: [
+        'gancio-events',
+        'gancio-event',
+        'json-schema-form' // Add the json-schema-form component to ignored elements
+      ]
     }
   },
 
