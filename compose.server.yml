@@ -22,7 +22,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     container_name: gancio
     environment:
       - PATH=$PATH:/home/node/.yarn/bin
