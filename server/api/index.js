@@ -287,7 +287,7 @@ module.exports = () => {
     )
 
     // - TAGS
-    api.get('/tags', isAdmin, tagController.getAll)
+    api.get('/tags', tagController.getAll)
     api.get('/tag', cors, tagController.search)
     api.get('/tag/:tag', cors, tagController.getEvents)
     api.delete('/tag/:tag', isAdmin, tagController.remove)
