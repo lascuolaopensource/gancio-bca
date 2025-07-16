@@ -275,6 +275,7 @@ module.exports = () => {
         api.get('/export/:format', cors, exportController.export)
 
         // - PLACES
+        api.post('/places', placeController.add)
         api.get('/places', isAdmin, placeController.getAll)
         api.get('/place/:placeNameOrId', cors, placeController.getEvents)
         api.get('/place', cors, placeController.search)
