@@ -29,16 +29,15 @@
         color='primary' :key='collection.id'
         :to='`/collection/${encodeURIComponent(collection.name)}`') {{collection.name}}
 
-    
-
-    
 </template>
+
 <script>
 import { mapState, mapActions } from 'vuex'
 import Calendar from '@/components/Calendar'
 import { mdiClose, mdiCog, mdiMagnify } from '@mdi/js'
 
 export default {
+  components: { Calendar },
   data: ({ $store }) => ({
     oldRoute: '',
     mdiClose,
@@ -48,7 +47,6 @@ export default {
     show_multidate: true,
     query: ''
   }),
-  components: { Calendar },
   computed: {
     ...mapState(['collections']),
     showSearchBar() {
@@ -62,6 +60,7 @@ export default {
     showCollectionsBar() {
       const show = ['index', 'collection-collection'].includes(this.$route.name)
       if (show && this.oldRoute !== this.$route.name) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.oldRoute = this.$route.name
       }
       return show
