@@ -50,12 +50,10 @@
     <script type="module">
       import '@jsfe/core'
 
-      // window.add
-
-      // const form = document.querySelector('json-schema-form')
-      // if (!form) {
-      //   throw new Error('Form not found')
-      // }
+      const form = document.querySelector('json-schema-form')
+      if (!form) {
+        throw new Error('Form not found')
+      }
 
       // form.dataChangeCallback = (newData) => {
       //   window.parent.postMessage({ type: 'form-change', data: newData }, '*')
