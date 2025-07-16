@@ -810,7 +810,7 @@ const eventController = {
             // return created event to the client
             res.json(event)
 
-            if (process.env.N8N_WEBHOOK_URL && !is_anonymous) {
+            if (process.env.N8N_WEBHOOK_URL) {
                 await fetch(process.env.N8N_WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
