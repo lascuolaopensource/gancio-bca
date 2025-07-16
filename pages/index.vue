@@ -40,6 +40,8 @@
 </template>
 
 <script>
+/* eslint-disable indent */
+
 import { mapState, mapActions, mapGetters } from 'vuex'
 import { DateTime } from 'luxon'
 import Event from '@/components/Event'
