@@ -421,9 +421,9 @@ const eventController = {
 
     async aiFeedback(req, res) {
 
-        if (!res.locals.settings.enable_moderation) {
-            return res.sendStatus(403)
-        }
+        // if (!res.locals.settings.enable_moderation) {
+        //     return res.sendStatus(403)
+        // }
 
         const eventId = Number(req.params.event_id)
 
