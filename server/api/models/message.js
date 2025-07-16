@@ -1,20 +1,20 @@
 module.exports = (sequelize, DataTypes) =>
-  sequelize.define('message', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    message: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    author: {
-      type: DataTypes.ENUM,
-      values: ['AUTHOR', 'ADMIN', 'ANON', 'REGISTERED']
-    },
-    is_author_visible: DataTypes.BOOLEAN // is this message visible to the author?
-  })
+    sequelize.define('message', {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        message: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        author: {
+            type: DataTypes.ENUM,
+            values: ['AUTHOR', 'ADMIN', 'ANON', 'REGISTERED', 'AI']
+        },
+        is_author_visible: DataTypes.BOOLEAN // is this message visible to the author?
+    })
 
 /** Moderation
  *

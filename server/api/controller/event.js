@@ -441,7 +441,7 @@ const eventController = {
                 eventId,
                 message: body.message,
                 is_author_visible: false,
-                author: 'GancioBot'
+                author: 'AI'
             })
 
             // notify admins
@@ -453,7 +453,7 @@ const eventController = {
                 mail.send(event['user.email'], 'report', {
                     event,
                     message: body.message,
-                    author: 'GancioBot'
+                    author: 'AI'
                 })
             }
             return res.json(message)
