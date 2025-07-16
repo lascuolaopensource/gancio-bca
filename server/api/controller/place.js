@@ -7,7 +7,9 @@ const log = require('../../log')
 const { Op, where, col, fn, cast } = require('sequelize')
 
 module.exports = {
-    async _findOrCreatePlace(body) {
+
+    async add(req, res) {
+        const body = req.body
         if (body?.place_id) {
             const place = await Place.findByPk(body.place_id)
             if (!place) {
@@ -53,12 +55,6 @@ module.exports = {
                 console.error(e?.errors)
             })
         }
-        return place
-    },
-
-    async add(req, res) {
-        const body = req.body
-        const place = await this._findOrCreatePlace(body)
         return res.json({ place })
     },
 
