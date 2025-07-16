@@ -810,6 +810,16 @@ const eventController = {
             // return created event to the client
             res.json(event)
 
+            if (process.env.N8N_WEBHOOK_URL && !is_anonymous) {
+                await fetch(process.env.N8N_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ event })
+                })
+            }
+
             // create recurrent instances of event if needed
             // without waiting for the task manager
             if (event.recurrent && event.is_visible) {
