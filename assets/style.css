@@ -2,6 +2,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap');
 
+@font-face {
+  font-family: 'Adaxi';
+  src: url('/adaxi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* VARIABLES */
 
 :root {
@@ -334,6 +342,7 @@ pre {
   font-size: var(--large);
   background-color: var(--grey);
   border-radius: 10px;
+  text-align: center;
 }
 
 .search-input input::placeholder {
@@ -347,7 +356,7 @@ pre {
 } 
 
 .v-input__slot::before {
-  display: none;
+  display: none !important;
 }
 
 #navsearch {
@@ -374,6 +383,8 @@ pre {
 .main-search-button-container {
   max-width: 1400px;
   margin: 0 auto;
+  padding-right: 24px !important;
+  padding-left: 24px !important;
 }
 
 .main-search-button {
@@ -412,28 +423,29 @@ pre {
 }
 
 .tags {
-  displaY: flex;
+  display: flex;
+  justify-content: center;
   padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
 }
 
 .tags a {
-  padding: calc(var(--spacer) / 2) calc(var(--spacer) * 1.5);
-  background-color: var(--purple);
-  color: var(--white);
-  font-size: var(--medium);
-  text-decoration: none;
-  border-radius: 100vw;
-  margin-right: calc(var(--spacer) / 2);
-  margin-bottom: calc(var(--spacer) / 2);
+  padding: calc(var(--spacer) / 2) calc(var(--spacer) * 1.5) !important;
+  background-color: var(--purple) !important;
+  color: var(--white) !important;
+  font-size: var(--small) !important;
+  text-decoration: none !important;
+  border-radius: 100vw !important;
+  margin-right: calc(var(--spacer) / 2) !important;
+  margin-bottom: calc(var(--spacer) / 2) !important;
 }
 
 .tags a:hover {
-  background-color: var(--black);
-  color: var(--white);
+  background-color: var(--black) !important;
+  color: var(--white) !important;
 }
 
 #events {
-      
+    margin-bottom: calc(var(--spacer) * 2)
 }
 
 #events .event.v-card {
@@ -446,7 +458,7 @@ pre {
 }
 
 #events .event.v-card:hover .thumb img {
-  mix-blend-mode: normal;
+ 
 }
 
 #events .event.v-card .thumb {
@@ -461,8 +473,9 @@ pre {
 #events .event.v-card h2.title {
   color: var(--white);
   text-decoration: none !important;
-  font-size: var(--medium) !important;
-  font-family: "Cabin", sans-serif !important;
+  font-size: var(--large) !important;
+  font-family: 'Adaxi', sans-serif !important;
+  margin-bottom: calc(var(--spacer) * 2);
 }
 
 #events .event.v-card h2.title:hover {
@@ -484,7 +497,7 @@ pre {
 }
 
 #events .event.v-card .v-card__text time span {
-  display: none;
+  /* display: none; */
 }
 
 #events .event.v-card .v-card__text .p-location {
@@ -497,7 +510,7 @@ pre {
 }
 
 #events .event.v-card .v-card__text .p-location span.v-icon {
-  display: none;
+  /* display: none; */
 }
 
 #events .event.v-card .v-card__text .v-card__actions {
@@ -532,6 +545,8 @@ pre {
 
 .hero-text-below p {
   margin-bottom: 0px;
+  font-family: 'Adaxi', sans-serif !important;
+  font-size: var(--extralarge);
 }
 
 .hero-text-above {
@@ -543,6 +558,8 @@ pre {
 
 .hero-text-above p {
   margin-bottom: 0px;
+  font-family: 'Adaxi', sans-serif !important;
+  font-size: var(--extralarge);
 }
 
 .hero-section .hero-text-below {
@@ -562,16 +579,13 @@ pre {
   margin: var(--spacer) 0px;
 }
 
-@media (max-width: 600px) {
-  .hero-section {
-    min-height: calc(var(--spacer) * 10);
-    padding: calc(var(--spacer) * 1.5) calc(var(--spacer) / 4) var(--spacer) calc(var(--spacer) / 4);
-    border-radius: calc(var(--spacer) * 0.8);
-  }
-  .hero-text-above {
-    font-size: var(--medium);
-  }
-  .hero-section .hero-text-below {
-    font-size: var(--small);
-  }
+/* CALENDAR */
+
+.vc-pane-container {
+  font-family: "Cabin", sans-serif !important;
+}
+
+.v-card .v-icon {
+  opacity: 1 !important;
+  color: #fff !important;
 }

@@ -3,15 +3,18 @@
 <template>
   <nav>
     <NavHeader />
-    <div class="hero-section">
-      <div class="hero-text-above">
-        <p>Oggi ho voglia di</p>
+    
+    <template v-if="$route.name === 'index'">
+      <div class="hero-section">
+        <div class="hero-text-above">
+          <p>Oggi ho voglia di</p>
+        </div>
+        <NavSearch />
+        <div class="hero-text-below">
+          <p>Adaxi</p>
+        </div>
       </div>
-      <NavSearch />
-      <div class="hero-text-below">
-        <p>Adaxi</p>
-      </div>
-    </div>
+    </template>
 
     <!-- title -
     <template v-if="!hideTitle">
@@ -32,14 +35,18 @@
       </div>
     </template>-->
 
-    <div class="main-search-button" @click="toggleSearch">
-      <p>Usa il calendario</p>
-    </div>
-    <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
-      <Calendar v-if="showCalendar" class="" />
-      <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
-    </div>
-    <Tags />
+    <template v-if="$route.name === 'index'">
+      <div class="main-search-button-container">
+        <div class="main-search-button" @click="toggleSearch">
+          <p>Usa il calendario</p>
+        </div>
+        <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
+          <Calendar v-if="showCalendar" class="" />
+          <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+        </div>
+      </div>
+    </template>
+    
   </nav>
 </template>
 

@@ -14,7 +14,7 @@
     </section>
 
     <!-- Tags -->
-    <section class="mt-2 mt-sm-4">
+    <section class="">
       <Tags :show-count="true" :limit="8" />
     </section>
 
