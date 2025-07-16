@@ -10,6 +10,15 @@ v-container.container.pa-0.pa-md-3
       ImportDialog(@close='openImportDialog = false' @imported='eventImported')
 
     v-card-text.px-0.px-xs-2
+      pre(v-if="schema") {{ JSON.stringify(schema, null, 2) }}
+      SchemaForm(
+        v-if="schema"
+        :schema="schema"
+        :data="formData"
+        :uiSchema="uiSchema"
+        @form-change="onFormChange"
+        @form-submit="onFormSubmit"
+      )
       v-form(v-model='valid' ref='form' lazy-validation)
         v-container
           v-row
@@ -73,6 +82,7 @@ v-container.container.pa-0.pa-md-3
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import uniqBy from 'lodash/uniqBy'
+import { getCollectionSchema } from '@/server/schemas.utils'
 
 import {
   mdiFileImport,
@@ -86,6 +96,7 @@ import ImportDialog from '@/components/ImportDialog'
 import MediaInput from '@/components/MediaInput'
 import WhereInput from '@/components/WhereInput'
 import DateInput from '@/components/DateInput'
+import SchemaForm from '@/components/SchemaForm'
 
 export default {
   name: 'NewEvent',
@@ -94,7 +105,8 @@ export default {
     ImportDialog,
     MediaInput,
     WhereInput,
-    DateInput
+    DateInput,
+    SchemaForm
   },
   validate({ store, params, error }) {
     // should we allow anon event?
@@ -113,6 +125,7 @@ export default {
     if (params.edit) {
       const data = { event: { place: {}, media: [] } }
       data.id = params.edit
+      console.log(data.id)
       data.edit = !query.clone
       let event
       try {
@@ -168,6 +181,9 @@ export default {
       mdiCloseCircle,
       valid: false,
       openImportDialog: false,
+      schema: null,
+      formData: {},
+      uiSchema: {},
       event: {
         place: { name: '', address: '', latitude: null, longitude: null },
         online_locations: [],
@@ -191,10 +207,22 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(async () => (this.tags = await this.$axios.$get('/tag')))
+    this.$nextTick(async () => {
+      this.tags = await this.$axios.$get('/tag')
+      this.schema = getCollectionSchema('eventSchema')
+    })
   },
   computed: mapState(['settings']),
   methods: {
+    onFormChange(newData) {
+      this.formData = newData
+    },
+    onFormSubmit({ data, valid }) {
+      if (valid) {
+        // Handle form submission
+        console.log('Form submitted with data:', data)
+      }
+    },
     updateTags(tags) {
       this.event.tags = uniqBy(
         tags.map((t) => t.trim()),
