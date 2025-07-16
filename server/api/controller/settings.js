@@ -47,17 +47,17 @@ const defaultSettings = {
   'theme.is_dark': true,
   dark_colors: {
     primary: '#ff3e63',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FB8C00'
+    error: '#ff3e63',
+    info: '#ff3e63',
+    success: '#ff3e63',
+    warning: '#ff3e63'
   },
   light_colors: {
-    primary: '#0911eb',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FB8C00'
+    primary: '#ff3e63',
+    error: '#ff3e63',
+    info: '#ff3e63',
+    success: '#ff3e63',
+    warning: '#ff3e63'
   },
   hide_thumbs: false,
   hide_calendar: false,

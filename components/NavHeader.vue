@@ -10,13 +10,18 @@
 
     <div class="d-flex">
       <v-btn
+        v-for="nav in navLinks"
+        :key="nav.to"
         icon
         large
-        href="/about"
-        :title="$t('common.about')"
-        :aria-label="$t('common.about')"
+        :href="nav.href"
+        :to="nav.to"
+        :nuxt="!!nav.to"
+        :title="$t(nav.title)"
+        :aria-label="$t(nav.title)"
+        v-if="!nav.hide"
       >
-        <v-icon v-text="mdiInformation" />
+        <v-icon v-text="nav.icon" />
       </v-btn>
       <v-btn icon large @click="toggleDark">
         <v-icon v-text="mdiContrastCircle" />
@@ -175,7 +180,15 @@ export default {
       mdiCog,
       mdiInformation,
       mdiContrastCircle,
-      mdiCalendarAccount
+      mdiCalendarAccount,
+      navLinks: [
+        {
+          to: '/about',
+          title: 'common.about',
+          icon: mdiInformation
+        }
+        // Add more navigation links here as needed
+      ]
     }
   },
   computed: {
