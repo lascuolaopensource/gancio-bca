@@ -436,12 +436,13 @@ const eventController = {
             return res.sendStatus(404)
         }
         const body = req.body
+        const author = 'AI'
         try {
             const message = await Message.create({
                 eventId,
                 message: body.message,
                 is_author_visible: false,
-                author: 'AI'
+                author
             })
 
             // notify admins
@@ -453,7 +454,7 @@ const eventController = {
                 mail.send(event['user.email'], 'report', {
                     event,
                     message: body.message,
-                    author: 'AI'
+                    author
                 })
             }
             return res.json(message)
