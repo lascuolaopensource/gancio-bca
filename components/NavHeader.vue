@@ -3,7 +3,7 @@
     <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
       <!--<img src="/logo.png" height="40" />-->
-      <p class="site-title">Bari Ad'acsi</p>
+      <p class="site-title">Adaxi</p>
     </v-btn>
 
     <v-spacer />

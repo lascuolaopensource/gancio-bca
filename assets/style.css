@@ -1,3 +1,7 @@
+/* WEBFONTS */
+
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap');
+
 /* VARIABLES */
 
 :root {
@@ -13,6 +17,7 @@
 
 	/* Colors */
 	--black: #000000;
+  --grey: #f3f3f3;
 	--white: #FFFFFF;
   --primary: #ff3e63;
   --purple: #9369dd;
@@ -45,27 +50,22 @@
 	color: var(--white);
 }
 
-/* WEBFONTS */
-
-@font-face {
-  font-family: 'geist-regular';
-  src: url('/fonts/Geist-Regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 /* GLOBAL */
 
 html, body {
   overflow-y: auto !important;
   overflow-x: hidden;
-  font-family: 'geist-regular';
+  font-family: "Cabin", sans-serif !important;
   background-color: var(--white) !important;
   color: var(--black) !important;
 }
 
 .theme--dark.v-application {
   color: var(--black) !important;
+}
+
+.v-application {
+  font-family: "Cabin", sans-serif !important;
 }
 
 /* HEADER */
@@ -318,12 +318,13 @@ pre {
   padding: 0px !important;
   outline: 0px;
   border: 0px !important;
+  margin: 0px !important;
+  margin-bottom: calc(var(--spacer) * 1) !important;
 }
 
 .search-input input {
   color: var(--black) !important;
   outline: 0px !important;
-  border-top: 1px solid var(--black);
   border-left: 0px;
   border-right: 0px;
   border-bottom: 0px !important;
@@ -331,16 +332,23 @@ pre {
   padding: calc(var(--spacer) * 2.5) calc(var(--spacer) * 1) !important;
   margin: 0px !important;
   font-size: var(--large);
+  background-color: var(--grey);
+  border-radius: 10px;
 }
 
 .search-input input::placeholder {
   color: #9e9e9e !important;
   opacity: 1; 
+  text-align: center;
 }
 
 .search-input .v-input__append-inner {
   display: none !important;
 } 
+
+.v-input__slot::before {
+  display: none;
+}
 
 #navsearch {
   max-width: 100% !important;
@@ -361,6 +369,11 @@ pre {
 .vc-arrow:hover {
   background-color: var(--primary) !important;
   opacity: 0.5 !important;
+}
+
+.main-search-button-container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .main-search-button {
@@ -449,6 +462,7 @@ pre {
   color: var(--white);
   text-decoration: none !important;
   font-size: var(--medium) !important;
+  font-family: "Cabin", sans-serif !important;
 }
 
 #events .event.v-card h2.title:hover {
@@ -466,6 +480,7 @@ pre {
 #events .event.v-card .v-card__text time {
   color: var(--white);
   font-size: var(--small) !important;
+  font-family: "Cabin", sans-serif !important;
 }
 
 #events .event.v-card .v-card__text time span {
@@ -499,4 +514,64 @@ pre {
   border-radius: 100vw !important;
   margin-right: calc(var(--spacer) / 2) !important;
   margin-bottom: calc(var(--spacer) / 2) !important;
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--spacer) * 24);
+  padding: calc(var(--spacer) * 3) var(--spacer) calc(var(--spacer) * 2) var(--spacer);
+  border-radius: calc(var(--spacer) * 1.6);
+  margin: calc(var(--spacer) * 1.6) auto calc(var(--spacer) * 2.1) auto;
+  max-width: 100%;
+  background-color: transparent;
+  height: 500px;
+}
+
+.hero-text-below p {
+  margin-bottom: 0px;
+}
+
+.hero-text-above {
+  font-size: var(--large);
+  font-weight: 400;
+  color: var(--black);
+  text-align: center;
+}
+
+.hero-text-above p {
+  margin-bottom: 0px;
+}
+
+.hero-section .hero-text-below {
+  font-size: var(--large);
+  font-weight: 400;
+  color: var(--black);
+  text-align: center;
+}
+
+.hero-section .NavSearch {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#navsearch {
+  margin: var(--spacer) 0px;
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    min-height: calc(var(--spacer) * 10);
+    padding: calc(var(--spacer) * 1.5) calc(var(--spacer) / 4) var(--spacer) calc(var(--spacer) / 4);
+    border-radius: calc(var(--spacer) * 0.8);
+  }
+  .hero-text-above {
+    font-size: var(--medium);
+  }
+  .hero-section .hero-text-below {
+    font-size: var(--small);
+  }
 }

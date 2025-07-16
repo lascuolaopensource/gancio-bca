@@ -3,6 +3,15 @@
 <template>
   <nav>
     <NavHeader />
+    <div class="hero-section">
+      <div class="hero-text-above">
+        <p>Oggi ho voglia di</p>
+      </div>
+      <NavSearch />
+      <div class="hero-text-below">
+        <p>Adaxi</p>
+      </div>
+    </div>
 
     <!-- title -
     <template v-if="!hideTitle">
@@ -23,7 +32,6 @@
       </div>
     </template>-->
 
-    <NavSearch />
     <div class="main-search-button" @click="toggleSearch">
       <p>Usa il calendario</p>
     </div>
