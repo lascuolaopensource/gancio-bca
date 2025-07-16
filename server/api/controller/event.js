@@ -421,9 +421,9 @@ const eventController = {
 
     async aiFeedback(req, res) {
 
-        // if (!res.locals.settings.enable_moderation) {
-        //     return res.sendStatus(403)
-        // }
+        if (!res.locals.settings.enable_moderation) {
+            return res.sendStatus(403)
+        }
 
         const eventId = Number(req.params.event_id)
 
@@ -435,7 +435,7 @@ const eventController = {
             log.warn(`[REPORT] Event does not exists: ${eventId}`)
             return res.sendStatus(404)
         }
-
+        const body = req.body
         try {
             const message = await Message.create({
                 eventId,
