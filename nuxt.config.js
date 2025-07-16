@@ -26,7 +26,9 @@ module.exports = {
     }
   },
 
-  css: ['./assets/style.css'],
+  css: [
+    '@/assets/style.css'
+  ],
 
   /*
    ** Customize the progress-bar component
@@ -34,7 +36,7 @@ module.exports = {
   loading: {
     color: 'orangered',
     height: '3px'
-  }, //'~/components/Loading.vue',
+  },
   /*
    ** Plugins to load before mounting the App
    */

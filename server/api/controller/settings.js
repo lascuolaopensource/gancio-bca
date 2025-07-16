@@ -46,7 +46,7 @@ const defaultSettings = {
   hide_boosts: true,
   'theme.is_dark': true,
   dark_colors: {
-    primary: '#676cf0',
+    primary: '#ff3e63',
     error: '#FF5252',
     info: '#2196F3',
     success: '#4CAF50',
