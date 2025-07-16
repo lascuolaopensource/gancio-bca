@@ -37,13 +37,15 @@
 
     <template v-if="$route.name === 'index'">
       <div class="main-search-button-container">
+        <!--
         <div class="main-search-button" @click="toggleSearch">
           <p>Usa il calendario</p>
         </div>
         <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
           <Calendar v-if="showCalendar" class="" />
           <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
-        </div>
+        </div>-->
+        <TimeFilters @filter-change="handleFilterChange" />
       </div>
     </template>
     
@@ -57,10 +59,11 @@ import NavBar from './NavBar.vue'
 import NavSearch from './NavSearch.vue'
 import Tags from './Tags.vue'
 import Calendar from './Calendar.vue'
+import TimeFilters from './TimeFilters.vue'
 
 export default {
   name: 'Appbar',
-  components: { NavHeader, NavBar, NavSearch, Tags, Calendar },
+  components: { NavHeader, NavBar, NavSearch, Tags, Calendar, TimeFilters },
   props: {
     hideTitle: {
       type: Boolean,
@@ -83,6 +86,10 @@ export default {
   methods: {
     toggleSearch() {
       this.showSearchContainer = !this.showSearchContainer
+    },
+    handleFilterChange(payload) {
+      // This method will be implemented in the parent component to filter events
+      console.log('Filter changed:', payload);
     }
   }
 }

@@ -68,7 +68,7 @@ html, body {
   color: var(--black) !important;
 }
 
-.theme--dark.v-application {
+.v-application {
   color: var(--black) !important;
 }
 
@@ -102,9 +102,10 @@ nav {
   font-size: var(--medium);
   text-transform: initial;
   color: var(--black) !important;
+  font-family: 'Adaxi', sans-serif !important;
 }
 
-.theme--dark.v-application {
+.v-application {
   background-color: var(--white) !important;
 }
 
@@ -112,11 +113,11 @@ li {
   margin-left: 10px;
 }
 
-.theme--light .v-card {
-  background-color: #f8f8f8 !important;
+.v-card {
+  /* background-color: #f8f8f8 !important; */
 }
 
-.v-dialog .theme--dark.v-card {
+.v-dialog .v-card {
   background-color: #333;
 }
 
@@ -341,7 +342,7 @@ pre {
   margin: 0px !important;
   font-size: var(--large);
   background-color: var(--grey);
-  border-radius: 10px;
+  border-radius: 100vw;
   text-align: center;
 }
 
@@ -451,14 +452,18 @@ pre {
 #events .event.v-card {
   border: 0px !important;
   background-color: var(--primary) !important;
+  transition: all 0.3s ease;
 }
 
 #events .event.v-card:hover {
   box-shadow: none;
+  background-color: var(--grey) !important;
+  transform: translateY(-10px);
+  border: 1px solid var(--primary) !important;
 }
 
-#events .event.v-card:hover .thumb img {
- 
+#events .event.v-card:hover h2.title {
+ color: var(--black) !important;
 }
 
 #events .event.v-card .thumb {
@@ -487,13 +492,18 @@ pre {
 }
 
 #events .event.v-card .v-card__text {
-
+  margin-bottom: calc(var(--spacer) * 2);
 }
 
 #events .event.v-card .v-card__text time {
   color: var(--white);
   font-size: var(--small) !important;
   font-family: "Cabin", sans-serif !important;
+  transition: all 0.3s ease;
+}
+
+#events .event.v-card:hover .v-card__text time {
+  color: var(--black);
 }
 
 #events .event.v-card .v-card__text time span {
@@ -507,10 +517,25 @@ pre {
 #events .event.v-card .v-card__text .p-location a {
   color: var(--white);
   font-size: var(--small) !important;
+  transition: all 0.3s ease;
+}
+
+#events .event.v-card:hover .v-card__text .p-location a {
+  color: var(--black);
 }
 
 #events .event.v-card .v-card__text .p-location span.v-icon {
   /* display: none; */
+}
+
+#events .event.v-card .v-card__text svg path {
+  fill: var(--white);
+  opacity: 1 !important;
+  transition: all 0.3s ease;
+}
+
+#events .event.v-card:hover .v-card__text svg path {
+  fill: var(--black);
 }
 
 #events .event.v-card .v-card__text .v-card__actions {
@@ -585,7 +610,39 @@ pre {
   font-family: "Cabin", sans-serif !important;
 }
 
-.v-card .v-icon {
-  opacity: 1 !important;
-  color: #fff !important;
+/* TIME FILTERS */
+
+.time-filters {
+  display: flex;
+  justify-content: center;
+  padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
+  margin-bottom: calc(var(--spacer) * 2);
+}
+
+.time-filters button {
+  background-color: transparent;
+  color: var(--primary);
+  font-size: var(--small);
+  font-family: "Cabin", sans-serif !important;
+  border-radius: 100vw;
+  border: 1px solid var(--primary);
+  text-transform: initial;
+  box-shadow: none;
+}
+
+.time-filters button .v-btn__content {
+  color: var(--primary);
+}
+
+.time-filters button:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.time-filters button:hover .v-btn__content {
+  color: var(--white);
+}
+
+.time-filters button.primary .v-btn__content {
+  color: var(--white);
 }
