@@ -589,3 +589,20 @@ pre {
   opacity: 1 !important;
   color: #fff !important;
 }
+
+
+/* UTILITY */
+.font-heading{
+  font-family: 'Adaxi', sans-serif !important;
+}
+
+/* EVENT ADMIN */
+.admin-actions{
+  background-color: var(--grey) !important;
+}
+.admin-actions .v-list{
+  display: flex;
+  @media only screen and (max-width: 600px) {
+    display: block;
+  }
+}

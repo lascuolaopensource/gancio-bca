@@ -3,7 +3,7 @@
 <template>
   <nav>
     <NavHeader />
-    
+
     <template v-if="$route.name === 'index'">
       <div class="hero-section">
         <div class="hero-text-above">

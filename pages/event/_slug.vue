@@ -1,18 +1,27 @@
 <template lang="pug">
+  
 #event.h-event.pa-2.pa-sm-2.pt-0.pt-sm-0.container(v-touch="{ left: goNext, right: goPrev }" itemscope itemtype="https://schema.org/Event")
     //- EVENT PAGE
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
-    h1.title.text-center.text-md-h4.text-h5.pa-6
-      strong.p-name.text--primary(itemprop="name") {{event.title}}
+    div
+      //- admin actions
+      template(v-if='can_edit')
+        EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
     v-row
-      v-col.col-12.col-md-8.pr-sm-2.pr-md-0
-        MyPicture(v-if='hasMedia' :event='event')
-        .p-description.text-body-1.pa-3.rounded(v-if='event.description' itemprop='description' v-html='event.description')
+      v-col.col-12.col-md-6
+        h1.title.text-md-h2.text-h4.pb-8
+          strong.p-name.text--primary.font-heading(itemprop="name") {{event.title}}
 
-      v-col.col-12.col-md-4
-        v-card(outlined)
-          v-container.eventDetails
+      
+        div
+          //- tags, hashtags
+          .pt-0(v-if='event?.tags?.length')
+            v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' small label color='primary'
+              :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
+
+          //- event details
+          v-container.eventDetails.pt-4
             v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
             v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
             time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
@@ -31,11 +40,6 @@
             //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
             a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
 
-          //- tags, hashtags
-          v-container.pt-0(v-if='event?.tags?.length')
-            v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' small label color='primary'
-              outlined :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
-
           //- online events
           v-list(nav dense v-if='hasOnlineLocations')
             v-list-item(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
@@ -44,9 +48,8 @@
               v-list-item-content.py-0
                 v-list-item-title.text-caption(v-text='item')
 
-          v-divider
           //- info & actions
-          v-list(dense nav color='transparent')
+          v-list.v-card(dense nav color='transparent')
 
               //- copy link
               v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
@@ -90,9 +93,13 @@
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.embed')")
 
-          //- admin actions
-          template(v-if='can_edit')
-            EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
+      //- image if present
+      v-col.col-12.col-md-6.pr-sm-2.pr-md-0
+        MyPicture(v-if='hasMedia' :event='event')
+
+      //- description
+      v-col.col-12.d-flex.justify-center
+        .p-description.text-body-1.rounded.col-md-8.col-sm-10.col-xs-12(v-if='event.description' itemprop='description' v-html='event.description')
 
     //- resources from fediverse
     EventResource#resources.mt-3(:event='event' v-if='showResources')
@@ -117,6 +124,7 @@
 
     v-navigation-drawer(v-model='openModeration' :fullscreen='$vuetify.breakpoint.xsOnly' fixed top right width=400 temporary)
       EventModeration(:event='event' v-if='openModeration' @close='openModeration=false')
+
 
 </template>
 <script>
