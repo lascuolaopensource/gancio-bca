@@ -58,8 +58,8 @@ module.exports = {
 
     async add(req, res) {
         const body = req.body
-        const place = await this._findOrCreatePlace(body)
-        return res.json(place)
+        // const place = await this._findOrCreatePlace(body)
+        return res.json({ mannaggia: "no", body })
     },
 
     async getEvents(req, res) {
