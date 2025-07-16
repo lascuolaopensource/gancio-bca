@@ -29,7 +29,7 @@
         color='primary' :key='collection.id'
         :to='`/collection/${encodeURIComponent(collection.name)}`') {{collection.name}}
 
-    Calendar.mt-2(v-if='showCalendar')
+    
 
     
 </template>
