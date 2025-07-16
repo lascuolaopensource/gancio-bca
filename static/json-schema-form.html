@@ -50,47 +50,45 @@
     <script type="module">
       import '@jsfe/core'
 
-      const form = document.getElementById('myForm')
-      console.log('Form initialized:', form)
+      // window.add
 
-      // Handle data changes
-      form.dataChangeCallback = (newData) => {
-        console.info('Data changed:', newData)
-        window.parent.postMessage({ type: 'form-change', data: newData }, '*')
-      }
+      // const form = document.querySelector('json-schema-form')
+      // if (!form) {
+      //   throw new Error('Form not found')
+      // }
 
-      // Handle form submission
-      form.onFormSubmit = (newData, valid) => {
-        console.info('Form submitted:', { newData, valid })
-        window.parent.postMessage(
-          { type: 'form-submit', data: { data: newData, valid } },
-          '*'
-        )
-      }
+      // form.dataChangeCallback = (newData) => {
+      //   window.parent.postMessage({ type: 'form-change', data: newData }, '*')
+      // }
 
-      // Listen for messages from parent
+      // form.onFormSubmit = (newData, valid) => {
+      //   window.parent.postMessage(
+      //     { type: 'form-submit', data: { data: newData, valid } },
+      //     '*'
+      //   )
+      // }
+
       window.addEventListener('message', (event) => {
         const { type, data } = event.data
 
         switch (type) {
-          case 'update-schema':
+          case 'schema-change':
             console.log('Updating schema:', data)
-            form.schema = data
+            // form.schema = data
             break
 
-          case 'update-data':
-            console.log('Updating data:', data)
-            form.data = data
-            break
+          // case 'update-data':
+          //   console.log('Updating data:', data)
+          //   form.data = data
+          //   break
 
-          case 'update-ui-schema':
-            console.log('Updating UI schema:', data)
-            form.uiSchema = data
-            break
+          // case 'update-ui-schema':
+          //   console.log('Updating UI schema:', data)
+          //   form.uiSchema = data
+          //   break
         }
       })
 
-      // Notify parent that form is ready
       window.parent.postMessage({ type: 'form-ready' }, '*')
     </script>
   </body>

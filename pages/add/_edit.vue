@@ -10,7 +10,6 @@ v-container.container.pa-0.pa-md-3
       ImportDialog(@close='openImportDialog = false' @imported='eventImported')
 
     v-card-text.px-0.px-xs-2
-      pre(v-if="schema") {{ JSON.stringify(schema, null, 2) }}
       SchemaForm(
         v-if="schema"
         :schema="schema"
@@ -206,13 +205,13 @@ export default {
       title: `${this.settings.title} - ${this.$t('common.add_event')}`
     }
   },
+  computed: mapState(['settings']),
   mounted() {
     this.$nextTick(async () => {
       this.tags = await this.$axios.$get('/tag')
       this.schema = getCollectionSchema('eventSchema')
     })
   },
-  computed: mapState(['settings']),
   methods: {
     onFormChange(newData) {
       this.formData = newData

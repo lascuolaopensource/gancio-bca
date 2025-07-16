@@ -28,6 +28,8 @@ export default {
     }
   },
 
+  emits: ['form-change', 'form-submit'],
+
   data() {
     return {
       form: null
@@ -64,44 +66,45 @@ export default {
       if (form) {
         this.form = form
 
-        // Initialize form with props
-        this.updateFormSchema(this.schema)
-        this.updateFormData(this.data)
-        this.updateFormUiSchema(this.uiSchema)
+        iframe.contentWindow.postMessage(
+          {
+            type: 'schema-change',
+            data: this.schema
+          },
+          '*'
+        )
 
-        // Set up event listeners
-        form.dataChangeCallback = (newData) => {
-          console.log('Form data changed:', newData)
-          this.$emit('form-change', newData)
-        }
+        // this.updateFormSchema(this.schema)
+        // this.updateFormData(this.data)
+        // this.updateFormUiSchema(this.uiSchema)
 
-        form.onFormSubmit = (newData, valid) => {
-          console.log('Form submitted:', { newData, valid })
-          this.$emit('form-submit', { data: newData, valid })
-        }
+        // form.dataChangeCallback = (newData) => {
+        //   this.$emit('form-change', newData)
+        // }
 
-        // Send ready event to parent
-        this.$emit('form-ready', form)
-      }
-    },
-
-    updateFormData(newData) {
-      if (this.form) {
-        this.form.data = newData
-      }
-    },
-
-    updateFormSchema(newSchema) {
-      if (this.form) {
-        this.form.schema = newSchema
-      }
-    },
-
-    updateFormUiSchema(newUiSchema) {
-      if (this.form) {
-        this.form.uiSchema = newUiSchema
+        // form.onFormSubmit = (newData, valid) => {
+        //   this.$emit('form-submit', { data: newData, valid })
+        // }
       }
     }
+
+    // updateFormData(newData) {
+    //   if (this.form) {
+    //     this.form.data = newData
+    //   }
+    // },
+
+    // updateFormSchema(newSchema) {
+    //   if (this.form) {
+    //     this.form.schema = newSchema
+    //   }
+    // },
+
+    // updateFormUiSchema(newUiSchema) {
+    //   if (this.form) {
+    //     this.form.uiSchema = newUiSchema
+    //   }
+    // }
   }
 }
 </script>

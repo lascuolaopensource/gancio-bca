@@ -86,10 +86,32 @@ export const eventMetadataSchema = z.object({
 
 // Export
 
+const jsonSchema = z.toJSONSchema(eventMetadataSchema, {
+  override: (ctx) => {
+    const s = ctx.jsonSchema
+
+    if (
+      s.type === 'array' &&
+      s.items &&
+      s.items !== true &&
+      !Array.isArray(s.items) &&
+      s.items.type === 'string' &&
+      s.items.enum
+    ) {
+      ctx.jsonSchema = {
+        type: 'array',
+        uniqueItems: true,
+        items: {
+          type: 'string',
+          enum: s.items.enum
+        }
+      }
+    }
+  }
+})
+
 const code =
-  'module.exports = { eventSchema: ' +
-  JSON.stringify(z.toJSONSchema(eventMetadataSchema), null, 2) +
-  '}'
+  'module.exports = { eventSchema: ' + JSON.stringify(jsonSchema, null, 2) + '}'
 
 const formatPromise = format(code, {
   parser: 'typescript',
