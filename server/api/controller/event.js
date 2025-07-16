@@ -453,7 +453,7 @@ const eventController = {
                 mail.send(event['user.email'], 'report', {
                     event,
                     message: body.message,
-                    author
+                    author: 'ANON'
                 })
             }
             return res.json(message)
