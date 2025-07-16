@@ -13,6 +13,11 @@
       />
     </section>
 
+    <!-- Tags -->
+    <section class="mt-2 mt-sm-4">
+      <Tags :show-count="true" :limit="8" />
+    </section>
+
     <!-- Events -->
     <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
       <v-lazy
@@ -46,11 +51,12 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import { DateTime } from 'luxon'
 import Event from '@/components/Event'
 import Announcement from '@/components/Announcement'
+import Tags from '@/components/Tags'
 import { mdiMagnify, mdiCloseCircle } from '@mdi/js'
 
 export default {
   name: 'Index',
-  components: { Event, Announcement },
+  components: { Event, Announcement, Tags },
   middleware: 'setup',
   data({ $time }) {
     return {
