@@ -323,12 +323,14 @@ pre {
 .search-input input {
   color: var(--black) !important;
   outline: 0px !important;
-  border: 1px solid var(--black);
+  border-top: 1px solid var(--black);
   border-left: 0px;
   border-right: 0px;
+  border-bottom: 0px !important;
   padding: 0px !important;
-  padding: calc(var(--spacer) / 2) var(--spacer) !important;
+  padding: calc(var(--spacer) * 2.5) calc(var(--spacer) * 1) !important;
   margin: 0px !important;
+  font-size: var(--large);
 }
 
 .search-input input::placeholder {
@@ -382,4 +384,41 @@ pre {
 
 .main-search-button:hover p {
   color: var(--white);
+}
+
+.search-calendar-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.search-calendar-container.visible {
+  max-height: 500px; /* Adjust based on expected content height */
+  opacity: 1;
+}
+
+.tags {
+  displaY: flex;
+  padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
+}
+
+.tags a {
+  padding: calc(var(--spacer) / 2) calc(var(--spacer) * 1.5);
+  background-color: var(--purple);
+  color: var(--white);
+  font-size: var(--medium);
+  text-decoration: none;
+  border-radius: 100vw;
+  margin-right: calc(var(--spacer) / 2);
+  margin-bottom: calc(var(--spacer) / 2);
+}
+
+.tags a:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+#events {
+      justify-content: flex-start !important;
 }

@@ -23,13 +23,15 @@
       </div>
     </template>-->
 
-    <div class="main-search-button">
-      <p>Cerca un evento</p>
-    </div>
     <NavSearch />
-    Tags:
+    <div class="main-search-button" @click="toggleSearch">
+      <p>Usa il calendario</p>
+    </div>
+    <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
+      <Calendar v-if="showCalendar" class="" />
+      <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+    </div>
     <Tags />
-    <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
   </nav>
 </template>
 
@@ -38,17 +40,36 @@ import { mapState } from 'vuex'
 import NavHeader from './NavHeader.vue'
 import NavBar from './NavBar.vue'
 import NavSearch from './NavSearch.vue'
+import Tags from './Tags.vue'
+import Calendar from './Calendar.vue'
 
 export default {
   name: 'Appbar',
-  components: { NavHeader, NavBar, NavSearch },
+  components: { NavHeader, NavBar, NavSearch, Tags, Calendar },
   props: {
     hideTitle: {
       type: Boolean,
       default: false
     }
   },
-  computed: mapState(['settings'])
+  data() {
+    return {
+      showSearchContainer: false
+    }
+  },
+  computed: {
+    ...mapState(['settings']),
+    showCalendar() {
+      return (
+        !this.settings.hide_calendar && ['index'].includes(this.$route.name)
+      )
+    }
+  },
+  methods: {
+    toggleSearch() {
+      this.showSearchContainer = !this.showSearchContainer
+    }
+  }
 }
 </script>
 
