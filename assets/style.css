@@ -752,7 +752,7 @@ nav {
 
 .title-tags-section {
   background-color: var(--purple);
-  padding: calc(var(--spacer) * 5) var(--spacer);
+  padding: calc(var(--spacer) * 5) var(--spacer) calc(var(--spacer) * 12) var(--spacer);
 }
 
 .title-tags-section .tags {
@@ -795,7 +795,7 @@ nav {
 
 .image-section {
   position: relative;
-  top: calc(var(--spacer) * -4);
+  top: calc(var(--spacer) * -8);
   width: 100%;
   display: flex;
   justify-content: center;
