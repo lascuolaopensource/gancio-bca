@@ -71,6 +71,10 @@
 
       // Handle form submission
       form.onFormSubmit = (newData, valid) => {
+        console.log(
+          'inside iframeonFormSubmit',
+          JSON.stringify({ newData, valid })
+        )
         window.parent.postMessage(
           {
             type: 'form-submit',
@@ -83,6 +87,7 @@
       // Handle messages from parent
       window.addEventListener('message', (event) => {
         const { type, data } = event.data
+        console.log('inside iframe', JSON.stringify({ type, data }))
 
         switch (type) {
           case 'update-schema':

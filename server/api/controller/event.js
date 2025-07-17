@@ -976,6 +976,7 @@ const eventController = {
         eventDetails.media[0].name = body.image_name || body.title || ''
       }
 
+      console.log('Right before update', JSON.stringify({ eventDetails }))
       await event.update(eventDetails)
 
       // find or create the place

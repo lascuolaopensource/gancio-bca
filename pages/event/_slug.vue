@@ -182,6 +182,8 @@ export default {
         throw metadata
       }
 
+      console.log('metadata inside page load', metadata)
+
       return { event, metadata }
     } catch (e) {
       error({ statusCode: 404, message: 'Event not found' })

@@ -222,6 +222,7 @@ export default {
       if (!valid) {
         return
       }
+      console.log('metadata coming from form', JSON.stringify(data))
       this.$axios
         .$put('/event', {
           id: this.id,
