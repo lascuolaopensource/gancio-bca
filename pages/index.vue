@@ -1,7 +1,5 @@
 <template>
-
   <div>
-
     <!-- Tags -->
     <section class="">
       <Tags :show-count="true" :limit="8" />
@@ -47,9 +45,7 @@
         />
       </section>
     </v-container>
-  
   </div>
-
 </template>
 
 <script>
