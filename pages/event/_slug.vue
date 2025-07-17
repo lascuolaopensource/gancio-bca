@@ -30,28 +30,28 @@
           v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
           v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
           time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
-            v-icon(v-text='mdiCalendar' medium)
+            span.adaxi-icon ŷ
             span.ml-2 {{$time.when(event)}}
             .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
           div.font-weight-light.font-italic {{$time.from(event.start_datetime)}}
             small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
 
         .p-location.h-adr.row(itemprop="location" itemscope itemtype="https://schema.org/Place")
-          v-icon(v-text='mdiMapMarker' medium)
+          span.adaxi-icon q
           nuxt-link.vcard.ml-2.p-name.text-decoration-none(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
             span(itemprop='name') {{event?.place?.name}}
           .font-weight-light.p-street-address.font-italic(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
-
+        v-list(nav dense v-if='hasOnlineLocations')
+          v-list-item.event-url(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
+            v-list-item-icon
+              span.adaxi-icon ,
+            v-list-item-content.py-0
+              v-list-item-title.text-caption(v-text='item')
         //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
         a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
 
       //- online events
-      v-list(nav dense v-if='hasOnlineLocations')
-        v-list-item(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
-          v-list-item-icon
-            v-icon(v-text='mdiMonitorAccount')
-          v-list-item-content.py-0
-            v-list-item-title.text-caption(v-text='item')
+     
 
     //- Description section
     div.description-section
@@ -61,42 +61,42 @@
             //- copy link
             v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
               v-list-item-icon
-                v-icon(v-text='mdiContentCopy')
+                span.adaxi-icon T
               v-list-item-content
                 v-list-item-title(v-text="$t('common.copy_link')")
 
             //- map
             v-list-item(v-if='settings.allow_geolocation && event.place?.latitude && event.place?.longitude' @click="mapModal = true")
               v-list-item-icon
-                v-icon(v-text='mdiMap')
+                span.adaxi-icon q
               v-list-item-content
                 v-list-item-title(v-text="$t('common.show_map')")
 
             //- calendar
             v-list-item(:href='`/api/event/detail/${event.slug || event.id}.ics`')
               v-list-item-icon
-                v-icon(v-text='mdiCalendarExport')
+                span.adaxi-icon ŷ
               v-list-item-content
                 v-list-item-title(v-text="$t('common.add_to_calendar')")
 
             //- Report
             v-list-item(v-if='settings.enable_moderation && settings.enable_report && !showModeration' @click='report')
               v-list-item-icon
-                v-icon(v-text='mdiMessageTextOutline')
+                span.adaxi-icon ,
               v-list-item-content
                 v-list-item-title(v-text="$t('common.report')")
 
             //- download flyer
             v-list-item(v-if='hasMedia && settings.show_download_media' :href='$helper.mediaURL(event, "download")')
               v-list-item-icon
-                v-icon(v-text='mdiFileDownloadOutline')
+                span.adaxi-icon °
               v-list-item-content
                 v-list-item-title(v-text="$t('event.download_flyer')")
 
             //- embed
             v-list-item(@click='showEmbed=true')
               v-list-item-icon
-                v-icon(v-text='mdiCodeTags')
+                span.adaxi-icon +
               v-list-item-content
                 v-list-item-title(v-text="$t('common.embed')")
       div.event-container.event-description-content
