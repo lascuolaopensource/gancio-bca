@@ -66,6 +66,7 @@
         >
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
           <v-icon v-text="mdiMapMarker" />
+          <p class="event-icon">Y</p>
           <span itemprop="name">{{ event.place.name }}</span>
         </nuxt-link>
         <div class="d-none p-street-address" itemprop="address">

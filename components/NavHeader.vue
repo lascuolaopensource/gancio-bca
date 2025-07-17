@@ -1,3 +1,6 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
+<!-- eslint-disable vue/singleline-html-element-content-newline -->
+
 <template>
   <div class="d-flex">
     <v-btn class="site-title-button" nuxt to="/">
