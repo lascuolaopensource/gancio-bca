@@ -912,7 +912,7 @@ const eventController = {
                 end_datetime,
                 online_locations: body.online_locations,
                 recurrent,
-                metadata: body.metadata || {}
+                metadata: body.metadata
             }
 
             // remove old media in case a new one is uploaded
@@ -981,7 +981,7 @@ const eventController = {
                 eventDetails.media[0].name = body.image_name || body.title || ''
             }
 
-            await event.update(eventDetails)
+            await event.update({...event,...eventDetails})
 
             // find or create the place
             let place
