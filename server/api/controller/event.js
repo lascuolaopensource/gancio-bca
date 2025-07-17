@@ -740,8 +740,6 @@ const eventController = {
         return res.status(400).send(e.message)
       }
 
-      console.log({ metadata: body.metadata })
-
       const eventDetails = {
         title: body.title.trim(),
         // sanitize and linkify html
@@ -893,7 +891,6 @@ const eventController = {
         return res.status(400).send('start_datetime is too much in the future')
       }
 
-      console.log(JSON.stringify({ metadata: body.metadata }))
       const recurrent = body.recurrent ? JSON.parse(body.recurrent) : null
       const eventDetails = {
         title: body.title || event.title,
@@ -979,7 +976,6 @@ const eventController = {
         eventDetails.media[0].name = body.image_name || body.title || ''
       }
 
-      console.log('before update', JSON.stringify({ eventDetails }))
       await event.update(eventDetails)
 
       // find or create the place

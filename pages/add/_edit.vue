@@ -124,7 +124,6 @@ export default {
     if (params.edit) {
       const data = { event: { place: {}, media: [] } }
       data.id = params.edit
-      console.log(data.id)
       data.edit = !query.clone
       let event
       try {
@@ -217,7 +216,7 @@ export default {
   },
   methods: {
     onFormChange(newData) {
-      console.log('onFormChange', newData)
+      // console.log('onFormChange', newData)
     },
     onFormSubmit({ data, valid }) {
       if (!valid) {
