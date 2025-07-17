@@ -79,7 +79,6 @@
         </div>
       </div>
     </v-card-text>
-prova
     <v-card-actions class="flex-wrap">
       <v-chip
         v-for="tag in event.tags.slice(0, 6)"

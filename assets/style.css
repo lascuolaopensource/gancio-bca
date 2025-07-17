@@ -65,6 +65,7 @@ body {
   font-family: 'Cabin', sans-serif !important;
   background-color: var(--white) !important;
   color: var(--black) !important;
+  font-feature-settings: "ss01";
 }
 
 .v-application {
@@ -439,9 +440,11 @@ pre {
 }
 
 .tags {
+  padding-top: calc(var(--spacer) * 1.5) !important;
   display: flex;
   justify-content: center;
   padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
+  background-color: var(--grey);
 }
 
 .tags a {
@@ -704,7 +707,7 @@ nav {
   display: flex;
   justify-content: center;
   padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
-  margin-bottom: calc(var(--spacer) * 2);
+  /* margin-bottom: calc(var(--spacer) * 2); */
 }
 
 .time-filters button {
@@ -757,11 +760,11 @@ nav {
 
 /* MENU */
 
-.v-menu__content {
+.drawer-menu-content{
   height: 100dvh !important;
-  width: 20vw !important;
+  width: 30vw !important;
   z-index: 1 !important;
-  right: -20vw !important;
+  right: -30vw !important;
   left: unset !important;
   top: 0px !important;
   position: fixed !important;
@@ -780,23 +783,23 @@ nav {
   max-height: 100% !important;
 }
 
-.v-menu__content.menuable__content__active {
+.drawer-menu-content.menuable__content__active {
   right: 0px !important;
 }
 
-.v-menu__content .v-list {
+.drawer-menu-content .v-list {
   padding: 0px !important;
 }
 
-.v-menu__content .v-list .v-list-item {
+.drawer-menu-content .v-list .v-list-item {
   padding: 0p !important;
 }
 
-.v-menu__content .v-list .v-list-item .v-list-item__icon svg path {
+.drawer-menu-content .v-list .v-list-item .v-list-item__icon svg path {
   fill: var(--white) !important;
 }
 
-.v-menu__content .v-list .v-list-item  .v-list-item__title {
+.drawer-menu-content .v-list .v-list-item  .v-list-item__title {
   font-size: var(--medium) !important;
   line-height: 1.2 !important;
   color: var(--white) !important;
@@ -842,7 +845,7 @@ nav {
   color: var(--white);
 }
 
-.v-menu__content .v-list {
+.drawer-menu-content .v-list {
   background-color: transparent !important;
 }
 
@@ -858,7 +861,7 @@ nav {
   color: var(--primary) !important;
   font-size: var(--extralarge) !important;
   font-family: 'Adaxi', sans-serif !important;
-  font-weight: 700 !important;
+  font-weight: 400 !important;
   text-transform: initial !important;
   letter-spacing: 0px !important;
   text-align: center !important;
@@ -866,4 +869,157 @@ nav {
 
 .tag-title:hover {
   text-decoration: none !important;
+}
+
+
+/* ADD EVENT */
+
+.action-buttons-add-export {
+  padding-top: calc(var(--spacer) * 4) !important;
+}
+
+.action-buttons-add-export .v-slide-group__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
+  flex-direction: row !important;
+}
+
+.action-buttons-add-export .v-slide-group__content a {
+  padding: calc(var(--spacer) / 2) calc(var(--spacer) * 1.5) !important;
+  background-color: var(--grey) !important;
+  color: var(--black) !important;
+  font-size: var(--small) !important;
+  text-decoration: none !important;
+  border-radius: 100vw !important;
+  margin-right: calc(var(--spacer) / 2) !important;
+  margin-bottom: calc(var(--spacer) / 2) !important;
+  font-family: 'Cabin', sans-serif !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0px calc(var(--spacer) / 2) !important;
+  flex-direction: row !important;
+}
+
+.action-buttons-add-export .v-slide-group__content a span{
+  font-family: 'Cabin', sans-serif !important;
+  margin: 0px !important;
+}
+
+.action-buttons-add-export .v-slide-group__content a svg path {
+  fill: var(--black) !important;
+}
+
+.action-buttons-add-export .v-slide-group__content a:hover {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+.action-buttons-add-export .v-slide-group__content a:hover svg path {
+  fill: var(--white) !important;
+}
+
+/* INPUTS */  
+
+.admin-section .v-input input {
+  background-color: var(--grey) !important;
+  border-radius: 100vw !important;
+  padding: calc(var(--spacer) * 1.5) calc(var(--spacer) * 3) !important;
+  font-size: var(--medium) !important;
+  font-family: 'Cabin', sans-serif !important;
+  color: var(--black) !important;
+  border: 0px solid var(--black) !important;
+  box-shadow: none !important;
+  height: auto !important;
+  margin-top: calc(var(--spacer) / 2) !important;
+}
+
+.admin-section .v-input label {
+  transform: translateY(-18px) scale(0.75) !important;
+}
+.admin-section .theme--light .v-input__slot:after,
+.admin-section .theme--light .v-input__slot:before {
+  border-bottom: none !important;
+  transition: none !important;
+}
+
+.v-input__slot:after,
+.v-input__slot:before {
+  border-bottom: none !important;
+  transition: none !important;
+}
+
+.admin-section .v-input__slot {
+  display: inline !important;
+}
+
+.admin-section  .v-input--selection-controls .v-input__slot > .v-label {
+  display: inline !important;
+}
+
+.admin-section .v-messages__message {
+  font-size: var(--small) !important;
+  line-height: 1.2 !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.admin-section .v-card__title {
+  font-family: 'Adaxi', sans-serif !important;
+  font-size: var(--large) !important;
+  margin-bottom: calc(var(--spacer) * 2) !important;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.admin-section .v-card__text {
+  font-size: var(--small) !important;
+}
+
+.admin-section span,
+.admin-section label,
+.admin-section .v-label,
+.admin-section .v-input__details,
+.admin-section .v-messages__message,
+.admin-section .v-list-item__subtitle,
+.admin-section .v-list-item__title,
+.admin-section .v-list-item__content,
+.admin-section .v-list-item__action,
+.admin-section small {
+  font-size: var(--small) !important;
+}
+
+.admin-section :deep(span),
+.admin-section :deep(label),
+.admin-section :deep(.v-label),
+.admin-section :deep(.v-input__details),
+.admin-section :deep(.v-messages__message),
+.admin-section :deep(.v-list-item__subtitle),
+.admin-section :deep(.v-list-item__title),
+.admin-section :deep(.v-list-item__content),
+.admin-section :deep(.v-list-item__action),
+.admin-section :deep(small) {
+  font-size: var(--small) !important;
+}
+
+.admin-section,
+.admin-section .v-card,
+.admin-section .v-card__text,
+.admin-section .v-card__title,
+.admin-section .v-card__actions,
+.admin-section .v-card__subtitle {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.admin-section .v-input--selection-controls .v-input__slot > .v-label, .v-input--selection-controls .v-radio > .v-label {
+  flex: none !important;
+}
+
+.v-ripple__container {
+  display: none !important;
 }

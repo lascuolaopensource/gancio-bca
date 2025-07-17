@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <Appbar />
-    <TimeFilters @filter-change="handleFilterChange" />
+    <template v-if="$route.name === 'index'">
+      <TimeFilters @filter-change="handleFilterChange" />
+    </template>
     <v-main>
       <Snackbar />
       <Confirm />
@@ -20,6 +22,7 @@ import Footer from '../components/Footer.vue'
 import Confirm from '../components/Confirm.vue'
 import TimeFilters from '../components/TimeFilters.vue'
 import { mapState, mapGetters } from 'vuex'
+import { setRandomFontFeatures } from '../plugins/helpers.js'
 
 export default {
   name: 'Default',
@@ -66,6 +69,10 @@ export default {
     } catch (e) {
       console.error(e)
     }
+  },
+  mounted() {
+    // Set random font-feature-settings on page load
+    setRandomFontFeatures()
   }
 }
 </script>
