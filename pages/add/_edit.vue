@@ -222,18 +222,14 @@ export default {
       if (!valid) {
         return
       }
-      console.log('metadata coming from form', JSON.stringify(data))
-      this.$axios
-        .$put('/event', {
-          id: this.event.id,
-          metadata: data,
-          place_id: this.event.place.id,
-          place_name: this.event.place.name,
-          place_address: this.event.place.address
-        })
-        .then((res) => {
-          console.log(res)
-        })
+      const body = {
+        id: this.id,
+        metadata: data,
+        place_id: this.event.place.id,
+        place_name: this.event.place.name,
+        place_address: this.event.place.address
+      }
+      this.$axios.$put('/event', body)
     },
     updateTags(tags) {
       this.event.tags = uniqBy(
