@@ -4,42 +4,43 @@
     //- EVENT PAGE
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
-    div.admin-action-wrapper
+    div.admin-actions-wrapper
       //- admin actions
       template(v-if='can_edit')
         EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
 
     //- Title and tags section
     div.title-tags-section
-      h1.title.text-md-h2.text-h4.pb-8
+      h1.title.text-md-h1.text-h4.pb-8
         strong.p-name.text--primary.font-heading(itemprop="name") {{event.title}}
 
       //- tags, hashtags
-      v-list.pt-0(v-if='event?.tags?.length')
-        v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' dark color='var(--purple)'
+      .tags(v-if='event?.tags?.length')
+        v-chip.tag(v-for='tag in event.tags' large color='primary'
           :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
 
     //- Image section
     div.image-section
-      MyPicture(v-if='hasMedia' :event='event')
+      MyPicture.event-container(v-if='hasMedia' :event='event')
 
     //- Event info section
     div.event-info-section
-      v-container.eventDetails.pt-4
-        v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
-        v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
-        time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
-          v-icon(v-text='mdiCalendar' small)
-          span.ml-2.text-uppercase {{$time.when(event)}}
-          .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
-        div.font-weight-light.mb-3 {{$time.from(event.start_datetime)}}
-          small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
+      v-container.event-container.eventDetails
+        div.row
+          v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
+          v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
+          time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
+            v-icon(v-text='mdiCalendar' medium)
+            span.ml-2 {{$time.when(event)}}
+            .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
+          div.font-weight-light.font-italic {{$time.from(event.start_datetime)}}
+            small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
 
-        .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
-          v-icon(v-text='mdiMapMarker' small)
-          nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
+        .p-location.h-adr.row(itemprop="location" itemscope itemtype="https://schema.org/Place")
+          v-icon(v-text='mdiMapMarker' medium)
+          nuxt-link.vcard.ml-2.p-name.text-decoration-none(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
             span(itemprop='name') {{event?.place?.name}}
-          .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
+          .font-weight-light.p-street-address.font-italic(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
 
         //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
         a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
@@ -52,8 +53,11 @@
           v-list-item-content.py-0
             v-list-item-title.text-caption(v-text='item')
 
+    //- Description section
+    div.description-section
       //- Action buttons
-      v-list.event-actions(dense nav color='transparent')
+      div.event-actions-wrapper
+        v-list.event-actions(dense nav color='transparent')
             //- copy link
             v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
               v-list-item-icon
@@ -95,10 +99,8 @@
                 v-icon(v-text='mdiCodeTags')
               v-list-item-content
                 v-list-item-title(v-text="$t('common.embed')")
-
-    //- Description section
-    div.description-section
-      .p-description.text-body-1.rounded.col-md-8.col-sm-12(v-if='event.description' itemprop='description' v-html='event.description')
+      div.event-container.event-description-content
+        .p-description(v-if='event.description' itemprop='description' v-html='event.description')
 
     //- resources from fediverse
     EventResource#resources.mt-3(:event='event' v-if='showResources')
