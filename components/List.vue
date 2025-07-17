@@ -18,9 +18,6 @@ import { mdiRepeat } from '@mdi/js'
 
 export default {
   name: 'List',
-  data() {
-    return { mdiRepeat }
-  },
   props: {
     title: {
       type: String,
@@ -52,6 +49,9 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  data() {
+    return { mdiRepeat }
   },
   computed: {
     computedEvents() {

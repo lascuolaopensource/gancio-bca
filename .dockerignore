@@ -8,3 +8,5 @@ uploads
 _nuxt2
 wp_plugin
 tests
+postgres
+data
