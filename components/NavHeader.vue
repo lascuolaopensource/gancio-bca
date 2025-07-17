@@ -24,7 +24,7 @@
         :aria-label="$t(nav.title)"
         v-if="!nav.hide"
       >
-        Cos'è
+        {{$t(nav.title)}}
       </v-btn>
       <!-- <v-btn icon large @click="toggleDark">
         Darkmode
@@ -196,7 +196,7 @@ export default {
       navLinks: [
         {
           to: '/about',
-          title: 'common.about',
+          title: 'About',
           icon: mdiInformation
         }
         // Add more navigation links here as needed

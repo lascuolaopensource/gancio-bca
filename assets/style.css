@@ -1130,3 +1130,20 @@ nav {
 .v-ripple__container {
   display: none !important;
 }
+
+/* ABOUT */
+.about-text{
+  font-size: var(--large) !important;
+  padding: 0 !important;
+}
+
+.about-text p{
+  line-height: 1.2;
+}
+
+.about-heading::after{
+  content: 'About';
+  font-family: 'Adaxi', sans-serif !important;
+  font-size: var(--extralarge);
+  font-weight: normal;
+}

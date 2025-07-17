@@ -58,6 +58,7 @@ import NavHeader from './NavHeader.vue'
 import NavSearch from './NavSearch.vue'
 import Tags from './Tags.vue'
 import Calendar from './Calendar.vue'
+import NavBar from './NavBar.vue'
 
 export default {
   name: 'Appbar',
