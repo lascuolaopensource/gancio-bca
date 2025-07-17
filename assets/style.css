@@ -727,6 +727,7 @@ nav {
   padding-left: calc(var(--spacer) * 2);
   padding-right: calc(var(--spacer) * 2);
   max-width: calc(800px);
+  max-height: 50vh;
 }
 
 .admin-actions-wrapper {
