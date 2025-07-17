@@ -302,7 +302,7 @@ li {
 }
 
 #event {
-  max-width: 1200px;
+  /*max-width: 1200px;*/
   overflow-wrap: break-word;
 }
 
@@ -455,7 +455,7 @@ pre {
 }
 
 #events {
-    margin-bottom: calc(var(--spacer) * 2)
+    margin-bottom: calc(var(--spacer) * 2);
 }
 
 #events .event.v-card {
@@ -641,16 +641,20 @@ nav {
 
 .v-card .v-icon {
   opacity: 1 !important;
-  color: #fff !important;
+  color: var(--black) !important;
 }
 
 
 /* UTILITY */
+.adaxi-body{
+  overflow: visible !important;
+}
 .font-heading{
   font-family: 'Adaxi', sans-serif !important;
+  font-weight: normal;
 }
 
-/* EVENT ADMIN */
+/* EVENT PAGE */
 .admin-actions{
   background-color: var(--grey) !important;
 }
@@ -659,6 +663,38 @@ nav {
   @media only screen and (max-width: 600px) {
     display: block;
   }
+}
+
+.event-hero{
+  gap: var(--spacer);
+  background-color: var(--primary);
+}
+
+.event-hero img{
+  aspect-ratio: 1 !important;
+  object-fit: cover !important;
+}
+
+.event-description{
+  flex-direction: row-reverse;
+  justify-content: center
+}
+
+
+.event-actions-wrapper{
+  position: relative;
+}
+.event-actions{
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  scroll-margin-top: 0;
+}
+
+.p-description{
+  max-width: 65ch;
+}
+
 }  
 /* TIME FILTERS */
 

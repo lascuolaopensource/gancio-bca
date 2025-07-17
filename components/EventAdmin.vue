@@ -1,12 +1,14 @@
 <template lang="pug">
-span.admin-actions.v-card.mb-8
-  h3.text-overline.pl-4 {{$t('common.admin_actions')}}
+span.admin-actions.v-card
   v-list(dense nav color='transparent')
 
     //-v-list-group(:append-icon='mdiChevronUp' :value='true')
       template(v-slot:activator)
         v-list-item.text-overline {{$t('common.admin_actions')}}
     -//
+
+      v-list-item
+        h3.text-overline.pl-4 {{$t('common.admin_actions')}}
 
       //- Hide / confirm event
       v-list-item(@click='toggle(false)')

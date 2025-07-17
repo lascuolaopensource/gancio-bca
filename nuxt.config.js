@@ -15,6 +15,9 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
+    bodyAttrs: {
+      class: 'adaxi-body'
+    }
   },
   dev: isDev,
   server: config.server,
