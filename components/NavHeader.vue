@@ -3,7 +3,7 @@
     <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
       <!--<img src="/logo.png" height="40" />-->
-      <p class="site-title">Adaxi</p>
+      <p class="site-title">Adaxi Eventi</p>
     </v-btn>
 
     <v-spacer />
@@ -28,6 +28,9 @@
       </v-btn> -->
       <client-only>
         <v-menu
+          class="language-menu drawer-menu"
+          content-class="drawer-menu-content"
+          role="menu"
           offset-y
           transition="slide-y-transition"
           bottom
@@ -72,7 +75,13 @@
       </client-only>
 
       <client-only>
-        <v-menu v-if="$auth.loggedIn" offset-y transition="slide-y-transition">
+        <v-menu 
+          v-if="$auth.loggedIn" 
+          class="user-menu drawer-menu"
+          content-class="drawer-menu-content"
+          role="menu"
+          offset-y 
+          transition="slide-y-transition">
           <template #activator="{ on, attrs }">
             <v-btn
               class="mr-0"

@@ -5,13 +5,13 @@
     <NavHeader />
 
     <template v-if="$route.name === 'index'">
-      <div class="hero-section">
+      <div class="hero-section" :style="heroStyle">
         <div class="hero-text-above">
           <p>Oggi ho voglia di</p>
         </div>
         <NavSearch />
         <div class="hero-text-below">
-          <p>Adaxi</p>
+          
         </div>
       </div>
     </template>
@@ -43,8 +43,8 @@
         </div>
         <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
           <Calendar v-if="showCalendar" class="" />
-          <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
-        </div>-->
+          
+        </div> -->
         <!-- <TimeFilters @filter-change="handleFilterChange" /> -->
       </div>
     </template>
@@ -71,7 +71,11 @@ export default {
   },
   data() {
     return {
-      showSearchContainer: false
+      showSearchContainer: false,
+      heroStyle: {
+        'font-feature-settings': '"ss01"'
+      },
+      fontFeatureInterval: null
     }
   },
   computed: {
@@ -82,6 +86,23 @@ export default {
       )
     }
   },
+  mounted() {
+    if (this.$route.name === 'index') {
+      this.startFontFeatureAnimation()
+    }
+  },
+  beforeDestroy() {
+    this.stopFontFeatureAnimation()
+  },
+  watch: {
+    '$route.name'(newRoute) {
+      if (newRoute === 'index') {
+        this.startFontFeatureAnimation()
+      } else {
+        this.stopFontFeatureAnimation()
+      }
+    }
+  },
   methods: {
     toggleSearch() {
       this.showSearchContainer = !this.showSearchContainer
@@ -89,6 +110,22 @@ export default {
     handleFilterChange(payload) {
       // This method will be implemented in the parent component to filter events
       console.log('Filter changed:', payload);
+    },
+    startFontFeatureAnimation() {
+      this.stopFontFeatureAnimation() // Clear any existing interval
+      this.fontFeatureInterval = setInterval(() => {
+        const ssNumber = Math.floor(Math.random() * 5) + 1 // Random number 1-5
+        const ssNumberStr = ssNumber < 10 ? `0${ssNumber}` : `${ssNumber}`
+        this.heroStyle = {
+          'font-feature-settings': `"ss${ssNumberStr}"`
+        }
+      }, 1000) // Change every 1 second
+    },
+    stopFontFeatureAnimation() {
+      if (this.fontFeatureInterval) {
+        clearInterval(this.fontFeatureInterval)
+        this.fontFeatureInterval = null
+      }
     }
   }
 }

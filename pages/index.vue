@@ -1,47 +1,55 @@
 <template>
-  <v-container id="home" class="px-2 px-sm-6 pt-0">
-    <!-- Announcements -->
-    <section
-      v-if="announcements?.length"
-      id="announcements"
-      class="mt-2 mt-sm-4"
-    >
-      <Announcement
-        v-for="announcement in announcements"
-        :key="`a_${announcement.id}`"
-        :announcement="announcement"
-      />
-    </section>
+
+  <div>
 
     <!-- Tags -->
     <section class="">
       <Tags :show-count="true" :limit="8" />
     </section>
 
-    <!-- Events -->
-    <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
-      <v-lazy
-        v-for="(event, idx) in visibleEvents"
-        :key="event.id"
-        class="event v-card"
-        :value="idx < 9"
-        :min-height="hide_thumbs ? 105 : undefined"
-        :options="{ threshold: 0.5, rootMargin: '500px' }"
-        :class="{ 'theme--dark': is_dark }"
+    <v-container id="home" class="px-2 px-sm-6 pt-0">
+      <!-- Announcements -->
+      <section
+        v-if="announcements?.length"
+        id="announcements"
+        class="mt-2 mt-sm-4"
       >
-        <Event :event="event" :lazy="idx > 9" />
-      </v-lazy>
-    </section>
+        <Announcement
+          v-for="announcement in announcements"
+          :key="`a_${announcement.id}`"
+          :announcement="announcement"
+        />
+      </section>
 
-    <section v-else class="text-center">
-      <v-progress-circular
-        class="mt-5 justify-center align-center mx-auto"
-        color="primary"
-        indeterminate
-        model-value="20"
-      />
-    </section>
-  </v-container>
+      <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+
+      <!-- Events -->
+      <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
+        <v-lazy
+          v-for="(event, idx) in visibleEvents"
+          :key="event.id"
+          class="event v-card"
+          :value="idx < 9"
+          :min-height="hide_thumbs ? 105 : undefined"
+          :options="{ threshold: 0.5, rootMargin: '500px' }"
+          :class="{ 'theme--dark': is_dark }"
+        >
+          <Event :event="event" :lazy="idx > 9" />
+        </v-lazy>
+      </section>
+
+      <section v-else class="text-center">
+        <v-progress-circular
+          class="mt-5 justify-center align-center mx-auto"
+          color="primary"
+          indeterminate
+          model-value="20"
+        />
+      </section>
+    </v-container>
+  
+  </div>
+
 </template>
 
 <script>
@@ -52,11 +60,12 @@ import { DateTime } from 'luxon'
 import Event from '@/components/Event'
 import Announcement from '@/components/Announcement'
 import Tags from '@/components/Tags'
+import NavBar from '@/components/NavBar.vue'
 import { mdiMagnify, mdiCloseCircle } from '@mdi/js'
 
 export default {
   name: 'Index',
-  components: { Event, Announcement, Tags },
+  components: { Event, Announcement, Tags, NavBar },
   middleware: 'setup',
   data({ $time }) {
     return {

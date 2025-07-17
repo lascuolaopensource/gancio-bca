@@ -1,5 +1,5 @@
 <template lang="pug">
-v-container.container.pa-0.pa-md-3
+v-container.container.event-add-section.pa-0.pa-md-3
   v-card
     v-card-title
       h4 {{ edit ? $t('common.edit_event') : $t('common.add_event') }}

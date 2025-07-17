@@ -9,7 +9,7 @@
       optional
       dense
       icons-and-text
-      class="mt-4"
+      class="action-buttons-add-export"
     >
       <v-tab
         v-if="$auth.loggedIn || settings.allow_anon_event"

@@ -16,12 +16,6 @@
         color="success"
         v-text="mdiRepeat"
       />
-      <v-icon
-        v-if="isPast"
-        class="float-right mt-1 mr-1"
-        color="warning"
-        v-text="mdiTimerSandComplete"
-      />
       <h2 class="title p-name" itemprop="name">
         {{ event.title }}
       </h2>
@@ -79,7 +73,6 @@
         </div>
       </div>
     </v-card-text>
-prova
     <v-card-actions class="flex-wrap">
       <v-chip
         v-for="tag in event.tags.slice(0, 6)"
@@ -103,8 +96,7 @@ import MyPicture from '~/components/MyPicture'
 import {
   mdiRepeat,
   mdiCalendar,
-  mdiMapMarker,
-  mdiTimerSandComplete
+  mdiMapMarker
 } from '@mdi/js'
 
 export default {
@@ -116,7 +108,7 @@ export default {
     lazy: Boolean
   },
   data() {
-    return { mdiRepeat, mdiMapMarker, mdiCalendar, mdiTimerSandComplete }
+    return { mdiRepeat, mdiMapMarker, mdiCalendar }
   },
   computed: {
     ...mapGetters(['hide_thumbs']),
