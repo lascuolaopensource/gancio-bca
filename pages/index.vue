@@ -13,11 +13,6 @@
       />
     </section>
 
-    <!-- Tags -->
-    <section class="mt-2 mt-sm-4">
-      <Tags :show-count="true" :limit="8" />
-    </section>
-
     <!-- Map -->
     <section class="mt-2 mt-sm-4">
       <GancioMap
@@ -30,7 +25,7 @@
     </section>
 
     <!-- Events -->
-    <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
+    <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2 py-8">
       <v-lazy
         v-for="(event, idx) in visibleEvents"
         :key="event.id"

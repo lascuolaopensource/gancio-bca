@@ -5,57 +5,56 @@
 /* VARIABLES */
 
 :root {
+  /* Spacer */
+  --spacer: 15px;
 
-	/* Spacer */
-	--spacer: 15px;
+  /* Typography */
+  --extralarge: 75px;
+  --large: 36px;
+  --medium: 24px;
+  --small: 16px;
 
-	/* Typography */
-	--extralarge: 75px; 
-	--large: 36px;
-	--medium: 24px; 
-	--small: 16px;
-
-	/* Colors */
-	--black: #000000;
+  /* Colors */
+  --black: #000000;
   --grey: #f3f3f3;
-	--white: #FFFFFF;
+  --white: #ffffff;
   --primary: #ff3e63;
   --purple: #9369dd;
   --green: #16c882;
   --yellow: #ffe00f;
-	
 }
 
 /* RESET */
 
 * {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	list-style: none;
-	vertical-align: baseline;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  vertical-align: baseline;
+  box-sizing: border-box;
 }
 
 /* SCROLLBAR */
 
-*::-webkit-scrollbar { 
-	display: none; 
-} 
+*::-webkit-scrollbar {
+  display: none;
+}
 
 /* SELECTION */
 
 ::selection {
-	background-color: var(--black);
-	color: var(--white);
+  background-color: var(--black);
+  color: var(--white);
 }
 
 /* GLOBAL */
 
-html, body {
+html,
+body {
   overflow-y: auto !important;
   overflow-x: hidden;
-  font-family: "Cabin", sans-serif !important;
+  font-family: 'Cabin', sans-serif !important;
   background-color: var(--white) !important;
   color: var(--black) !important;
 }
@@ -65,7 +64,7 @@ html, body {
 }
 
 .v-application {
-  font-family: "Cabin", sans-serif !important;
+  font-family: 'Cabin', sans-serif !important;
 }
 
 /* HEADER */
@@ -247,7 +246,9 @@ li {
 }
 
 .event:hover {
-  box-shadow: 0 0 0 3px #ff4511, 0 1.5px 6px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 0 0 3px #ff4511,
+    0 1.5px 6px rgba(0, 0, 0, 0.08);
   z-index: 1;
 }
 
@@ -338,13 +339,13 @@ pre {
 
 .search-input input::placeholder {
   color: #9e9e9e !important;
-  opacity: 1; 
+  opacity: 1;
   text-align: center;
 }
 
 .search-input .v-input__append-inner {
   display: none !important;
-} 
+}
 
 .v-input__slot::before {
   display: none;
@@ -402,7 +403,9 @@ pre {
 .search-calendar-container {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.4s ease;
+  transition:
+    max-height 0.4s ease,
+    opacity 0.4s ease;
   opacity: 0;
 }
 
@@ -412,7 +415,7 @@ pre {
 }
 
 .tags {
-  displaY: flex;
+  display: flex;
   padding: calc(var(--spacer) * 1) calc(var(--spacer) * 1);
 }
 
@@ -433,12 +436,11 @@ pre {
 }
 
 #events {
-      
 }
 
 #events .event.v-card {
   border: 0px !important;
-  background-color: var(--primary) !important;
+  background-color: var(--green) !important;
 }
 
 #events .event.v-card:hover {
@@ -450,7 +452,6 @@ pre {
 }
 
 #events .event.v-card .thumb {
-
 }
 
 #events .event.v-card .thumb img {
@@ -462,11 +463,11 @@ pre {
   color: var(--white);
   text-decoration: none !important;
   font-size: var(--medium) !important;
-  font-family: "Cabin", sans-serif !important;
+  font-family: 'Cabin', sans-serif !important;
 }
 
 #events .event.v-card h2.title:hover {
-   text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 #events .event.v-card > article > a:hover {
@@ -474,13 +475,12 @@ pre {
 }
 
 #events .event.v-card .v-card__text {
-
 }
 
 #events .event.v-card .v-card__text time {
   color: var(--white);
   font-size: var(--small) !important;
-  font-family: "Cabin", sans-serif !important;
+  font-family: 'Cabin', sans-serif !important;
 }
 
 #events .event.v-card .v-card__text time span {
@@ -501,7 +501,6 @@ pre {
 }
 
 #events .event.v-card .v-card__text .v-card__actions {
-
 }
 
 #events .event.v-card .v-card__actions a {
@@ -521,13 +520,12 @@ pre {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(var(--spacer) * 24);
-  padding: calc(var(--spacer) * 3) var(--spacer) calc(var(--spacer) * 2) var(--spacer);
+  padding: calc(var(--spacer) * 3) var(--spacer) calc(var(--spacer) * 2)
+    var(--spacer);
   border-radius: calc(var(--spacer) * 1.6);
   margin: calc(var(--spacer) * 1.6) auto calc(var(--spacer) * 2.1) auto;
   max-width: 100%;
   background-color: transparent;
-  height: 500px;
 }
 
 .hero-text-below p {
@@ -564,8 +562,8 @@ pre {
 
 @media (max-width: 600px) {
   .hero-section {
-    min-height: calc(var(--spacer) * 10);
-    padding: calc(var(--spacer) * 1.5) calc(var(--spacer) / 4) var(--spacer) calc(var(--spacer) / 4);
+    padding: calc(var(--spacer) * 1.5) calc(var(--spacer) / 4) var(--spacer)
+      calc(var(--spacer) / 4);
     border-radius: calc(var(--spacer) * 0.8);
   }
   .hero-text-above {

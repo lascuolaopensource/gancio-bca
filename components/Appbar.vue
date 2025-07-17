@@ -5,12 +5,9 @@
     <NavHeader />
     <div class="hero-section">
       <div class="hero-text-above">
-        <p>Oggi ho voglia di</p>
+        <p>Scopri i parchi dell'area metropolitana di Bari</p>
       </div>
       <NavSearch />
-      <div class="hero-text-below">
-        <p>Adaxi</p>
-      </div>
     </div>
 
     <!-- title -
@@ -31,15 +28,14 @@
         />
       </div>
     </template>-->
-
-    <div class="main-search-button" @click="toggleSearch">
-      <p>Usa il calendario</p>
-    </div>
-    <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
+    <div
+      class="search-calendar-container"
+      :class="{ visible: showSearchContainer }"
+    >
       <Calendar v-if="showCalendar" class="" />
       <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
     </div>
-    <Tags />
+    <!-- <Tags />s -->
   </nav>
 </template>
 
@@ -83,14 +79,16 @@ export default {
 
 <style>
 nav {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.7)),
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.7)),
     url(/headerimage.png);
   background-position: center center;
   background-size: cover;
 }
 
 .theme--light nav {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       to bottom,
       rgba(230, 230, 230, 0.95),
       rgba(250, 250, 250, 0.95)

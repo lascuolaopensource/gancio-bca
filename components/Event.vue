@@ -27,36 +27,7 @@
       </h2>
     </nuxt-link>
 
-    <v-img
-      v-if="event?.ap_user?.image"
-      contain
-      :src="event?.ap_user?.image"
-      max-height="30"
-      max-width="30"
-      style="position: absolute; top: 5px; right: 5px"
-    />
-
     <v-card-text class="body pt-0 pb-0">
-      <time
-        class="dt-start subtitle-1"
-        :datetime="$time.unixFormat(event.start_datetime, 'yyyy-MM-dd HH:mm')"
-        itemprop="startDate"
-        :content="
-          $time.unixFormat(event.start_datetime, 'yyyy-MM-dd\'T\'HH:mm')
-        "
-      >
-        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-        <v-icon v-text="mdiCalendar" /> {{ $time.when(event) }}
-      </time>
-      <time
-        v-if="event.end_datetime"
-        class="d-none dt-end"
-        itemprop="endDate"
-        :content="$time.unixFormat(event.end_datetime, 'yyyy-MM-dd\'T\'HH:mm')"
-      >
-        {{ $time.unixFormat(event.end_datetime) }}
-      </time>
-
       <div
         class="p-location"
         itemprop="location"

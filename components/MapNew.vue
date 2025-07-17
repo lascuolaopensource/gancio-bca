@@ -209,9 +209,10 @@ export default {
 
 <style>
 #leaflet-map {
-  height: 10rem;
+  height: 30rem;
+
   border-radius: 0.3rem;
-  border: 1px solid #fff;
+  border: 4px solid black;
   z-index: 1;
 }
 </style>

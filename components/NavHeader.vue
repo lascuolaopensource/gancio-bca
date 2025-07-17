@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex pa-4">
+  <div class="d-flex pa-4 background">
     <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
       <!--<img src="/logo.png" height="40" />-->
@@ -194,3 +194,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.background {
+  background-color: var(--green);
+}
+</style>

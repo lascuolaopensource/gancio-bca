@@ -2,7 +2,7 @@
 v-container.container.pa-0.pa-md-3
   v-card
     v-card-title
-      h4 {{ edit ? $t('common.edit_event') : $t('common.add_event') }}
+      h4 {{ edit ? $t('Modifica parco') : $t('Aggiungi parco') }}
       v-spacer
       v-btn(outlined  color='primary' @click='openImportDialog = true')
         <v-icon v-text='mdiFileImport'></v-icon> {{ $t('common.import') }}
@@ -10,14 +10,6 @@ v-container.container.pa-0.pa-md-3
       ImportDialog(@close='openImportDialog = false' @imported='eventImported')
 
     v-card-text.px-0.px-xs-2
-      SchemaForm(
-        v-if="schema"
-        :schema="schema"
-        :data="event.metadata"
-        :uiSchema="uiSchema"
-        @form-change="onFormChange"
-        @form-submit="onFormSubmit"
-      )
       v-form(v-model='valid' ref='form' lazy-validation)
         v-container
           v-row
@@ -75,6 +67,22 @@ v-container.container.pa-0.pa-md-3
       <v-spacer />
       <v-btn @click='done' :loading='loading' :disabled='!valid || loading' outlined color='primary'>{{ edit ? $t('common.save') : $t('common.send') }}</v-btn>
     </v-card-actions>
+
+    div.spacer
+
+    div.mb-3
+      h4 Metadati
+
+    div.schema-container(v-if="schema")
+      SchemaForm(
+          v-if="schema"
+          :schema="schema"
+          :data="event.metadata"
+          :uiSchema="uiSchema"
+          @form-change="onFormChange"
+          @form-submit="onFormSubmit"
+        )
+
 </template>
 
 <script>
@@ -107,6 +115,7 @@ export default {
     DateInput,
     SchemaForm
   },
+  layout: 'default-slim',
   validate({ store, params, error }) {
     // should we allow anon event?
     if (!store.state.settings.allow_anon_event && !store.state.auth.loggedIn) {
