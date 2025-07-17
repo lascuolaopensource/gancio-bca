@@ -1203,3 +1203,12 @@ nav {
   font-size: var(--extralarge);
   font-weight: normal;
 }
+
+
+/* ADD PAGE */
+.add-event-form input{
+  background-color: var(--grey);
+  border-radius: 32px;
+  font-size: var(--medium);
+  padding: var(--spacer);
+}

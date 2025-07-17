@@ -9,7 +9,7 @@ v-container.container.event-add-section.pa-0.pa-md-3
     v-dialog(v-model='openImportDialog' :fullscreen='$vuetify.breakpoint.xsOnly')
       ImportDialog(@close='openImportDialog = false' @imported='eventImported')
 
-    v-card-text.px-0.px-xs-2
+    v-card-text.px-0.px-xs-2.add-event-form
       v-form(v-model='valid' ref='form' lazy-validation)
         v-container
           v-row
