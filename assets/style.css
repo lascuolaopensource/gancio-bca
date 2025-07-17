@@ -477,9 +477,53 @@ pre {
   margin-bottom: calc(var(--spacer) * 2);
 }
 
+#events .event.v-card .event-icon {
+  font-family: 'Adaxi Icons', sans-serif !important;
+  font-size: var(--medium) !important;
+  margin-bottom: 0px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#events .event.v-card .v-card__text a:hover {
+  text-decoration: none !important;
+}
+
+#events .event.v-card .v-card__text a .event-icon {
+  font-family: 'Adaxi Icons', sans-serif !important;
+  font-size: 32px !important;
+  line-height: 0.8 !important;
+  margin-bottom: 0px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#events .event.v-card .v-card__text .event-date {
+  display: flex;
+  align-items: center;
+}
+
+#events .event.v-card .v-card__text .event-date .event-icon {
+  margin-bottom: -10px !important;
+}
+
+#events .event.v-card .v-card__text .event-icon {
+  font-family: 'Adaxi Icons', sans-serif !important;
+  font-size: 32px !important;
+  line-height: 0.8 !important;
+  margin-bottom: 0px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#events .event.v-card .v-card__text a:hover .event-icon {
+
+}
+
 #events .event.v-card {
   border: 0px !important;
   background-color: var(--primary) !important;
+  border: 1px solid var(--primary) !important;
   transition: all 0.3s ease;
 }
 
@@ -495,6 +539,12 @@ pre {
 }
 
 #events .event.v-card .thumb {
+}
+
+#events .event.v-card .place {
+  display: flex !important;
+  align-items: center !important;
+  margin-right: calc(var(--spacer) / 2) !important;
 }
 
 #events .event.v-card .thumb img {
@@ -532,6 +582,7 @@ pre {
   font-size: var(--small) !important;
   font-family: 'Cabin', sans-serif !important;
   transition: all 0.3s ease;
+  display: inline-block !important;
 }
 
 #events .event.v-card:hover .v-card__text time {
@@ -709,8 +760,37 @@ nav {
   align-items: center;
 }
 
+.title-tags-section .tags a {
+  padding: calc(var(--spacer) / 2) calc(var(--spacer) * 1) !important;
+  background-color: transparent !important;
+  border: 1px solid var(--white) !important;
+  color: var(--white) !important;
+  font-size: var(--medium) !important;
+  text-decoration: none !important;
+  border-radius: 100vw !important;
+  margin-right: calc(var(--spacer) / 2) !important;
+  margin-bottom: calc(var(--spacer) / 2) !important;
+  height: auto !important;
+}
+
+.title-tags-section .tags a:hover {
+  background-color: var(--white) !important;
+  color: var(--purple) !important;
+}
+
+.title-tags-section .tags a .v-chip__content {
+  color: var(--white) !important;
+  font-size: var(--medium) !important;
+  font-family: 'Cabin', sans-serif !important;
+}
+
+.title-tags-section .tags a:hover .v-chip__content {
+  color: var(--purple) !important;
+}
+
 .title-tags-section h1 {
   text-align: center;
+  color: var(--white);
 }
 
 .image-section {
@@ -719,6 +799,10 @@ nav {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.image-section .event-container {
+  max-width: 700px;
 }
 
 .image-section .img {
@@ -809,6 +893,10 @@ nav {
   @media only screen and (max-width: 600px) {
     font-size: calc(var(--small)) !important;
   }
+}
+
+.event-description-content p {
+  max-width: 700px !important;
 }
 
 /* TIME FILTERS */
@@ -1135,9 +1223,4 @@ nav {
 
 .title-tags-section .tags {
   background-color: transparent;
-}
-
-.event-icon {
-  font-family: 'Adaxi Icons', sans-serif;
-  font-size: var(--medium);
 }
