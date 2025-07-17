@@ -1,23 +1,23 @@
 <template lang="pug">
-  
-#event.h-event.pa-2.pa-sm-2.pt-0.pt-sm-0.container(v-touch="{ left: goNext, right: goPrev }" itemscope itemtype="https://schema.org/Event")
+
+#event.h-event.pa-2.pa-sm-2.pt-0.pt-sm-0(v-touch="{ left: goNext, right: goPrev }" itemscope itemtype="https://schema.org/Event")
     //- EVENT PAGE
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
-    div
+    div.admin-action-wrapper
       //- admin actions
       template(v-if='can_edit')
         EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
-    v-row
-      v-col.col-12.col-md-6
+
+    div.d-md-flex.event-hero
+      div
         h1.title.text-md-h2.text-h4.pb-8
           strong.p-name.text--primary.font-heading(itemprop="name") {{event.title}}
 
-      
         div
           //- tags, hashtags
-          .pt-0(v-if='event?.tags?.length')
-            v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' small label color='primary'
+          v-list.pt-0(v-if='event?.tags?.length')
+            v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' dark color='var(--purple)'
               :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
 
           //- event details
@@ -48,9 +48,14 @@
               v-list-item-content.py-0
                 v-list-item-title.text-caption(v-text='item')
 
-          //- info & actions
-          v-list.v-card(dense nav color='transparent')
+      //- image if present
+      div
+        MyPicture(v-if='hasMedia' :event='event')
 
+    div.d-md-flex.align-stretch.event-description
+      //- info & actions
+      div.event-actions-wrapper
+        v-list.event-actions(dense nav color='transparent')
               //- copy link
               v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
                 v-list-item-icon
@@ -93,13 +98,9 @@
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.embed')")
 
-      //- image if present
-      v-col.col-12.col-md-6.pr-sm-2.pr-md-0
-        MyPicture(v-if='hasMedia' :event='event')
-
-      //- description
-      v-col.col-12.d-flex.justify-center
-        .p-description.text-body-1.rounded.col-md-8.col-sm-10.col-xs-12(v-if='event.description' itemprop='description' v-html='event.description')
+      //- description colore icone
+      div.event-p-description
+        .p-description.text-body-1.rounded.col-md-8.col-sm-12(v-if='event.description' itemprop='description' v-html='event.description')
 
     //- resources from fediverse
     EventResource#resources.mt-3(:event='event' v-if='showResources')
