@@ -3,18 +3,7 @@
     <!-- Declarative setup -->
     <schema-form
       id="myForm"
-      :schema="{
-        title: 'CDN demo',
-        description: 'Pretty neat, huh?',
-        properties: {
-          foo: {
-            type: 'string'
-          },
-          bar: {
-            type: 'boolean'
-          }
-        }
-      }"
+      :schema="eventSchema"
       :data="{
         foo: 'Hello'
       }"
@@ -29,10 +18,16 @@
 
 <script>
 import SchemaForm from '~/components/SchemaForm.vue'
+import { eventSchema } from '../server/schemas.generated.js'
 
 export default {
   components: {
     SchemaForm
+  },
+  data() {
+    return {
+      eventSchema
+    }
   }
 }
 </script>

@@ -4,7 +4,6 @@
       ref="formFrame"
       src="/json-schema-form.html"
       style="width: 100%; height: 100vh; border: none"
-      @load="onIframeLoad"
     />
   </div>
 </template>
@@ -32,7 +31,7 @@ export default {
 
   data() {
     return {
-      form: null
+      isFormReady: false
     }
   },
 
@@ -57,54 +56,63 @@ export default {
     }
   },
 
+  mounted() {
+    window.addEventListener('message', this.handleMessage)
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('message', this.handleMessage)
+  },
+
   methods: {
-    onIframeLoad() {
-      // Get reference to the form inside iframe
-      const iframe = this.$refs.formFrame
-      const form = iframe.contentWindow.document.getElementById('myForm')
+    handleMessage(event) {
+      const { type, data } = event.data
 
-      if (form) {
-        this.form = form
+      if (type === 'form-ready') {
+        this.isFormReady = true
+        this.updateFormSchema(this.schema)
+        this.updateFormData(this.data)
+        this.updateFormUiSchema(this.uiSchema)
+      } else if (type === 'form-submit') {
+        this.$emit('form-submit', data)
+      }
+    },
 
-        iframe.contentWindow.postMessage(
+    updateFormData(newData) {
+      if (this.isFormReady) {
+        this.$refs.formFrame.contentWindow.postMessage(
           {
-            type: 'schema-change',
-            data: this.schema
+            type: 'update-data',
+            data: newData
           },
           '*'
         )
+      }
+    },
 
-        // this.updateFormSchema(this.schema)
-        // this.updateFormData(this.data)
-        // this.updateFormUiSchema(this.uiSchema)
+    updateFormSchema(newSchema) {
+      if (this.isFormReady) {
+        this.$refs.formFrame.contentWindow.postMessage(
+          {
+            type: 'update-schema',
+            data: newSchema
+          },
+          '*'
+        )
+      }
+    },
 
-        // form.dataChangeCallback = (newData) => {
-        //   this.$emit('form-change', newData)
-        // }
-
-        // form.onFormSubmit = (newData, valid) => {
-        //   this.$emit('form-submit', { data: newData, valid })
-        // }
+    updateFormUiSchema(newUiSchema) {
+      if (this.isFormReady) {
+        this.$refs.formFrame.contentWindow.postMessage(
+          {
+            type: 'update-ui-schema',
+            data: newUiSchema
+          },
+          '*'
+        )
       }
     }
-
-    // updateFormData(newData) {
-    //   if (this.form) {
-    //     this.form.data = newData
-    //   }
-    // },
-
-    // updateFormSchema(newSchema) {
-    //   if (this.form) {
-    //     this.form.schema = newSchema
-    //   }
-    // },
-
-    // updateFormUiSchema(newUiSchema) {
-    //   if (this.form) {
-    //     this.form.uiSchema = newUiSchema
-    //   }
-    // }
   }
 }
 </script>

@@ -2,7 +2,7 @@
 <html lang="en" class="sl-theme-dark">
   <head>
     <meta charset="utf-8" />
-    <title>Pure HTML with CDN import maps - JSFE demo</title>
+    <title>JSON Schema Form</title>
 
     <script type="importmap">
       {
@@ -28,17 +28,20 @@
       body {
         display: flex;
         justify-content: center;
+        margin: 0;
+        padding: 1rem;
+        background: var(--sl-color-neutral-50);
       }
 
       json-schema-form {
-        margin: 2rem;
-        width: calc(50rem + 5vw);
+        margin: 1rem;
+        width: 100%;
+        max-width: 800px;
       }
     </style>
   </head>
 
   <body>
-    <!-- Declarative setup -->
     <json-schema-form
       id="myForm"
       schema='{
@@ -50,42 +53,76 @@
     <script type="module">
       import '@jsfe/core'
 
-      const form = document.querySelector('json-schema-form')
+      const form = document.getElementById('myForm')
       if (!form) {
         throw new Error('Form not found')
       }
 
-      // form.dataChangeCallback = (newData) => {
-      //   window.parent.postMessage({ type: 'form-change', data: newData }, '*')
+      // myForm.dataChangeCallback = (newData) => {
+      //   console.info(newData)
       // }
+      myForm.onFormSubmit = (newData, valid) => {
+        window.parent.postMessage(
+          {
+            type: 'form-submit',
+            data: { data: newData, valid }
+          },
+          '*'
+        )
+      }
 
-      // form.onFormSubmit = (newData, valid) => {
+      // // Listen for the custom 'submit' event from the <json-schema-form> web component
+      // form.addEventListener('submit', (event) => {
+      //   // event.detail should contain the submitted form data, but fallback to form.data if not present
+      //   const submittedData = event.detail ?? form.data
       //   window.parent.postMessage(
-      //     { type: 'form-submit', data: { data: newData, valid } },
+      //     {
+      //       type: 'form-submit',
+      //       data: submittedData
+      //     },
       //     '*'
       //   )
-      // }
+      // })
 
+      // Handle messages from parent
       window.addEventListener('message', (event) => {
         const { type, data } = event.data
 
         switch (type) {
-          case 'schema-change':
-            console.log('Updating schema:', data)
-            // form.schema = data
+          case 'update-schema':
+            form.schema = data
             break
 
-          // case 'update-data':
-          //   console.log('Updating data:', data)
-          //   form.data = data
-          //   break
+          case 'update-data':
+            form.data = data
+            break
 
-          // case 'update-ui-schema':
-          //   console.log('Updating UI schema:', data)
-          //   form.uiSchema = data
-          //   break
+          case 'update-ui-schema':
+            form.uiSchema = data
+            break
         }
       })
+
+      // // Handle form events
+      // form.addEventListener('change', (event) => {
+      //   window.parent.postMessage(
+      //     {
+      //       type: 'form-change',
+      //       data: event.detail
+      //     },
+      //     '*'
+      //   )
+      // })
+
+      // form.addEventListener('submit', (event) => {
+      //   window.parent.postMessage(
+      //     {
+      //       type: 'form-submit',
+      //       data: event.detail
+      //     },
+      //     '*'
+      //   )
+      // })
 
       window.parent.postMessage({ type: 'form-ready' }, '*')
     </script>

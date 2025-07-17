@@ -22,7 +22,8 @@ module.exports = {
             'laboratorio',
             'lingue_parlate'
           ]
-        }
+        },
+        uniqueItems: true
       },
       mood: {
         type: 'array',
@@ -44,7 +45,8 @@ module.exports = {
             'underground',
             'alternative'
           ]
-        }
+        },
+        uniqueItems: true
       },
       accessibilita: {
         type: 'array',
@@ -57,7 +59,8 @@ module.exports = {
             'sensorialmente_inclusivo',
             'no_strobo_presenti'
           ]
-        }
+        },
+        uniqueItems: true
       },
       eta: {
         type: 'array',
@@ -72,7 +75,8 @@ module.exports = {
             'genitori_con_bambini',
             '+18'
           ]
-        }
+        },
+        uniqueItems: true
       },
       valori: {
         type: 'array',
@@ -98,7 +102,8 @@ module.exports = {
             'no_alcool_e_sostanze',
             'ambiente_positivo'
           ]
-        }
+        },
+        uniqueItems: true
       }
     },
     required: ['categoria', 'mood', 'accessibilita', 'eta', 'valori'],

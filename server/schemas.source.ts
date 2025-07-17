@@ -86,32 +86,29 @@ export const eventMetadataSchema = z.object({
 
 // Export
 
-const jsonSchema = z.toJSONSchema(eventMetadataSchema, {
-  override: (ctx) => {
-    const s = ctx.jsonSchema
+const jsonSchema = z.toJSONSchema(eventMetadataSchema)
 
-    if (
-      s.type === 'array' &&
-      s.items &&
-      s.items !== true &&
-      !Array.isArray(s.items) &&
-      s.items.type === 'string' &&
-      s.items.enum
-    ) {
-      ctx.jsonSchema = {
-        type: 'array',
-        uniqueItems: true,
-        items: {
-          type: 'string',
-          enum: s.items.enum
-        }
-      }
-    }
-  }
-})
+// TODO - Review this
+// Add uniqueItems to all array properties
+const modifiedSchema = {
+  ...jsonSchema,
+  properties: Object.fromEntries(
+    Object.entries(jsonSchema.properties || {}).map(([key, prop]) => [
+      key,
+      typeof prop === 'object' &&
+      prop !== null &&
+      'type' in prop &&
+      prop.type === 'array'
+        ? { ...prop, uniqueItems: true }
+        : prop
+    ])
+  )
+}
 
 const code =
-  'module.exports = { eventSchema: ' + JSON.stringify(jsonSchema, null, 2) + '}'
+  'module.exports = { eventSchema: ' +
+  JSON.stringify(modifiedSchema, null, 2) +
+  '}'
 
 const formatPromise = format(code, {
   parser: 'typescript',
