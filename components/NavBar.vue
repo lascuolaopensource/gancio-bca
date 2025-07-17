@@ -1,7 +1,6 @@
 <!-- eslint-disable vue/no-v-text-v-html-on-component -->
 <template>
   <div>
-    
     <v-tabs
       id="navbar"
       centered
@@ -24,7 +23,6 @@
         <v-icon v-text="mdiShareVariant" />
       </v-tab>
     </v-tabs>
-    
   </div>
 </template>
 

@@ -10,9 +10,7 @@
           <p>Oggi ho voglia di</p>
         </div>
         <NavSearch />
-        <div class="hero-text-below">
-          
-        </div>
+        <div class="hero-text-below"></div>
       </div>
     </template>
 
@@ -43,26 +41,21 @@
         </div>
         <div class="search-calendar-container" :class="{ visible: showSearchContainer }">
           <Calendar v-if="showCalendar" class="" />
-          
         </div> -->
         <!-- <TimeFilters @filter-change="handleFilterChange" /> -->
       </div>
     </template>
-    
   </nav>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import NavHeader from './NavHeader.vue'
-import NavBar from './NavBar.vue'
 import NavSearch from './NavSearch.vue'
-import Tags from './Tags.vue'
-import Calendar from './Calendar.vue'
 
 export default {
   name: 'Appbar',
-  components: { NavHeader, NavBar, NavSearch, Tags, Calendar },
+  components: { NavHeader, NavSearch },
   props: {
     hideTitle: {
       type: Boolean,
@@ -86,14 +79,6 @@ export default {
       )
     }
   },
-  mounted() {
-    if (this.$route.name === 'index') {
-      this.startFontFeatureAnimation()
-    }
-  },
-  beforeDestroy() {
-    this.stopFontFeatureAnimation()
-  },
   watch: {
     '$route.name'(newRoute) {
       if (newRoute === 'index') {
@@ -103,13 +88,22 @@ export default {
       }
     }
   },
+  mounted() {
+    if (this.$route.name === 'index') {
+      this.startFontFeatureAnimation()
+    }
+  },
+  beforeUnmount() {
+    this.stopFontFeatureAnimation()
+  },
+
   methods: {
     toggleSearch() {
       this.showSearchContainer = !this.showSearchContainer
     },
     handleFilterChange(payload) {
       // This method will be implemented in the parent component to filter events
-      console.log('Filter changed:', payload);
+      console.log('Filter changed:', payload)
     },
     startFontFeatureAnimation() {
       this.stopFontFeatureAnimation() // Clear any existing interval
@@ -133,14 +127,16 @@ export default {
 
 <style>
 nav {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.7)),
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.7)),
     url(/headerimage.png);
   background-position: center center;
   background-size: cover;
 }
 
 .theme--light nav {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       to bottom,
       rgba(230, 230, 230, 0.95),
       rgba(250, 250, 250, 0.95)
