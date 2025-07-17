@@ -13,7 +13,7 @@ v-container.container.pa-0.pa-md-3
       SchemaForm(
         v-if="schema"
         :schema="schema"
-        :data="metadata"
+        :data="event.metadata"
         :uiSchema="uiSchema"
         @form-change="onFormChange"
         @form-submit="onFormSubmit"
@@ -166,6 +166,7 @@ export default {
       data.event.parentId = event.parentId
       data.event.recurrent = event.recurrent
       data.event.online_locations = event.online_locations
+      data.event.metadata = event.metadata
 
       return data
     }
