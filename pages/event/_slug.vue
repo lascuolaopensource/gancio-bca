@@ -5,6 +5,9 @@
     //- and microdata https://schema.org/Event
     h1.title.text-center.text-md-h4.text-h5.pa-6
       strong.p-name.text--primary(itemprop="name") {{event.title}}
+
+    pre {{ metadata }}
+
     v-row
       v-col.col-12.col-md-8.pr-sm-2.pr-md-0
         MyPicture(v-if='hasMedia' :event='event')
@@ -154,6 +157,7 @@ import {
   mdiBookmark,
   mdiStar
 } from '@mdi/js'
+import { parseEvent } from '../../server/schemas.utils'
 
 export default {
   name: 'Event',
@@ -172,7 +176,13 @@ export default {
   async asyncData({ $axios, params, error }) {
     try {
       const event = await $axios.$get(`/event/detail/${params.slug}`)
-      return { event }
+
+      const metadata = parseEvent(event.metadata ?? {})
+      if (metadata instanceof Error) {
+        throw metadata
+      }
+
+      return { event, metadata }
     } catch (e) {
       error({ statusCode: 404, message: 'Event not found' })
     }
