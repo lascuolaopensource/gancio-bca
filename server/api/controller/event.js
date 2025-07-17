@@ -742,6 +742,8 @@ const eventController = {
                 return res.status(400).send(e.message)
             }
 
+            console.log({metadata: body.metadata})
+
             const eventDetails = {
                 title: body.title.trim(),
                 // sanitize and linkify html
@@ -757,7 +759,8 @@ const eventController = {
                 online_locations: body.online_locations,
                 recurrent,
                 // publish this event only if authenticated
-                is_visible: !is_anonymous
+                is_visible: !is_anonymous,
+                metadata: body.metadata || {},
             }
 
             if (req.file || body.image_url) {
