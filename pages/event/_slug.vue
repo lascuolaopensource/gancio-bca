@@ -126,7 +126,6 @@
     v-navigation-drawer(v-model='openModeration' :fullscreen='$vuetify.breakpoint.xsOnly' fixed top right width=400 temporary)
       EventModeration(:event='event' v-if='openModeration' @close='openModeration=false')
 
-
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -162,6 +161,7 @@ import {
   mdiBookmark,
   mdiStar
 } from '@mdi/js'
+import { parseEvent } from '../../server/schemas.utils'
 
 export default {
   name: 'Event',
@@ -180,7 +180,13 @@ export default {
   async asyncData({ $axios, params, error }) {
     try {
       const event = await $axios.$get(`/event/detail/${params.slug}`)
-      return { event }
+
+      const metadata = parseEvent(event.metadata ?? {})
+      if (metadata instanceof Error) {
+        throw metadata
+      }
+
+      return { event, metadata }
     } catch (e) {
       error({ statusCode: 404, message: 'Event not found' })
     }

@@ -51,29 +51,29 @@ module.exports = () => {
     api.post('/settings/smtp', settingsController.testSMTP)
     api.get('/locale/:locale', localeController.get)
   } else {
-    const { isAuth, isAdmin, isAdminOrEditor } = require('./auth')
+    const { isAuth, isAdmin, isAdminOrEditor, isN8n } = require('./auth')
     const upload = multer({ storage })
 
     /**
-     * Get current authenticated user
-     * @category User
-     * @name /api/user
-     * @type GET
-     * @example **Response**
-     * ```json
-    {
-      "description" : null,
-      "recover_code" : "",
-      "id" : 1,
-      "createdAt" : "2020-01-29T18:10:16.630Z",
-      "updatedAt" : "2020-01-30T22:42:14.789Z",
-      "is_active" : true,
-      "settings" : "{}",
-      "email" : "eventi@cisti.org",
-      "is_admin" : true
-    }
-    ```
-    */
+         * Get current authenticated user
+         * @category User
+         * @name /api/user
+         * @type GET
+         * @example **Response**
+         * ```json
+        {
+          "description" : null,
+          "recover_code" : "",
+          "id" : 1,
+          "createdAt" : "2020-01-29T18:10:16.630Z",
+          "updatedAt" : "2020-01-30T22:42:14.789Z",
+          "is_active" : true,
+          "settings" : "{}",
+          "email" : "eventi@cisti.org",
+          "is_admin" : true
+        }
+        ```
+        */
     api.get('/ping', (_req, res) => res.sendStatus(200))
     api.get('/reachable', helpers.reachable)
     api.get('/user', isAuth, (req, res) => res.json(req.user))
@@ -236,6 +236,14 @@ module.exports = () => {
     api.post('/settings/test_smtp', isAdmin, settingsController.testSMTP)
     api.get('/settings/smtp', isAdmin, settingsController.getSMTPSettings)
 
+    // ai feedabak
+    api.post(
+      '/event/feedback/:event_id',
+      SPAMProtectionApiRateLimiter,
+      isN8n,
+      eventController.aiFeedback
+    )
+
     // moderation
     api.post(
       '/event/messages/:event_id',
@@ -267,6 +275,8 @@ module.exports = () => {
     api.get('/export/:format', cors, exportController.export)
 
     // - PLACES
+    api.post('/places', placeController.add)
+
     api.get('/places', isAdmin, placeController.getAll)
     api.get('/place/:placeNameOrId', cors, placeController.getEvents)
     api.get('/place', cors, placeController.search)

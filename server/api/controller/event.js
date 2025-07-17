@@ -419,6 +419,51 @@ const eventController = {
     return res.sendStatus(400)
   },
 
+  async aiFeedback(req, res) {
+    if (!res.locals.settings.enable_moderation) {
+      return res.sendStatus(403)
+    }
+
+    const eventId = Number(req.params.event_id)
+
+    const event = await Event.findByPk(eventId, {
+      include: [{ model: User, required: false }],
+      raw: true
+    })
+    if (!event) {
+      log.warn(`[REPORT] Event does not exists: ${eventId}`)
+      return res.sendStatus(404)
+    }
+    const body = req.body
+    const author = 'AI'
+    try {
+      const message = await Message.create({
+        eventId,
+        message: body.message,
+        is_author_visible: false,
+        author
+      })
+
+      // notify admins
+      notifier.notifyAdmins('report', { event, message: body.message, author })
+      log.info('[EVENT] Report event to admins')
+
+      // notify author
+      if (event['user.email']) {
+        const mail = require('../mail')
+        mail.send(event['user.email'], 'report', {
+          event,
+          message: body.message,
+          author
+        })
+      }
+      return res.json(message)
+    } catch (e) {
+      log.warn(`[EVENT] ${e}`)
+      return res.sendStatus(403)
+    }
+  },
+
   async report(req, res) {
     const mail = require('../mail')
     if (!res.locals.settings.enable_moderation) {
@@ -710,7 +755,8 @@ const eventController = {
         online_locations: body.online_locations,
         recurrent,
         // publish this event only if authenticated
-        is_visible: !is_anonymous
+        is_visible: !is_anonymous,
+        metadata: body.metadata || {}
       }
 
       if (req.file || body.image_url) {
@@ -764,6 +810,16 @@ const eventController = {
       event.place = place
       // return created event to the client
       res.json(event)
+
+      if (process.env.N8N_WEBHOOK_URL) {
+        await fetch(process.env.N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ event })
+        })
+      }
 
       // create recurrent instances of event if needed
       // without waiting for the task manager
@@ -850,7 +906,8 @@ const eventController = {
         start_datetime,
         end_datetime,
         online_locations: body.online_locations,
-        recurrent
+        recurrent,
+        metadata: body.metadata
       }
 
       // remove old media in case a new one is uploaded

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) =>
     },
     author: {
       type: DataTypes.ENUM,
-      values: ['AUTHOR', 'ADMIN', 'ANON', 'REGISTERED']
+      values: ['AUTHOR', 'ADMIN', 'ANON', 'REGISTERED', 'AI']
     },
     is_author_visible: DataTypes.BOOLEAN // is this message visible to the author?
   })

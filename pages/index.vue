@@ -1,7 +1,5 @@
 <template>
-
   <div>
-
     <!-- Tags -->
     <section class="">
       <Tags :show-count="true" :limit="8" />
@@ -14,42 +12,57 @@
         id="announcements"
         class="mt-2 mt-sm-4"
       >
-        <Announcement
-          v-for="announcement in announcements"
-          :key="`a_${announcement.id}`"
-          :announcement="announcement"
-        />
-      </section>
+        <section class="mt-2 mt-sm-4">
+          <Tags :show-count="true" :limit="8" />
+        </section>
 
-      <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+        <!-- Events -->
+        <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
+          <v-lazy
+            v-for="(event, idx) in visibleEvents"
+            :key="event.id"
+            class="event v-card"
+            :value="idx < 9"
+            :min-height="hide_thumbs ? 105 : undefined"
+            :options="{ threshold: 0.5, rootMargin: '500px' }"
+            :class="{ 'theme--dark': is_dark }"
+          >
+            <Announcement
+              v-for="announcement in announcements"
+              :key="`a_${announcement.id}`"
+              :announcement="announcement"
+            />
+          </v-lazy>
+        </section>
 
-      <!-- Events -->
-      <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
-        <v-lazy
-          v-for="(event, idx) in visibleEvents"
-          :key="event.id"
-          class="event v-card"
-          :value="idx < 9"
-          :min-height="hide_thumbs ? 105 : undefined"
-          :options="{ threshold: 0.5, rootMargin: '500px' }"
-          :class="{ 'theme--dark': is_dark }"
-        >
-          <Event :event="event" :lazy="idx > 9" />
-        </v-lazy>
-      </section>
+        <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
 
-      <section v-else class="text-center">
-        <v-progress-circular
-          class="mt-5 justify-center align-center mx-auto"
-          color="primary"
-          indeterminate
-          model-value="20"
-        />
+        <!-- Events -->
+        <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
+          <v-lazy
+            v-for="(event, idx) in visibleEvents"
+            :key="event.id"
+            class="event v-card"
+            :value="idx < 9"
+            :min-height="hide_thumbs ? 105 : undefined"
+            :options="{ threshold: 0.5, rootMargin: '500px' }"
+            :class="{ 'theme--dark': is_dark }"
+          >
+            <Event :event="event" :lazy="idx > 9" />
+          </v-lazy>
+        </section>
+
+        <section v-else class="text-center">
+          <v-progress-circular
+            class="mt-5 justify-center align-center mx-auto"
+            color="primary"
+            indeterminate
+            model-value="20"
+          />
+        </section>
       </section>
     </v-container>
-  
   </div>
-
 </template>
 
 <script>

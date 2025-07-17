@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" class="sl-theme-dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSON Schema Form</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "lit": "https://ga.jspm.io/npm:lit@2.8.0/index.js",
+          "lit/": "https://ga.jspm.io/npm:lit@2.8.0/",
+          "lit-html": "https://ga.jspm.io/npm:lit-html@2.8.0/lit-html.js",
+          "lit-html/": "https://ga.jspm.io/npm:lit-html@2.8.0/",
+          "lit-element/": "https://ga.jspm.io/npm:lit-element@3.3.3/",
+          "@lit/reactive-element": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/reactive-element.js",
+          "@lit/reactive-element/": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.1/",
+          "@shoelace-style/shoelace/": "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.3.0/",
+          "lodash-es/set": "https://unpkg.com/lodash-es@4.17.21/set.js",
+          "@jsfe/core": "https://unpkg.com/@jsfe/core@0.0.5/dist/esm-min"
+        }
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.9.0/cdn/themes/dark.css"
+    />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 1rem;
+        background: var(--sl-color-neutral-50);
+      }
+
+      json-schema-form {
+        margin: 1rem;
+        width: 100%;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <json-schema-form
+      id="myForm"
+      schema='{
+        "title": "Loading...",
+        "properties": {}
+      }'
+    ></json-schema-form>
+
+    <script type="module">
+      import '@jsfe/core'
+
+      const form = document.getElementById('myForm')
+      if (!form) {
+        throw new Error('Form not found')
+      }
+
+      // Handle form data changes
+      form.dataChangeCallback = (newData) => {
+        window.parent.postMessage(
+          {
+            type: 'form-change',
+            data: newData
+          },
+          '*'
+        )
+      }
+
+      // Handle form submission
+      form.onFormSubmit = (newData, valid) => {
+        window.parent.postMessage(
+          {
+            type: 'form-submit',
+            data: { data: newData, valid }
+          },
+          '*'
+        )
+      }
+
+      // Handle messages from parent
+      window.addEventListener('message', (event) => {
+        const { type, data } = event.data
+
+        switch (type) {
+          case 'update-schema':
+            form.schema = data
+            break
+
+          case 'update-data':
+            form.data = data
+            break
+
+          case 'update-ui-schema':
+            form.uiSchema = data
+            break
+        }
+      })
+
+      // Signal ready to parent
+      window.parent.postMessage({ type: 'form-ready' }, '*')
+    </script>
+  </body>
+</html>
