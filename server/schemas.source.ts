@@ -77,11 +77,11 @@ const valoriSchema = z.enum([
 ])
 
 export const eventMetadataSchema = z.object({
-  categoria: z.array(categoriaSchema),
-  mood: z.array(moodSchema),
-  accessibilita: z.array(accessibilitaSchema),
-  eta: z.array(etaSchema),
-  valori: z.array(valoriSchema)
+  categoria: z.array(categoriaSchema).optional(),
+  mood: z.array(moodSchema).optional(),
+  accessibilita: z.array(accessibilitaSchema).optional(),
+  eta: z.array(etaSchema).optional(),
+  valori: z.array(valoriSchema).optional()
 })
 
 // Export

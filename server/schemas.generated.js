@@ -106,7 +106,6 @@ module.exports = {
         uniqueItems: true
       }
     },
-    required: ['categoria', 'mood', 'accessibilita', 'eta', 'valori'],
     additionalProperties: false
   }
 }

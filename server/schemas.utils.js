@@ -24,8 +24,12 @@ function getCollectionSchema(collection) {
 function parseEvent(data) {
   try {
     const schema = getCollectionSchema('eventSchema')
+    delete schema.$schema
     const valid = ajv.validate(schema, data)
-    return valid
+    if (!valid) {
+      return new Error(ajv.errorsText())
+    }
+    return data
   } catch (e) {
     if (e instanceof Error) {
       return e
