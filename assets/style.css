@@ -1082,14 +1082,19 @@ nav {
 
 /* ABOUT */
 .about-heading::after{
-  content: 'About'
-  font-size: var(--medium) !important;
+  content: 'About';
+  font-size: var(--extralarge) !important;
   font-family: 'Adaxi', sans-serif !important;
+  font-weight: normal;
 
 }
 .about-text{
   font-size: var(--medium) !important;
-  padding: 0 !important
+  padding: 0 !important;
+}
+
+.about-text p{
+  line-height: 1.2;
 }
 
 /* ADD EVENT */
