@@ -895,6 +895,7 @@ const eventController = {
                 return res.status(400).send('start_datetime is too much in the future')
             }
 
+            console.log({metadata: body.metadata})
             const recurrent = body.recurrent ? JSON.parse(body.recurrent) : null
             const eventDetails = {
                 title: body.title || event.title,
@@ -910,7 +911,8 @@ const eventController = {
                 start_datetime,
                 end_datetime,
                 online_locations: body.online_locations,
-                recurrent
+                recurrent,
+                metadata: body.metadata || {}
             }
 
             // remove old media in case a new one is uploaded
