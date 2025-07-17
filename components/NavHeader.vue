@@ -23,9 +23,9 @@
       >
         Cos'è
       </v-btn>
-      <v-btn icon large @click="toggleDark">
+      <!-- <v-btn icon large @click="toggleDark">
         Darkmode
-      </v-btn>
+      </v-btn> -->
       <client-only>
         <v-menu
           offset-y
