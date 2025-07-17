@@ -2,7 +2,7 @@
   <v-app>
     <Appbar />
     <template v-if="$route.name === 'index'">
-      <TimeFilters />
+      <TimeFilters @filter-change="handleFilterChange" />
     </template>
     <v-main>
       <Snackbar />

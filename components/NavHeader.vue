@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/singleline-html-element-content-newline -->
 
 <template>
-  <div class="d-flex background">
+  <div class="d-flex">
     <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
       <!--<img src="/logo.png" height="40" />-->
@@ -219,9 +219,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.background {
-  background-color: var(--purple);
-}
-</style>

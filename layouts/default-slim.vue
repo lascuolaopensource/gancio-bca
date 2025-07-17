@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavHeader />
+    <Appbar :hide-title="true" />
     <v-main>
       <Snackbar />
       <Confirm />
@@ -13,16 +13,16 @@
 </template>
 
 <script>
+import Appbar from '../components/Appbar.vue'
 import Snackbar from '../components/Snackbar.vue'
 import Footer from '../components/Footer.vue'
 import Confirm from '../components/Confirm.vue'
-import NavHeader from '../components/NavHeader.vue'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'DefaultSlim',
   // eslint-disable-next-line vue/no-reserved-component-names
-  components: { Snackbar, Footer, Confirm, NavHeader },
+  components: { Appbar, Snackbar, Footer, Confirm },
   head() {
     const custom_script = [
       {
