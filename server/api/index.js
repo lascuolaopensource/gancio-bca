@@ -161,7 +161,7 @@ module.exports = () => {
     api.post(
       '/event',
       eventController.isAnonEventAllowed,
-      SPAMProtectionApiRateLimiter,
+    //   SPAMProtectionApiRateLimiter,
       upload.single('image'),
       eventController.add
     )
