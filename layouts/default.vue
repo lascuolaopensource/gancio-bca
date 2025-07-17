@@ -1,6 +1,9 @@
 <template>
   <v-app>
     <Appbar />
+    <template v-if="$route.name === 'index'">
+      <TimeFilters @filter-change="handleFilterChange" />
+    </template>
     <v-main>
       <Snackbar />
       <Confirm />
@@ -17,12 +20,14 @@ import Appbar from '../components/Appbar.vue'
 import Snackbar from '../components/Snackbar.vue'
 import Footer from '../components/Footer.vue'
 import Confirm from '../components/Confirm.vue'
+import TimeFilters from '../components/TimeFilters.vue'
 import { mapState, mapGetters } from 'vuex'
+import { setRandomFontFeatures } from '../plugins/helpers.js'
 
 export default {
   name: 'Default',
   // eslint-disable-next-line vue/no-reserved-component-names
-  components: { Appbar, Snackbar, Footer, Confirm },
+  components: { Appbar, Snackbar, Footer, Confirm, TimeFilters },
   head() {
     const custom_script = [
       {
@@ -64,6 +69,10 @@ export default {
     } catch (e) {
       console.error(e)
     }
+  },
+  mounted() {
+    // Set random font-feature-settings on page load
+    setRandomFontFeatures()
   }
 }
 </script>

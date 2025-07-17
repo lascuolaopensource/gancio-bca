@@ -17,8 +17,7 @@
     "migrate": "NODE_ENV=production sequelize db:migrate",
     "migrate:dev": "sequelize db:migrate",
     "analyze": "nuxt build --analyze",
-    "build:wc": "cd webcomponents; yarn build:lib; cp dist/gancio-events.umd.cjs ../wp-plugin/js/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../assets/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../docs/assets/js/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../static/gancio-events.es.js;",
-    "generate:schemas": "bun run server/schemas.source.ts"
+    "build:wc": "cd webcomponents; yarn build:lib; cp dist/gancio-events.umd.cjs ../wp-plugin/js/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../assets/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../docs/assets/js/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../static/gancio-events.es.js;"
   },
   "files": [
     "server/",
@@ -45,7 +44,6 @@
     "@nuxtjs/sitemap": "^2.4.0",
     "@peertube/http-signature": "^1.7.0",
     "accept-language": "^3.0.18",
-    "ajv": "^8.17.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^2.0.0-beta.2",
     "cookie-parser": "^1.4.6",
@@ -97,8 +95,7 @@
     "vuetify": "2.6.14",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0",
-    "yargs": "^17.7.2",
-    "zod": "^4.0.5"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.27.1",
@@ -111,7 +108,7 @@
     "eslint-plugin-prettier": "^5.4.0",
     "jest": "^29.7.0",
     "jest-environment-node": "^29.7.0",
-    "prettier": "^3.6.2",
+    "prettier": "^2.8.8",
     "pug": "^3.0.3",
     "pug-plain-loader": "^1.1.0",
     "sass": "^1.77.6",

@@ -12,14 +12,7 @@ const hour = minute * 60
 const day = hour * 24
 
 class Task {
-  constructor({
-    name,
-    repeat = false,
-    repeatDelay = 1,
-    callAtStart = false,
-    method,
-    args = []
-  }) {
+  constructor ({ name, repeat = false, repeatDelay = 1, callAtStart = false, method, args = [] }) {
     this.name = name
     this.repeat = repeat
     this.repeatDelay = repeatDelay
@@ -28,7 +21,7 @@ class Task {
     this.args = args
   }
 
-  process() {
+  process () {
     this.processInNTick--
     if (this.processInNTick > 0) {
       return
@@ -38,9 +31,7 @@ class Task {
     try {
       const ret = this.method.apply(this, this.args)
       if (ret && typeof ret.catch === 'function') {
-        ret.catch((e) =>
-          log.error(`TASK ERROR [${this.name}]: ${e} ${e.stack}`)
-        )
+        ret.catch(e => log.error(`TASK ERROR [${this.name}]: ${e} ${e.stack}`))
         return ret
       }
       return ret
@@ -62,72 +53,62 @@ class Task {
  */
 
 class TaskManager {
-  constructor() {
+  constructor () {
     this.tasks = []
     this.interval = 1
     this.timeout = null
   }
 
-  start(interval = loopInterval) {
+  start (interval = loopInterval) {
     const eventController = require('./api/controller/event')
 
     // create and clean recurrent events
-    this.add(
-      new Task({
-        name: 'CREATE_RECURRENT_EVENT',
-        method: eventController._createRecurrent,
-        repeatDelay: hour / 2, // check each half an hour
-        repeat: true
-      })
-    )
-
+    this.add(new Task({
+      name: 'CREATE_RECURRENT_EVENT',
+      method: eventController._createRecurrent,
+      repeatDelay: hour / 2, // check each half an hour
+      repeat: true
+    }))
+    
     // remove unrelated places
-    this.add(
-      new Task({
-        name: 'CLEAN_UNUSED_PLACES',
-        method: placeHelpers._cleanUnused,
-        repeatDelay: day,
-        repeat: true,
-        callAtStart: true
-      })
-    )
+    this.add(new Task({
+      name: 'CLEAN_UNUSED_PLACES',
+      method: placeHelpers._cleanUnused,
+      repeatDelay: day,
+      repeat: true,
+      callAtStart: true
+    }))
+    
+    this.add(new Task({
+      name: 'CLEAN_UNUSED_TAGS',
+      method: tagHelpers._cleanUnused,
+      repeatDelay: day+minute,
+      repeat: true,
+      callAtStart: true
+    }))
 
-    this.add(
-      new Task({
-        name: 'CLEAN_UNUSED_TAGS',
-        method: tagHelpers._cleanUnused,
-        repeatDelay: day + minute,
-        repeat: true,
-        callAtStart: true
-      })
-    )
+    this.add(new Task({
+      name: 'CLEAN_FEDIVERSE_PAST_EVENT',
+      method: apHelpers._cleanPastEvents,
+      repeatDelay: 6*hour+5*minute,
+      repeat: true,
+      callAtStart: true
+    }))
 
-    this.add(
-      new Task({
-        name: 'CLEAN_FEDIVERSE_PAST_EVENT',
-        method: apHelpers._cleanPastEvents,
-        repeatDelay: 6 * hour + 5 * minute,
-        repeat: true,
-        callAtStart: true
-      })
-    )
-
-    this.add(
-      new Task({
-        name: 'CLEAN_FEDIVERSE_AP_USERS',
-        method: apHelpers._cleanUnusedAPUser,
-        repeatDelay: day + 10 * minute,
-        repeat: true,
-        callAtStart: true
-      })
-    )
+    this.add(new Task({
+      name: 'CLEAN_FEDIVERSE_AP_USERS',
+      method: apHelpers._cleanUnusedAPUser,
+      repeatDelay: day+10*minute,
+      repeat: true,
+      callAtStart: true
+    }))
 
     log.info(`START TASK MANAGER WITH LOOP INTERVAL OF ${interval} seconds`)
     this.interval = interval
     this.timeout = setTimeout(this.tick.bind(this), interval * 1000)
   }
 
-  stop() {
+  stop () {
     if (this.timeout) {
       log.info('STOP TASKMANAGER')
       clearTimeout(this.timeout)
@@ -135,36 +116,31 @@ class TaskManager {
     }
   }
 
-  add(task) {
-    log.info(
-      `[TASK] Add ${task.name} (${Duration.fromMillis(
-        task.repeatDelay * this.interval * 1000
-      )
-        .rescale()
-        .toHuman({ listStyle: 'long' })})`
-    )
+  add (task) {
+    log.info(`[TASK] Add ${task.name} (${Duration.fromMillis(task.repeatDelay * this.interval * 1000).rescale().toHuman({ listStyle: "long" })})`)
     this.tasks.push(task)
   }
 
-  process() {
+  process () {
     if (!this.tasks.length) {
       return
     }
 
     // process all tasks
-    const tasks = this.tasks.map((t) => t.process())
+    const tasks = this.tasks.map(t => t.process())
 
     // remove removable tasks
-    this.tasks = this.tasks.filter((t) => t.repeat)
+    this.tasks = this.tasks.filter(t => t.repeat)
 
     return Promise.allSettled(tasks)
   }
 
-  async tick() {
+  async tick () {
     await this.process()
     this.timeout = setTimeout(this.tick.bind(this), this.interval * 1000)
   }
 }
+
 
 // daily morning notification
 // TS.add(new Task({

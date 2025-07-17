@@ -1,28 +1,36 @@
 <template>
-  <div class="d-flex pa-4">
+  <div class="d-flex">
     <v-btn class="site-title-button" nuxt to="/">
       <!-- eslint-disable-next-line vue/html-self-closing -->
       <!--<img src="/logo.png" height="40" />-->
-      <p class="site-title">Adaxi</p>
+      <p class="site-title">Adaxi Eventi</p>
     </v-btn>
 
     <v-spacer />
 
-    <div class="d-flex">
+    <div class="d-flex navigation">
       <v-btn
+        v-for="nav in navLinks"
+        :key="nav.to"
         icon
         large
-        href="/about"
-        :title="$t('common.about')"
-        :aria-label="$t('common.about')"
+        :href="nav.href"
+        :to="nav.to"
+        :nuxt="!!nav.to"
+        :title="$t(nav.title)"
+        :aria-label="$t(nav.title)"
+        v-if="!nav.hide"
       >
-        <v-icon v-text="mdiInformation" />
+        Cos'è
       </v-btn>
-      <v-btn icon large @click="toggleDark">
-        <v-icon v-text="mdiContrastCircle" />
-      </v-btn>
+      <!-- <v-btn icon large @click="toggleDark">
+        Darkmode
+      </v-btn> -->
       <client-only>
         <v-menu
+          class="language-menu drawer-menu"
+          content-class="drawer-menu-content"
+          role="menu"
           offset-y
           transition="slide-y-transition"
           bottom
@@ -67,7 +75,13 @@
       </client-only>
 
       <client-only>
-        <v-menu v-if="$auth.loggedIn" offset-y transition="slide-y-transition">
+        <v-menu 
+          v-if="$auth.loggedIn" 
+          class="user-menu drawer-menu"
+          content-class="drawer-menu-content"
+          role="menu"
+          offset-y 
+          transition="slide-y-transition">
           <template #activator="{ on, attrs }">
             <v-btn
               class="mr-0"
@@ -175,7 +189,15 @@ export default {
       mdiCog,
       mdiInformation,
       mdiContrastCircle,
-      mdiCalendarAccount
+      mdiCalendarAccount,
+      navLinks: [
+        {
+          to: '/about',
+          title: 'common.about',
+          icon: mdiInformation
+        }
+        // Add more navigation links here as needed
+      ]
     }
   },
   computed: {

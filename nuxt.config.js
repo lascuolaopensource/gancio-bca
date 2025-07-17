@@ -3,10 +3,10 @@ const locales = require('./locales/index')
 const dns = require('node:dns')
 dns.setDefaultResultOrder('ipv4first')
 
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = (process.env.NODE_ENV !== 'production')
 module.exports = {
   telemetry: false,
-  modern: process.env.NODE_ENV === 'production' && 'client',
+  modern: (process.env.NODE_ENV === 'production') && 'client',
   /*
    ** Headers of the page
    */
@@ -14,22 +14,24 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-    ]
+    ],
+    bodyAttrs: {
+      class: 'adaxi-body'
+    }
   },
   dev: isDev,
   server: config.server,
 
+
   vue: {
     config: {
-      ignoredElements: [
-        'gancio-events',
-        'gancio-event',
-        'json-schema-form' // Add the json-schema-form component to ignored elements
-      ]
+      ignoredElements: ['gancio-events', 'gancio-event']
     }
   },
 
-  css: ['@/assets/style.css'],
+  css: [
+    '@/assets/style.css'
+  ],
 
   /*
    ** Customize the progress-bar component
@@ -62,19 +64,24 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/sitemap',
-    ['cookie-universal-nuxt', { alias: 'cookies' }]
+    ['cookie-universal-nuxt', { alias: 'cookies' }],
   ],
 
   sitemap: {
     hostname: config.baseurl,
     gzip: true,
-    exclude: ['/Admin', '/settings', '/export', '/setup'],
+    exclude: [
+      '/Admin',
+      '/settings',
+      '/export',
+      '/setup'
+    ],
     routes: async () => {
       if (config.status === 'READY') {
         try {
           const Event = require('./server/api/models/event')
           const events = await Event.findAll({ where: { is_visible: true } })
-          return events.map((e) => `/event/${e.slug}`)
+          return events.map(e => `/event/${e.slug}`)
         } catch (e) {
           return []
         }
@@ -84,7 +91,7 @@ module.exports = {
     }
   },
   i18n: {
-    locales: Object.keys(locales).map((key) => ({
+    locales: Object.keys(locales).map(key => ({
       code: key,
       name: locales[key],
       file: 'loader.js',
@@ -98,11 +105,11 @@ module.exports = {
     lazy: true,
     strategy: 'no_prefix',
     skipSettingLocaleOnNavigate: true,
-    defaultLocale: 'en'
+    defaultLocale: 'en',
   },
   render: {
     static: {
-      maxAge: '6000000'
+      maxAge: "6000000"
     }
   },
 
@@ -139,12 +146,7 @@ module.exports = {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
           },
           logout: false,
-          user: {
-            url: '/user',
-            method: 'get',
-            propertyName: false,
-            autoFetch: false
-          }
+          user: { url: '/user', method: 'get', propertyName: false, autoFetch: false }
         },
         tokenRequired: true,
         tokenType: 'Bearer'
@@ -159,36 +161,27 @@ module.exports = {
   },
   hooks: {
     listen(server) {
-      server.keepAliveTimeout = 35000
-      server.headersTimeout = 36000
+      server.keepAliveTimeout = 35000;
+      server.headersTimeout = 36000;
     }
   },
   build: {
     extend(config, { isDev, isClient }) {
-      // Handle .mjs and .cjs files
+      // ..
       config.module.rules.push({
-        test: /\.(mjs|cjs)$/,
+        test: /\.mjs$/,
         include: /node_modules/,
-        type: 'javascript/auto'
+        type: "javascript/auto"
       })
-
-      // Handle node modules
-      config.module.rules.push({
-        test: /\.js$/,
-        include: /node_modules\/zod/,
-        type: 'javascript/auto'
-      })
-
       // Sets webpack's mode to development if `isDev` is true.
       if (isDev) {
         config.mode = 'development'
       }
     },
-    transpile: ['zod'],
     corejs: 3,
     cache: true,
     hardSource: !isDev,
     extractCSS: !isDev,
     optimizeCSS: !isDev
-  }
+  },
 }
