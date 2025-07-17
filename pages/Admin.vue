@@ -1,5 +1,5 @@
 <template lang="pug">
-v-container.container.pa-0.pa-md-3
+v-container.container.pa-0.pa-md-3.admin-section
   v-card
     template(v-if='$auth.user.is_admin')
       v-alert(v-if='url!==settings.baseurl' rounded="0" flat border="left" type='warning' show-icon :icon='mdiAlert')

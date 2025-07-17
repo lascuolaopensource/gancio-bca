@@ -1,47 +1,51 @@
 <template>
-  <v-container id="home" class="px-2 px-sm-6 pt-0">
-    <!-- Announcements -->
-    <section
-      v-if="announcements?.length"
-      id="announcements"
-      class="mt-2 mt-sm-4"
-    >
-      <Announcement
-        v-for="announcement in announcements"
-        :key="`a_${announcement.id}`"
-        :announcement="announcement"
-      />
-    </section>
-
+  <div>
     <!-- Tags -->
-    <section class="mt-2 mt-sm-4">
+    <section class="">
       <Tags :show-count="true" :limit="8" />
     </section>
 
-    <!-- Events -->
-    <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
-      <v-lazy
-        v-for="(event, idx) in visibleEvents"
-        :key="event.id"
-        class="event v-card"
-        :value="idx < 9"
-        :min-height="hide_thumbs ? 105 : undefined"
-        :options="{ threshold: 0.5, rootMargin: '500px' }"
-        :class="{ 'theme--dark': is_dark }"
+    <v-container id="home" class="px-2 px-sm-6 pt-0">
+      <!-- Announcements -->
+      <section
+        v-if="announcements?.length"
+        id="announcements"
+        class="mt-2 mt-sm-4"
       >
-        <Event :event="event" :lazy="idx > 9" />
-      </v-lazy>
-    </section>
+        <Announcement
+          v-for="announcement in announcements"
+          :key="`a_${announcement.id}`"
+          :announcement="announcement"
+        />
+      </section>
 
-    <section v-else class="text-center">
-      <v-progress-circular
-        class="mt-5 justify-center align-center mx-auto"
-        color="primary"
-        indeterminate
-        model-value="20"
-      />
-    </section>
-  </v-container>
+      <NavBar v-if="!['event-slug', 'e-slug'].includes($route.name)" />
+
+      <!-- Events -->
+      <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
+        <v-lazy
+          v-for="(event, idx) in visibleEvents"
+          :key="event.id"
+          class="event v-card"
+          :value="idx < 9"
+          :min-height="hide_thumbs ? 105 : undefined"
+          :options="{ threshold: 0.5, rootMargin: '500px' }"
+          :class="{ 'theme--dark': is_dark }"
+        >
+          <Event :event="event" :lazy="idx > 9" />
+        </v-lazy>
+      </section>
+
+      <section v-else class="text-center">
+        <v-progress-circular
+          class="mt-5 justify-center align-center mx-auto"
+          color="primary"
+          indeterminate
+          model-value="20"
+        />
+      </section>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -52,11 +56,12 @@ import { DateTime } from 'luxon'
 import Event from '@/components/Event'
 import Announcement from '@/components/Announcement'
 import Tags from '@/components/Tags'
+import NavBar from '@/components/NavBar.vue'
 import { mdiMagnify, mdiCloseCircle } from '@mdi/js'
 
 export default {
   name: 'Index',
-  components: { Event, Announcement, Tags },
+  components: { Event, Announcement, Tags, NavBar },
   middleware: 'setup',
   data({ $time }) {
     return {
@@ -68,6 +73,7 @@ export default {
       end: null,
       tmpEvents: [],
       selectedDay: null,
+      customDateRange: null, // For TimeFilters
       storeUnsubscribe: null
     }
   },
@@ -135,7 +141,39 @@ export default {
     ...mapGetters(['hide_thumbs', 'is_dark']),
     visibleEvents() {
       const now = this.$time.nowUnix()
-      if (this.selectedDay) {
+
+      if (this.customDateRange) {
+        // Handle custom date range from TimeFilters
+        const { startDate, endDate } = this.customDateRange
+        console.log('Filtering with custom date range:')
+        console.log('Start:', startDate ? startDate.toISOString() : 'null')
+        console.log('End:', endDate ? endDate.toISOString() : 'null')
+
+        return this.events.filter((e) => {
+          const eventStart = e.start_datetime
+          const eventEnd = e.end_datetime || e.start_datetime + 1
+
+          // Check if event overlaps with the date range
+          const rangeStart = startDate
+            ? Math.floor(startDate.getTime() / 1000)
+            : now
+          const rangeEnd = endDate
+            ? Math.floor(endDate.getTime() / 1000)
+            : Infinity
+
+          const overlaps = eventStart <= rangeEnd && eventEnd > rangeStart
+
+          console.log(
+            `Event: ${e.title}, Start: ${new Date(
+              eventStart * 1000
+            ).toISOString()}, End: ${new Date(
+              eventEnd * 1000
+            ).toISOString()}, Overlaps: ${overlaps}`
+          )
+
+          return overlaps && (this.filter.show_recurrent || !e.parentId)
+        })
+      } else if (this.selectedDay) {
         const min = this.selectedDay.startOf('day').toUnixInteger()
         const max = this.selectedDay.endOf('day').toUnixInteger()
         return this.events.filter(
@@ -164,6 +202,7 @@ export default {
   created() {
     this.$root.$on('dayclick', this.dayChange)
     this.$root.$on('monthchange', this.monthChange)
+    this.$root.$on('filter-change', this.handleFilterChange)
     if (process.client) {
       this.storeUnsubscribe = this.$store.subscribeAction({
         after: (action, state) => {
@@ -177,6 +216,7 @@ export default {
   unmounted() {
     this.$root.$off('dayclick')
     this.$root.$off('monthchange')
+    this.$root.$off('filter-change')
     if (typeof this.storeUnsubscribe === 'function') {
       this.storeUnsubscribe()
     }
@@ -228,6 +268,18 @@ export default {
             day: date.day
           })
         : null
+    },
+    handleFilterChange({ filterId, startDate, endDate }) {
+      // Clear any existing selections
+      this.selectedDay = null
+
+      if (filterId === 'tutti') {
+        // For "Tutti", clear custom date range and let default logic handle it
+        this.customDateRange = null
+      } else {
+        // Set custom date range for other filters
+        this.customDateRange = { startDate, endDate }
+      }
     }
   }
 }

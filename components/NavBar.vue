@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-v-text-v-html-on-component -->
 <template>
   <div>
-    <!--
+    
     <v-tabs
       id="navbar"
       centered
@@ -9,7 +9,7 @@
       optional
       dense
       icons-and-text
-      class="mt-4"
+      class="action-buttons-add-export"
     >
       <v-tab
         v-if="$auth.loggedIn || settings.allow_anon_event"
@@ -24,7 +24,7 @@
         <v-icon v-text="mdiShareVariant" />
       </v-tab>
     </v-tabs>
-    -->
+    
   </div>
 </template>
 

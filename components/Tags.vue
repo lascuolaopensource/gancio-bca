@@ -14,7 +14,6 @@
         class="tag"
       >
         {{ tag.tag }}
-        <span v-if="showCount" class="count">({{ tag.count }})</span>
       </a>
     </template>
   </div>

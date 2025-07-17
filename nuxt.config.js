@@ -14,18 +14,17 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-    ]
+    ],
+    bodyAttrs: {
+      class: 'adaxi-body'
+    }
   },
   dev: isDev,
   server: config.server,
 
   vue: {
     config: {
-      ignoredElements: [
-        'gancio-events',
-        'gancio-event',
-        'json-schema-form' // Add the json-schema-form component to ignored elements
-      ]
+      ignoredElements: ['gancio-events', 'gancio-event']
     }
   },
 
@@ -165,26 +164,17 @@ module.exports = {
   },
   build: {
     extend(config, { isDev, isClient }) {
-      // Handle .mjs and .cjs files
+      // ..
       config.module.rules.push({
-        test: /\.(mjs|cjs)$/,
+        test: /\.mjs$/,
         include: /node_modules/,
         type: 'javascript/auto'
       })
-
-      // Handle node modules
-      config.module.rules.push({
-        test: /\.js$/,
-        include: /node_modules\/zod/,
-        type: 'javascript/auto'
-      })
-
       // Sets webpack's mode to development if `isDev` is true.
       if (isDev) {
         config.mode = 'development'
       }
     },
-    transpile: ['zod'],
     corejs: 3,
     cache: true,
     hardSource: !isDev,

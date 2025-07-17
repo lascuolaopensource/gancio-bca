@@ -1,101 +1,105 @@
 <template lang="pug">
-#event.h-event.pa-2.pa-sm-2.pt-0.pt-sm-0.container(v-touch="{ left: goNext, right: goPrev }" itemscope itemtype="https://schema.org/Event")
+
+#event.h-event.pa-2.pa-sm-2.pt-0.pt-sm-0(v-touch="{ left: goNext, right: goPrev }" itemscope itemtype="https://schema.org/Event")
     //- EVENT PAGE
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
-    h1.title.text-center.text-md-h4.text-h5.pa-6
-      strong.p-name.text--primary(itemprop="name") {{event.title}}
+    div.admin-actions-wrapper
+      //- admin actions
+      template(v-if='can_edit')
+        EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
 
-    pre {{ metadata }}
+    //- Title and tags section
+    div.title-tags-section
+      h1.title.text-md-h1.text-h4.pb-8
+        strong.p-name.text--primary.font-heading(itemprop="name") {{event.title}}
 
-    v-row
-      v-col.col-12.col-md-8.pr-sm-2.pr-md-0
-        MyPicture(v-if='hasMedia' :event='event')
-        .p-description.text-body-1.pa-3.rounded(v-if='event.description' itemprop='description' v-html='event.description')
+      //- tags, hashtags
+      .tags(v-if='event?.tags?.length')
+        v-chip.tag(v-for='tag in event.tags' large color='primary'
+          :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
 
-      v-col.col-12.col-md-4
-        v-card(outlined)
-          v-container.eventDetails
-            v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
-            v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
-            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
-              v-icon(v-text='mdiCalendar' small)
-              span.ml-2.text-uppercase {{$time.when(event)}}
-              .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
-            div.font-weight-light.mb-3 {{$time.from(event.start_datetime)}}
-              small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
+    //- Image section
+    div.image-section
+      MyPicture.event-container(v-if='hasMedia' :event='event')
 
-            .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
-              v-icon(v-text='mdiMapMarker' small)
-              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
-                span(itemprop='name') {{event?.place?.name}}
-              .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
+    //- Event info section
+    div.event-info-section
+      v-container.event-container.eventDetails
+        div.row
+          v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
+          v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
+          time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
+            span.adaxi-icon ŷ
+            span.ml-2 {{$time.when(event)}}
+            .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
+          div.font-weight-light.font-italic {{$time.from(event.start_datetime)}}
+            small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
 
-            //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
-            a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
+        .p-location.h-adr.row(itemprop="location" itemscope itemtype="https://schema.org/Place")
+          span.adaxi-icon q
+          nuxt-link.vcard.ml-2.p-name.text-decoration-none(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
+            span(itemprop='name') {{event?.place?.name}}
+          .font-weight-light.p-street-address.font-italic(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
+        v-list(nav dense v-if='hasOnlineLocations')
+          v-list-item.event-url(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
+            v-list-item-icon
+              span.adaxi-icon ,
+            v-list-item-content.py-0
+              v-list-item-title.text-caption(v-text='item')
+        //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
+        a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
 
-          //- tags, hashtags
-          v-container.pt-0(v-if='event?.tags?.length')
-            v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' small label color='primary'
-              outlined :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
+      //- online events
 
-          //- online events
-          v-list(nav dense v-if='hasOnlineLocations')
-            v-list-item(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
+    //- Description section
+    div.description-section
+      //- Action buttons
+      div.event-actions-wrapper
+        v-list.event-actions(dense nav color='transparent')
+            //- copy link
+            v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
               v-list-item-icon
-                v-icon(v-text='mdiMonitorAccount')
-              v-list-item-content.py-0
-                v-list-item-title.text-caption(v-text='item')
+                span.adaxi-icon T
+              v-list-item-content
+                v-list-item-title(v-text="$t('common.copy_link')")
 
-          v-divider
-          //- info & actions
-          v-list(dense nav color='transparent')
+            //- map
+            v-list-item(v-if='settings.allow_geolocation && event.place?.latitude && event.place?.longitude' @click="mapModal = true")
+              v-list-item-icon
+                span.adaxi-icon q
+              v-list-item-content
+                v-list-item-title(v-text="$t('common.show_map')")
 
-              //- copy link
-              v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
-                v-list-item-icon
-                  v-icon(v-text='mdiContentCopy')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('common.copy_link')")
+            //- calendar
+            v-list-item(:href='`/api/event/detail/${event.slug || event.id}.ics`')
+              v-list-item-icon
+                span.adaxi-icon ŷ
+              v-list-item-content
+                v-list-item-title(v-text="$t('common.add_to_calendar')")
 
-              //- map
-              v-list-item(v-if='settings.allow_geolocation && event.place?.latitude && event.place?.longitude' @click="mapModal = true")
-                v-list-item-icon
-                  v-icon(v-text='mdiMap')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('common.show_map')")
+            //- Report
+            v-list-item(v-if='settings.enable_moderation && settings.enable_report && !showModeration' @click='report')
+              v-list-item-icon
+                span.adaxi-icon ,
+              v-list-item-content
+                v-list-item-title(v-text="$t('common.report')")
 
-              //- calendar
-              v-list-item(:href='`/api/event/detail/${event.slug || event.id}.ics`')
-                v-list-item-icon
-                  v-icon(v-text='mdiCalendarExport')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('common.add_to_calendar')")
+            //- download flyer
+            v-list-item(v-if='hasMedia && settings.show_download_media' :href='$helper.mediaURL(event, "download")')
+              v-list-item-icon
+                span.adaxi-icon °
+              v-list-item-content
+                v-list-item-title(v-text="$t('event.download_flyer')")
 
-              //- Report
-              v-list-item(v-if='settings.enable_moderation && settings.enable_report && !showModeration' @click='report')
-                v-list-item-icon
-                  v-icon(v-text='mdiMessageTextOutline')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('common.report')")
-
-              //- download flyer
-              v-list-item(v-if='hasMedia && settings.show_download_media' :href='$helper.mediaURL(event, "download")')
-                v-list-item-icon
-                  v-icon(v-text='mdiFileDownloadOutline')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('event.download_flyer')")
-
-              //- embed
-              v-list-item(@click='showEmbed=true')
-                v-list-item-icon
-                  v-icon(v-text='mdiCodeTags')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('common.embed')")
-
-          //- admin actions
-          template(v-if='can_edit')
-            EventAdmin(:event='event' @openModeration='openModeration=true' @openAssignAuthor='openAssignAuthor=true')
+            //- embed
+            v-list-item(@click='showEmbed=true')
+              v-list-item-icon
+                span.adaxi-icon +
+              v-list-item-content
+                v-list-item-title(v-text="$t('common.embed')")
+      div.event-container.event-description-content
+        .p-description(v-if='event.description' itemprop='description' v-html='event.description')
 
     //- resources from fediverse
     EventResource#resources.mt-3(:event='event' v-if='showResources')
@@ -147,7 +151,6 @@ import {
   mdiRepeat,
   mdiFileDownloadOutline,
   mdiShareAll,
-  mdiTimerSandComplete,
   mdiCalendarExport,
   mdiCalendar,
   mdiContentCopy,
@@ -157,7 +160,6 @@ import {
   mdiBookmark,
   mdiStar
 } from '@mdi/js'
-import { parseEvent } from '../../server/schemas.utils'
 
 export default {
   name: 'Event',
@@ -176,13 +178,7 @@ export default {
   async asyncData({ $axios, params, error }) {
     try {
       const event = await $axios.$get(`/event/detail/${params.slug}`)
-
-      const metadata = parseEvent(event.metadata ?? {})
-      if (metadata instanceof Error) {
-        throw metadata
-      }
-
-      return { event, metadata }
+      return { event }
     } catch (e) {
       error({ statusCode: 404, message: 'Event not found' })
     }
@@ -197,7 +193,6 @@ export default {
       mdiCalendar,
       mdiFileDownloadOutline,
       mdiMessageTextOutline,
-      mdiTimerSandComplete,
       mdiMapMarker,
       mdiContentCopy,
       mdiClose,
