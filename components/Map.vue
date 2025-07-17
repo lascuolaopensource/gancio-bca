@@ -37,6 +37,16 @@ export default {
     LPopup,
     LControlAttribution
   },
+  props: {
+    place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) },
+    places: { type: Array, default: () => [] },
+    showMarker: { type: Boolean, default: true },
+    mapCenter: { type: Array, default: () => [] },
+    zoom: { type: Number, default: () => 16 },
+    draggable: { type: Boolean, default: false },
+    // eslint-disable-next-line vue/prop-name-casing
+    LMapStyles: { type: Object, default: () => ({}) }
+  },
   data({ $store }) {
     return {
       url:
@@ -49,8 +59,9 @@ export default {
   },
   computed: {
     center() {
-      if (this.mapCenter.length) return this.mapCenter
-      else {
+      if (this.mapCenter.length) {
+        return this.mapCenter
+      } else {
         this.place.latitude = isNaN(this.place.latitude)
           ? 0
           : this.place.latitude
@@ -66,14 +77,6 @@ export default {
         coordinates: { lat: this.place.latitude, lon: this.place.longitude }
       }
     }
-  },
-  props: {
-    place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) },
-    showMarker: { type: Boolean, default: true },
-    mapCenter: { type: Array, default: () => [] },
-    zoom: { type: Number, default: () => 16 },
-    draggable: { type: Boolean, default: false },
-    LMapStyles: { type: Object, default: () => ({}) }
   },
   mounted() {
     delete Icon.Default.prototype._getIconUrl

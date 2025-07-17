@@ -18,6 +18,17 @@
       <Tags :show-count="true" :limit="8" />
     </section>
 
+    <!-- Map -->
+    <section class="mt-2 mt-sm-4">
+      <GancioMap
+        :place="randomPosition"
+        :places="randomPositions"
+        :zoom="6"
+        @update:coordinates="updateMapCoordinates"
+        @marker-click="handleMarkerClick"
+      />
+    </section>
+
     <!-- Events -->
     <section v-if="!$fetchState.pending" id="events" class="mt-sm-4 mt-2">
       <v-lazy
@@ -52,11 +63,12 @@ import { DateTime } from 'luxon'
 import Event from '@/components/Event'
 import Announcement from '@/components/Announcement'
 import Tags from '@/components/Tags'
+import GancioMap from '@/components/MapNew'
 import { mdiMagnify, mdiCloseCircle } from '@mdi/js'
 
 export default {
   name: 'Index',
-  components: { Event, Announcement, Tags },
+  components: { Event, Announcement, Tags, GancioMap },
   middleware: 'setup',
   data({ $time }) {
     return {
@@ -68,7 +80,25 @@ export default {
       end: null,
       tmpEvents: [],
       selectedDay: null,
-      storeUnsubscribe: null
+      storeUnsubscribe: null,
+      randomPosition: {
+        latitude: 40 + Math.random() * 10, // Random latitude between 40 and 50
+        longitude: -5 + Math.random() * 10 // Random longitude between -5 and 5
+      },
+      randomPositions: [
+        {
+          latitude: 41.9028, // Rome
+          longitude: 12.4964
+        },
+        {
+          latitude: 48.8566, // Paris
+          longitude: 2.3522
+        },
+        {
+          latitude: 52.52, // Berlin
+          longitude: 13.405
+        }
+      ]
     }
   },
   fetch() {
@@ -183,6 +213,12 @@ export default {
   },
   methods: {
     ...mapActions(['getEvents']),
+    updateMapCoordinates(coords) {
+      this.randomPosition = coords
+    },
+    handleMarkerClick(place) {
+      console.log('Marker clicked:', place)
+    },
     async monthChange({ year, month }) {
       if (this.filter.query) {
         return
