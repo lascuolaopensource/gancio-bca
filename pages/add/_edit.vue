@@ -1,5 +1,5 @@
 <template lang="pug">
-v-container.container.pa-0.pa-md-3
+v-container.container.event-add-section.pa-0.pa-md-3
   v-card
     v-card-title
       h4 {{ edit ? $t('common.edit_event') : $t('common.add_event') }}
@@ -10,14 +10,6 @@ v-container.container.pa-0.pa-md-3
       ImportDialog(@close='openImportDialog = false' @imported='eventImported')
 
     v-card-text.px-0.px-xs-2
-      SchemaForm(
-        v-if="schema"
-        :schema="schema"
-        :data="event.metadata"
-        :uiSchema="uiSchema"
-        @form-change="onFormChange"
-        @form-submit="onFormSubmit"
-      )
       v-form(v-model='valid' ref='form' lazy-validation)
         v-container
           v-row
@@ -70,7 +62,15 @@ v-container.container.pa-0.pa-md-3
                 template(v-slot:selection="{ item, on, attrs, selected, parent }")
                   v-chip(v-bind="attrs" close :close-icon='mdiCloseCircle' @click:close='parent.selectItem(item)'
                     :input-value="selected" label small) {{ item }}
-
+      v-text-field.schema-form-title Tags
+      SchemaForm(
+        v-if="schema"
+        :schema="schema"
+        :data="event.metadata"
+        :uiSchema="uiSchema"
+        @form-change="onFormChange"
+        @form-submit="onFormSubmit"
+      )
     <v-card-actions>
       <v-spacer />
       <v-btn @click='done' :loading='loading' :disabled='!valid || loading' outlined color='primary'>{{ edit ? $t('common.save') : $t('common.send') }}</v-btn>

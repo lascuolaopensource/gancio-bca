@@ -1,7 +1,7 @@
 <template>
   <v-container id="home" class="px-2 px-sm-6 pt-0" fluid>
     <h1
-      class="d-block text-h3 font-weight-black text-center text-uppercase mt-10 mx-auto w-100 text-underline"
+      class="d-block text-h3 font-weight-black text-center text-uppercase mt-10 mx-auto w-100 text-underline tag-title"
     >
       <u>{{ tag }}</u>
     </h1>

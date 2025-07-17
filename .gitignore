@@ -21,6 +21,7 @@ config/development.json
 thumb
 docs/_site
 package
+.DS_Store
 
 ### Node template
 # Logs

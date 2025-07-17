@@ -16,12 +16,6 @@
         color="success"
         v-text="mdiRepeat"
       />
-      <v-icon
-        v-if="isPast"
-        class="float-right mt-1 mr-1"
-        color="warning"
-        v-text="mdiTimerSandComplete"
-      />
       <h2 class="title p-name" itemprop="name">
         {{ event.title }}
       </h2>
@@ -37,26 +31,30 @@
     />
 
     <v-card-text class="body pt-0 pb-0">
-      <time
-        class="dt-start subtitle-1"
-        :datetime="$time.unixFormat(event.start_datetime, 'yyyy-MM-dd HH:mm')"
-        itemprop="startDate"
-        :content="
-          $time.unixFormat(event.start_datetime, 'yyyy-MM-dd\'T\'HH:mm')
-        "
-      >
-        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-        <v-icon v-text="mdiCalendar" /> {{ $time.when(event) }}
-      </time>
-      <time
-        v-if="event.end_datetime"
-        class="d-none dt-end"
-        itemprop="endDate"
-        :content="$time.unixFormat(event.end_datetime, 'yyyy-MM-dd\'T\'HH:mm')"
-      >
-        {{ $time.unixFormat(event.end_datetime) }}
-      </time>
-
+      <div class="event-date">
+        <time
+          class="dt-start subtitle-1"
+          :datetime="$time.unixFormat(event.start_datetime, 'yyyy-MM-dd HH:mm')"
+          itemprop="startDate"
+          :content="
+            $time.unixFormat(event.start_datetime, 'yyyy-MM-dd\'T\'HH:mm')
+          "
+        >
+          <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+          <!-- <v-icon v-text="mdiCalendar" /> {{ $time.when(event) }} -->
+          <p class="event-icon">ŷ</p>
+        </time>
+        <time
+          v-if="event.end_datetime"
+          class="d-none dt-end"
+          itemprop="endDate"
+          :content="
+            $time.unixFormat(event.end_datetime, 'yyyy-MM-dd\'T\'HH:mm')
+          "
+        >
+          {{ $time.unixFormat(event.end_datetime) }}
+        </time>
+      </div>
       <div
         class="p-location"
         itemprop="location"
@@ -71,7 +69,8 @@
           )}`"
         >
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-          <v-icon v-text="mdiMapMarker" />
+          <!-- <v-icon v-text="mdiMapMarker" /> -->
+          <p class="event-icon">q</p>
           <span itemprop="name">{{ event.place.name }}</span>
         </nuxt-link>
         <div class="d-none p-street-address" itemprop="address">
@@ -79,7 +78,6 @@
         </div>
       </div>
     </v-card-text>
-
     <v-card-actions class="flex-wrap">
       <v-chip
         v-for="tag in event.tags.slice(0, 6)"
@@ -100,12 +98,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import MyPicture from '~/components/MyPicture'
-import {
-  mdiRepeat,
-  mdiCalendar,
-  mdiMapMarker,
-  mdiTimerSandComplete
-} from '@mdi/js'
+import { mdiRepeat, mdiCalendar, mdiMapMarker } from '@mdi/js'
 
 export default {
   components: {
@@ -116,7 +109,7 @@ export default {
     lazy: Boolean
   },
   data() {
-    return { mdiRepeat, mdiMapMarker, mdiCalendar, mdiTimerSandComplete }
+    return { mdiRepeat, mdiMapMarker, mdiCalendar }
   },
   computed: {
     ...mapGetters(['hide_thumbs']),
