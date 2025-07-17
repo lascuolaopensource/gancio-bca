@@ -1271,11 +1271,24 @@ nav {
 }
 
 /* ADD PAGE */
-.add-event-form input {
+.event-add-section input {
   background-color: var(--grey);
   border-radius: 32px;
   font-size: var(--medium);
-  padding: var(--spacer);
+  padding-top: calc( var(--spacer) * 2) !important;
+  padding-bottom: calc( var(--spacer) * 2) !important;
+  z-index: 0;
+}
+
+.event-add-section label {
+  font-size: var(--medium);
+  z-index: 20;
+  margin-top: var(--spacer);
+  margin-left: var(--spacer);
+}
+
+.event-add-section .v-icon{
+  margin-top: calc( var(--spacer) * 2) !important;
 }
 
 
