@@ -479,9 +479,53 @@ pre {
   margin-bottom: calc(var(--spacer) * 2);
 }
 
+#events .event.v-card .event-icon {
+  font-family: 'Adaxi Icons', sans-serif !important;
+  font-size: var(--medium) !important;
+  margin-bottom: 0px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#events .event.v-card .v-card__text a:hover {
+  text-decoration: none !important;
+}
+
+#events .event.v-card .v-card__text a .event-icon {
+  font-family: 'Adaxi Icons', sans-serif !important;
+  font-size: 32px !important;
+  line-height: 0.8 !important;
+  margin-bottom: 0px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#events .event.v-card .v-card__text .event-date {
+  display: flex;
+  align-items: center;
+}
+
+#events .event.v-card .v-card__text .event-date .event-icon {
+  margin-bottom: -10px !important;
+}
+
+#events .event.v-card .v-card__text .event-icon {
+  font-family: 'Adaxi Icons', sans-serif !important;
+  font-size: 32px !important;
+  line-height: 0.8 !important;
+  margin-bottom: 0px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#events .event.v-card .v-card__text a:hover .event-icon {
+
+}
+
 #events .event.v-card {
   border: 0px !important;
   background-color: var(--primary) !important;
+  border: 1px solid var(--primary) !important;
   transition: all 0.3s ease;
 }
 
@@ -497,6 +541,12 @@ pre {
 }
 
 #events .event.v-card .thumb {
+}
+
+#events .event.v-card .place {
+  display: flex !important;
+  align-items: center !important;
+  margin-right: calc(var(--spacer) / 2) !important;
 }
 
 #events .event.v-card .thumb img {
@@ -534,6 +584,7 @@ pre {
   font-size: var(--small) !important;
   font-family: 'Cabin', sans-serif !important;
   transition: all 0.3s ease;
+  display: inline-block !important;
 }
 
 #events .event.v-card:hover .v-card__text time {
@@ -712,6 +763,7 @@ nav {
 
 .title-tags-section h1{
   text-align: center;
+  color: var(--white);
 }
 
 .image-section{
@@ -807,6 +859,10 @@ nav {
   @media only screen and (max-width: 600px) {
     font-size: calc(var(--small)) !important;
   }
+}
+
+.event-description-content p {
+  max-width: 700px !important;
 }
 
 /* TIME FILTERS */

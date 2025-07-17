@@ -31,26 +31,28 @@
     />
 
     <v-card-text class="body pt-0 pb-0">
-      <time
-        class="dt-start subtitle-1"
-        :datetime="$time.unixFormat(event.start_datetime, 'yyyy-MM-dd HH:mm')"
-        itemprop="startDate"
-        :content="
-          $time.unixFormat(event.start_datetime, 'yyyy-MM-dd\'T\'HH:mm')
-        "
-      >
-        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-        <v-icon v-text="mdiCalendar" /> {{ $time.when(event) }}
-      </time>
-      <time
-        v-if="event.end_datetime"
-        class="d-none dt-end"
-        itemprop="endDate"
-        :content="$time.unixFormat(event.end_datetime, 'yyyy-MM-dd\'T\'HH:mm')"
-      >
-        {{ $time.unixFormat(event.end_datetime) }}
-      </time>
-
+      <div class="event-date">
+        <time
+          class="dt-start subtitle-1"
+          :datetime="$time.unixFormat(event.start_datetime, 'yyyy-MM-dd HH:mm')"
+          itemprop="startDate"
+          :content="
+            $time.unixFormat(event.start_datetime, 'yyyy-MM-dd\'T\'HH:mm')
+          "
+        >
+          <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
+          <!-- <v-icon v-text="mdiCalendar" /> {{ $time.when(event) }} -->
+          <p class="event-icon">ŷ</p>
+        </time>
+        <time
+          v-if="event.end_datetime"
+          class="d-none dt-end"
+          itemprop="endDate"
+          :content="$time.unixFormat(event.end_datetime, 'yyyy-MM-dd\'T\'HH:mm')"
+        >
+          {{ $time.unixFormat(event.end_datetime) }}
+        </time>
+      </div>
       <div
         class="p-location"
         itemprop="location"
@@ -65,8 +67,8 @@
           )}`"
         >
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
-          <v-icon v-text="mdiMapMarker" />
-          <p class="event-icon">Y</p>
+          <!-- <v-icon v-text="mdiMapMarker" /> -->
+          <p class="event-icon">q</p>
           <span itemprop="name">{{ event.place.name }}</span>
         </nuxt-link>
         <div class="d-none p-street-address" itemprop="address">
