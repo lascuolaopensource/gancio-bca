@@ -225,7 +225,7 @@ export default {
       console.log('metadata coming from form', JSON.stringify(data))
       this.$axios
         .$put('/event', {
-          id: this.id,
+          id: this.event.id,
           metadata: data,
           place_id: this.event.place.id,
           place_name: this.event.place.name,
