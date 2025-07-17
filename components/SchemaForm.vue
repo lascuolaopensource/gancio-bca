@@ -75,6 +75,8 @@ export default {
         this.updateFormUiSchema(this.uiSchema)
       } else if (type === 'form-submit') {
         this.$emit('form-submit', data)
+      } else if (type === 'form-change') {
+        this.$emit('form-change', data)
       }
     },
 

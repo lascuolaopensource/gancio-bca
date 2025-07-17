@@ -58,10 +58,19 @@
         throw new Error('Form not found')
       }
 
-      // myForm.dataChangeCallback = (newData) => {
-      //   console.info(newData)
-      // }
-      myForm.onFormSubmit = (newData, valid) => {
+      // Handle form data changes
+      form.dataChangeCallback = (newData) => {
+        window.parent.postMessage(
+          {
+            type: 'form-change',
+            data: newData
+          },
+          '*'
+        )
+      }
+
+      // Handle form submission
+      form.onFormSubmit = (newData, valid) => {
         window.parent.postMessage(
           {
             type: 'form-submit',
@@ -70,19 +79,6 @@
           '*'
         )
       }
-
-      // // Listen for the custom 'submit' event from the <json-schema-form> web component
-      // form.addEventListener('submit', (event) => {
-      //   // event.detail should contain the submitted form data, but fallback to form.data if not present
-      //   const submittedData = event.detail ?? form.data
-      //   window.parent.postMessage(
-      //     {
-      //       type: 'form-submit',
-      //       data: submittedData
-      //     },
-      //     '*'
-      //   )
-      // })
 
       // Handle messages from parent
       window.addEventListener('message', (event) => {
@@ -103,27 +99,7 @@
         }
       })
 
-      // // Handle form events
-      // form.addEventListener('change', (event) => {
-      //   window.parent.postMessage(
-      //     {
-      //       type: 'form-change',
-      //       data: event.detail
-      //     },
-      //     '*'
-      //   )
-      // })
-
-      // form.addEventListener('submit', (event) => {
-      //   window.parent.postMessage(
-      //     {
-      //       type: 'form-submit',
-      //       data: event.detail
-      //     },
-      //     '*'
-      //   )
-      // })
-
+      // Signal ready to parent
       window.parent.postMessage({ type: 'form-ready' }, '*')
     </script>
   </body>

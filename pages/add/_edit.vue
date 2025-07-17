@@ -13,7 +13,7 @@ v-container.container.pa-0.pa-md-3
       SchemaForm(
         v-if="schema"
         :schema="schema"
-        :data="formData"
+        :data="metadata"
         :uiSchema="uiSchema"
         @form-change="onFormChange"
         @form-submit="onFormSubmit"
@@ -166,6 +166,7 @@ export default {
       data.event.parentId = event.parentId
       data.event.recurrent = event.recurrent
       data.event.online_locations = event.online_locations
+
       return data
     }
     return {}
@@ -197,7 +198,8 @@ export default {
       date: { from: null, due: null, recurrent: null },
       edit: false,
       loading: false,
-      disableAddress: false
+      disableAddress: false,
+      metadata: {}
     }
   },
   head() {
@@ -214,13 +216,23 @@ export default {
   },
   methods: {
     onFormChange(newData) {
-      this.formData = newData
+      console.log('onFormChange', newData)
     },
     onFormSubmit({ data, valid }) {
-      if (valid) {
-        // Handle form submission
-        console.log('Form submitted with data:', data)
+      if (!valid) {
+        return
       }
+      this.$axios
+        .$put('/event', {
+          id: this.id,
+          metadata: data,
+          place_id: this.event.place.id,
+          place_name: this.event.place.name,
+          place_address: this.event.place.address
+        })
+        .then((res) => {
+          console.log(res)
+        })
     },
     updateTags(tags) {
       this.event.tags = uniqBy(
