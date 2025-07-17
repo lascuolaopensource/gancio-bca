@@ -1085,7 +1085,6 @@ nav {
 .about-heading::after{
   content: 'About';
   font-size: var(--extralarge) !important;
-  font-size: var(--medium) !important;
   font-family: 'Adaxi', sans-serif !important;
   font-weight: normal;
 
