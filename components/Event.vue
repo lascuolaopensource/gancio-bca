@@ -66,6 +66,7 @@
         >
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
           <v-icon v-text="mdiMapMarker" />
+          <p class="event-icon">Y</p>
           <span itemprop="name">{{ event.place.name }}</span>
         </nuxt-link>
         <div class="d-none p-street-address" itemprop="address">
@@ -93,11 +94,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import MyPicture from '~/components/MyPicture'
-import {
-  mdiRepeat,
-  mdiCalendar,
-  mdiMapMarker
-} from '@mdi/js'
+import { mdiRepeat, mdiCalendar, mdiMapMarker } from '@mdi/js'
 
 export default {
   components: {
