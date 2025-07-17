@@ -27,7 +27,6 @@
     div.event-info-section
       v-container.eventDetails.pt-4
         v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
-        v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
         time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
           v-icon(v-text='mdiCalendar' small)
           span.ml-2.text-uppercase {{$time.when(event)}}
@@ -151,7 +150,6 @@ import {
   mdiRepeat,
   mdiFileDownloadOutline,
   mdiShareAll,
-  mdiTimerSandComplete,
   mdiCalendarExport,
   mdiCalendar,
   mdiContentCopy,
@@ -194,7 +192,6 @@ export default {
       mdiCalendar,
       mdiFileDownloadOutline,
       mdiMessageTextOutline,
-      mdiTimerSandComplete,
       mdiMapMarker,
       mdiContentCopy,
       mdiClose,
