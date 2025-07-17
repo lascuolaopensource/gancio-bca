@@ -20,6 +20,7 @@ config/development.json
 /assets/config.json
 thumb
 docs/_site
+.vscode
 package
 
 ### Node template

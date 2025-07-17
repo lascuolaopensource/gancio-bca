@@ -37,8 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     ap_id: {
       type: DataTypes.STRING,
       index: true
-    },
-    metadata: DataTypes.JSON
+    }
   })
 
   Event.prototype.toAP = function (

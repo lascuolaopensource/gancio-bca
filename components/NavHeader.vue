@@ -1,5 +1,3 @@
-<!-- eslint-disable vue/singleline-html-element-content-newline -->
-
 <template>
   <div class="d-flex">
     <v-btn class="site-title-button" nuxt to="/">
@@ -13,7 +11,6 @@
     <div class="d-flex navigation">
       <v-btn
         v-for="nav in navLinks"
-        v-if="!nav.hide"
         :key="nav.to"
         icon
         large
@@ -22,6 +19,7 @@
         :nuxt="!!nav.to"
         :title="$t(nav.title)"
         :aria-label="$t(nav.title)"
+        v-if="!nav.hide"
       >
         Cos'è
       </v-btn>
@@ -77,14 +75,13 @@
       </client-only>
 
       <client-only>
-        <v-menu
-          v-if="$auth.loggedIn"
+        <v-menu 
+          v-if="$auth.loggedIn" 
           class="user-menu drawer-menu"
           content-class="drawer-menu-content"
           role="menu"
-          offset-y
-          transition="slide-y-transition"
-        >
+          offset-y 
+          transition="slide-y-transition">
           <template #activator="{ on, attrs }">
             <v-btn
               class="mr-0"

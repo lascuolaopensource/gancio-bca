@@ -10,14 +10,6 @@ v-container.container.event-add-section.pa-0.pa-md-3
       ImportDialog(@close='openImportDialog = false' @imported='eventImported')
 
     v-card-text.px-0.px-xs-2
-      SchemaForm(
-        v-if="schema"
-        :schema="schema"
-        :data="event.metadata"
-        :uiSchema="uiSchema"
-        @form-change="onFormChange"
-        @form-submit="onFormSubmit"
-      )
       v-form(v-model='valid' ref='form' lazy-validation)
         v-container
           v-row
@@ -75,13 +67,12 @@ v-container.container.event-add-section.pa-0.pa-md-3
       <v-spacer />
       <v-btn @click='done' :loading='loading' :disabled='!valid || loading' outlined color='primary'>{{ edit ? $t('common.save') : $t('common.send') }}</v-btn>
     </v-card-actions>
-</template>
 
+</template>
 <script>
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import uniqBy from 'lodash/uniqBy'
-import { getCollectionSchema } from '@/server/schemas.utils'
 
 import {
   mdiFileImport,
@@ -95,7 +86,6 @@ import ImportDialog from '@/components/ImportDialog'
 import MediaInput from '@/components/MediaInput'
 import WhereInput from '@/components/WhereInput'
 import DateInput from '@/components/DateInput'
-import SchemaForm from '@/components/SchemaForm'
 
 export default {
   name: 'NewEvent',
@@ -104,8 +94,7 @@ export default {
     ImportDialog,
     MediaInput,
     WhereInput,
-    DateInput,
-    SchemaForm
+    DateInput
   },
   validate({ store, params, error }) {
     // should we allow anon event?
@@ -124,7 +113,7 @@ export default {
     if (params.edit) {
       const data = { event: { place: {}, media: [] } }
       data.id = params.edit
-      data.edit = !query.clone
+      data.edit = query.clone ? false : true
       let event
       try {
         event = await $axios.$get('/event/detail/' + data.id)
@@ -165,8 +154,6 @@ export default {
       data.event.parentId = event.parentId
       data.event.recurrent = event.recurrent
       data.event.online_locations = event.online_locations
-      data.event.metadata = event.metadata
-
       return data
     }
     return {}
@@ -181,9 +168,6 @@ export default {
       mdiCloseCircle,
       valid: false,
       openImportDialog: false,
-      schema: null,
-      formData: {},
-      uiSchema: {},
       event: {
         place: { name: '', address: '', latitude: null, longitude: null },
         online_locations: [],
@@ -198,9 +182,11 @@ export default {
       date: { from: null, due: null, recurrent: null },
       edit: false,
       loading: false,
-      disableAddress: false,
-      metadata: {}
+      disableAddress: false
     }
+  },
+  mounted() {
+    this.$nextTick(async () => (this.tags = await this.$axios.$get('/tag')))
   },
   head() {
     return {
@@ -208,29 +194,7 @@ export default {
     }
   },
   computed: mapState(['settings']),
-  mounted() {
-    this.$nextTick(async () => {
-      this.tags = await this.$axios.$get('/tag')
-      this.schema = getCollectionSchema('eventSchema')
-    })
-  },
   methods: {
-    onFormChange(newData) {
-      // console.log('onFormChange', newData)
-    },
-    onFormSubmit({ data, valid }) {
-      if (!valid) {
-        return
-      }
-      const body = {
-        id: this.id,
-        metadata: data,
-        place_id: this.event.place.id,
-        place_name: this.event.place.name,
-        place_address: this.event.place.address
-      }
-      this.$axios.$put('/event', body)
-    },
     updateTags(tags) {
       this.event.tags = uniqBy(
         tags.map((t) => t.trim()),
@@ -239,9 +203,7 @@ export default {
     },
     searchTags: debounce(async function (ev) {
       const search = ev.target.value
-      if (!search) {
-        return
-      }
+      if (!search) return
       this.tags = await this.$axios.$get(`/tag?search=${search}`)
     }, 200),
     eventImported(event) {
@@ -320,7 +282,7 @@ export default {
         'start_datetime',
         this.$time.fromDateInput(this.date.from, this.date.fromHour)
       )
-      if (this.date.multidate) {
+      if (!!this.date.multidate) {
         formData.append(
           'end_datetime',
           this.$time.fromDateInput(this.date.due, this.date.dueHour || '23:59')
