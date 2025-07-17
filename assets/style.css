@@ -1080,6 +1080,18 @@ nav {
   text-decoration: none !important;
 }
 
+/* ABOUT */
+.about-heading::after{
+  content: 'About'
+  font-size: var(--medium) !important;
+  font-family: 'Adaxi', sans-serif !important;
+
+}
+.about-text{
+  font-size: var(--medium) !important;
+  padding: 0 !important
+}
+
 /* ADD EVENT */
 
 .action-buttons-add-export {
@@ -1258,3 +1270,5 @@ nav {
   font-size: var(--medium);
   padding: var(--spacer);
 }
+
+
